@@ -19,12 +19,12 @@ class WebhookClientServiceProvider extends ServiceProvider
             $timestamp = date('Y_m_d_His', time());
 
             $this->publishes([
-                __DIR__.'/../database/migrations/create_webhook_calls_table.php.stub' => database_path('migrations/'.$timestamp.'_create_webhook_calls_table.php'),
+                __DIR__.'/../database/migrations/create_webhook_calls_table.php.stub' => database_path("migrations/{$timestamp}_create_webhook_calls_table.php"),
             ], 'migrations');
         }
 
-        Route::macro('webhooks', function (string $url, string $name = null) {
-            return Route::post($url, '\Spatie\StripeWebhooks\StripeWebhooksController');
+        Route::macro('webhooks', function (string $url, string $name = 'default') {
+            return Route::post($url, '\Spatie\WebhookClient\WebhookController')->name("webhook-client-{$name}");
         });
     }
 

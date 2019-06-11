@@ -6,7 +6,7 @@ return [
 
         'signing_secret' => env('WEBHOOKS_SECRET'),
 
-        'header_name' => 'Signature',
+        'signature_validator' => \Spatie\WebhookClient\SignatureValidator\DefaultSignatureValidator::class,
 
         'model' => \Spatie\WebhookClient\Models\WebhookCall::class,
     ]
