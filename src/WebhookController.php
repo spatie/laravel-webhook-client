@@ -22,7 +22,10 @@ class WebhookController
             throw WebhookFailed::missingSignature($config['signature_header_name']);
         }
 
-        $signatureValidator =
+        /** @var \Spatie\WebhookClient\SignatureValidator\SignatureValidator $signatureValidator */
+        $signatureValidator = app($config['signature_validator']);
+
+
 
 
     }
