@@ -20,7 +20,10 @@ class WebhookConfig
     public $webhookProfile;
 
     /** @var string */
-    public $modelClass;
+    public $webhookModel;
+
+    /** @var \Spatie\WebhookClient\ProcessWebhookJob */
+    public $processWebhookJob;
 
     public function __construct(array $properties)
     {
@@ -34,7 +37,9 @@ class WebhookConfig
 
         $this->webhookProfile = app($properties['webhook_profile']);
 
-        $this->modelClass = $properties['model_class'];
+        $this->webhookModel = $properties['webhook_model'];
+
+        $this->processWebhookJob = app($properties['process_webhook_job']);
     }
 }
 

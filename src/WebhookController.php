@@ -25,7 +25,9 @@ class WebhookController
         $webhookCall = $this->storeWebhook($request, $config);
 
         try {
-            $webhookCall->process();
+            $job = new $config->processWebhookJob($webhookCall);
+
+            dispatch($job);
         } catch (Exception $exception) {
             $webhookCall->saveException($exception);
 
@@ -71,7 +73,7 @@ class WebhookController
 
     protected function storeWebhook(Request $request, WebhookConfig $config): WebhookCall
     {
-        return $config->modelClass::create([
+        return $config->webhookModel::create([
             'payload' => $request->input(),
         ]);
     }

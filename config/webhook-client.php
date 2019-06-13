@@ -27,20 +27,22 @@ return [
         'signature_validator' => \Spatie\WebhookClient\SignatureValidator\DefaultSignatureValidator::class,
 
         /*
-         * The classname of the model to be used to store call. The class should equal or extend
-         * Spatie\WebhookClient\Models\WebhookCall.
-         */
-        'model_class' => \Spatie\WebhookClient\Models\WebhookCall::class,
-
-        /*
-         * This class is responsable to determine if the webhook call should be stored
+         * This class is responsible to determine if the webhook call should be stored
          * and processed.
          */
         'webhook_profile' => \Spatie\WebhookClient\WebhookProfile\ProcessEverythingWebhookProfile::class,
 
         /*
-         * The class name of the job that will process the webhook request.
+         * The classname of the model to be used to store call. The class should equal or extend
+         * Spatie\WebhookClient\Models\WebhookCall.
          */
-        'job_class' => '',
+        'webhook_model' => \Spatie\WebhookClient\Models\WebhookCall::class,
+
+        /*
+         * The class name of the job that will process the webhook request.
+         *
+         * This should be set to a class that extends \Spatie\WebhookClient\Spatie\WebhookClient.
+         */
+        'process_webhook_job' => '',
     ]
 ];
