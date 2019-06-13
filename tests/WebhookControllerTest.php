@@ -7,6 +7,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Route;
+use Spatie\WebhookClient\Events\InvalidSignatureEvent;
 use Spatie\WebhookClient\Models\WebhookCall;
 use Spatie\WebhookClient\Tests\TestClasses\ProcessWebhookJobTestClass;
 
@@ -71,6 +72,7 @@ class WebhookControllerTest extends TestCase
 
         $this->assertCount(0, WebhookCall::get());
         Queue::assertNothingPushed();
+        Event::assertDispatched(InvalidSignatureEvent::class);
     }
 
     private function determineSignature(array $payload): string

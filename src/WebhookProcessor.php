@@ -6,6 +6,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
+use Spatie\WebhookClient\Events\InvalidSignatureEvent;
 use Spatie\WebhookClient\Exceptions\WebhookFailed;
 use Spatie\WebhookClient\Exceptions\InvalidConfig;
 use Spatie\WebhookClient\Models\WebhookCall;
@@ -45,10 +46,13 @@ class WebhookProcessor
         $signature = $this->request->header($headerName);
 
         if (!$signature) {
+            event(new InvalidSignatureEvent($this->request, $signature));
             throw WebhookFailed::missingSignature($headerName);
         }
 
         if (!$this->config->signatureValidator->isValid($this->request, $this->config)) {
+            event(new InvalidSignatureEvent($this->request, $signature));
+
             throw WebhookFailed::invalidSignature($signature, $this->config->signatureHeaderName);
         }
 
