@@ -4,7 +4,6 @@ namespace Spatie\WebhookClient\Models;
 
 use Exception;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\StripeWebhooks\Exceptions\WebhookFailed;
 
 class WebhookCall extends Model
 {
@@ -14,17 +13,6 @@ class WebhookCall extends Model
         'payload' => 'array',
         'exception' => 'array',
     ];
-
-    public function process()
-    {
-        $this->clearException();
-
-        if (! class_exists($jobClass)) {
-            throw WebhookFailed::jobClassDoesNotExist($jobClass, $this);
-        }
-
-        dispatch(new $jobClass($this));
-    }
 
     public function saveException(Exception $exception)
     {
@@ -39,14 +27,7 @@ class WebhookCall extends Model
         return $this;
     }
 
-    protected function determineJobClass(string $eventType): string
-    {
-        $jobConfigKey = str_replace('.', '_', $eventType);
-
-        return config("stripe-webhooks.jobs.{$jobConfigKey}", '');
-    }
-
-    protected function clearException()
+    public function clearException()
     {
         $this->exception = null;
 

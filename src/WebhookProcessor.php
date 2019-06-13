@@ -6,7 +6,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
-use Spatie\StripeWebhooks\Exceptions\WebhookFailed;
+use Spatie\WebhookClient\Exceptions\WebhookFailed;
 use Spatie\WebhookClient\Exceptions\InvalidConfig;
 use Spatie\WebhookClient\Models\WebhookCall;
 
@@ -49,7 +49,7 @@ class WebhookProcessor
         }
 
         if (!$this->config->signatureValidator->isValid($this->request, $this->config)) {
-            throw WebhookFailed::invalidSignature($signature);
+            throw WebhookFailed::invalidSignature($signature, $this->config->signatureHeaderName);
         }
 
         return $this;
@@ -58,6 +58,7 @@ class WebhookProcessor
     protected function storeWebhook(): WebhookCall
     {
         return $this->config->webhookModel::create([
+            'name' => $this->config->name,
             'payload' => $this->request->input(),
         ]);
     }
@@ -66,6 +67,8 @@ class WebhookProcessor
     {
         try {
             $job = new $this->config->processWebhookJob($webhookCall);
+
+            $webhookCall->clearException();
 
             dispatch($job);
         } catch (Exception $exception) {
