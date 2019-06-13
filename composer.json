@@ -16,7 +16,10 @@
         }
     ],
     "require": {
-        "php": "^7.3"
+        "php": "^7.2",
+        "illuminate/bus": "^5.8",
+        "illuminate/database": "^5.8",
+        "illuminate/support": "^5.8"
     },
     "require-dev": {
         "orchestra/testbench": "^3.8",
