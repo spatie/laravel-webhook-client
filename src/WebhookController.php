@@ -16,9 +16,13 @@ class WebhookController
     {
         $config = $this->getConfig();
 
-        $webhookCall = $this
-            ->verifySignature($request, $config)
-            ->storeWebhook($request, $config);
+        $this->guardAgainstInvalidSignature($request, $config);
+
+        if (!$config->webhookProfile->shouldProcess($request)) {
+            return;
+        }
+
+        $webhookCall = $this->storeWebhook($request, $config);
 
         try {
             $webhookCall->process();
@@ -38,7 +42,7 @@ class WebhookController
         $activeConfigName = Str::after($routeName, 'webhook-client-');
 
         $activeConfig = collect(config('webhook-client'))
-            ->first(function(array $config) use ($activeConfigName) {
+            ->first(function (array $config) use ($activeConfigName) {
                 return $config['name'] === $activeConfigName;
             });
 
@@ -50,7 +54,7 @@ class WebhookController
 
     }
 
-    protected function verifySignature(Request $request, WebhookConfig $config)
+    protected function guardAgainstInvalidSignature(Request $request, WebhookConfig $config)
     {
         $signature = $request->header($config['signature_header_name']);
 

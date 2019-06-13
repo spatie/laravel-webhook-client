@@ -16,6 +16,9 @@ class WebhookConfig
     /** @var \Spatie\WebhookClient\SignatureValidator\SignatureValidator  */
     public $signatureValidator;
 
+    /** @var \Spatie\WebhookClient\WebhookProfile\WebhookProfile */
+    public $webhookProfile;
+
     /** @var string */
     public $modelClass;
 
@@ -28,6 +31,8 @@ class WebhookConfig
         $this->signatureHeaderName = $properties['signature_header_name'];
 
         $this->signatureValidator = app($properties['signature_validator']);
+
+        $this->webhookProfile = app($properties['webhook_profile']);
 
         $this->modelClass = $properties['model_class'];
     }
