@@ -2,13 +2,10 @@
 
 namespace Spatie\WebhookClient;
 
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
-use Spatie\StripeWebhooks\Exceptions\WebhookFailed;
 use Spatie\WebhookClient\Exceptions\InvalidConfig;
-use Spatie\WebhookClient\Models\WebhookCall;
 
 class WebhookController
 {
@@ -16,23 +13,7 @@ class WebhookController
     {
         $config = $this->getConfig();
 
-        $this->guardAgainstInvalidSignature($request, $config);
-
-        if (!$config->webhookProfile->shouldProcess($request)) {
-            return;
-        }
-
-        $webhookCall = $this->storeWebhook($request, $config);
-
-        try {
-            $job = new $config->processWebhookJob($webhookCall);
-
-            dispatch($job);
-        } catch (Exception $exception) {
-            $webhookCall->saveException($exception);
-
-            throw $exception;
-        }
+        (new WebhookProcessor($request, $config))->process();
 
         return response()->json(['message' => 'ok']);
     }
@@ -53,29 +34,6 @@ class WebhookController
         }
 
         return new WebhookConfig($activeConfig);
-
-    }
-
-    protected function guardAgainstInvalidSignature(Request $request, WebhookConfig $config)
-    {
-        $signature = $request->header($config['signature_header_name']);
-
-        if (!$signature) {
-            throw WebhookFailed::missingSignature($config['signature_header_name']);
-        }
-
-        if (!$config->signatureValidator->isValid($request, $config)) {
-            throw WebhookFailed::invalidSignature($signature);
-        }
-
-        return $this;
-    }
-
-    protected function storeWebhook(Request $request, WebhookConfig $config): WebhookCall
-    {
-        return $config->webhookModel::create([
-            'payload' => $request->input(),
-        ]);
     }
 }
 
