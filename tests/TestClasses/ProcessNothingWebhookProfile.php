@@ -12,4 +12,3 @@ class ProcessNothingWebhookProfile implements WebhookProfile
         return false;
     }
 }
-

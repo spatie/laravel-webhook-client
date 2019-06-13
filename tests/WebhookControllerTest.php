@@ -2,15 +2,14 @@
 
 namespace Spatie\WebhookClient\Tests;
 
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Route;
-use Spatie\WebhookClient\Events\InvalidSignatureEvent;
 use Spatie\WebhookClient\Models\WebhookCall;
-use Spatie\WebhookClient\Tests\TestClasses\ProcessNothingWebhookProfile;
+use Spatie\WebhookClient\Events\InvalidSignatureEvent;
 use Spatie\WebhookClient\Tests\TestClasses\ProcessWebhookJobTestClass;
+use Spatie\WebhookClient\Tests\TestClasses\ProcessNothingWebhookProfile;
 
 class WebhookControllerTest extends TestCase
 {
@@ -39,7 +38,7 @@ class WebhookControllerTest extends TestCase
         $this->payload = ['a' => 1];
 
         $this->headers = [
-            config('webhook-client.0.signature_header_name') => $this->determineSignature($this->payload)
+            config('webhook-client.0.signature_header_name') => $this->determineSignature($this->payload),
         ];
     }
 
@@ -57,7 +56,8 @@ class WebhookControllerTest extends TestCase
 
         Queue::assertPushed(ProcessWebhookJobTestClass::class, function (ProcessWebhookJobTestClass $job) {
             $this->assertEquals(1, $job->webhookCall->id);
-                return true;
+
+            return true;
         });
     }
 
@@ -104,7 +104,6 @@ class WebhookControllerTest extends TestCase
         $this
             ->postJson('incoming-webhooks-alternative-config', $this->payload, $this->headers)
             ->assertSuccessful();
-
     }
 
     private function determineSignature(array $payload): string
@@ -122,9 +121,9 @@ class WebhookControllerTest extends TestCase
         $payload = ['a' => 1];
 
         $headers = [
-            config('webhook-client.0.signature_header_name') => $this->determineSignature($payload)
+            config('webhook-client.0.signature_header_name') => $this->determineSignature($payload),
         ];
+
         return [$payload, $headers];
     }
 }
-

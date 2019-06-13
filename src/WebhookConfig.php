@@ -3,8 +3,8 @@
 namespace Spatie\WebhookClient;
 
 use Spatie\WebhookClient\Exceptions\InvalidConfig;
-use Spatie\WebhookClient\SignatureValidator\SignatureValidator;
 use Spatie\WebhookClient\WebhookProfile\WebhookProfile;
+use Spatie\WebhookClient\SignatureValidator\SignatureValidator;
 
 class WebhookConfig
 {
@@ -17,7 +17,7 @@ class WebhookConfig
     /** @var string */
     public $signatureHeaderName;
 
-    /** @var \Spatie\WebhookClient\SignatureValidator\SignatureValidator  */
+    /** @var \Spatie\WebhookClient\SignatureValidator\SignatureValidator */
     public $signatureValidator;
 
     /** @var \Spatie\WebhookClient\WebhookProfile\WebhookProfile */
@@ -55,4 +55,3 @@ class WebhookConfig
         $this->processWebhookJob = app($properties['process_webhook_job']);
     }
 }
-

@@ -44,5 +44,5 @@ return [
          * This should be set to a class that extends \Spatie\WebhookClient\Spatie\WebhookClient.
          */
         'process_webhook_job' => '',
-    ]
+    ],
 ];

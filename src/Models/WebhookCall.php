@@ -36,4 +36,3 @@ class WebhookCall extends Model
         return $this;
     }
 }
-
