@@ -3,6 +3,8 @@
 namespace Spatie\WebhookClient\Tests;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Route;
 use Spatie\WebhookClient\Models\WebhookCall;
@@ -10,6 +12,15 @@ use Spatie\WebhookClient\Tests\TestClasses\ProcessWebhookJobTestClass;
 
 class WebhookControllerTest extends TestCase
 {
+    /** @var array */
+    private $payload;
+
+    /** @var string */
+    private $signature;
+
+    /** @var array */
+    private $headers;
+
     public function setUp(): void
     {
         parent::setUp();
@@ -20,19 +31,21 @@ class WebhookControllerTest extends TestCase
         Route::webhooks('incoming-webhooks');
 
         Queue::fake();
+
+        Event::fake();
+
+        $this->payload = ['a' => 1];
+
+        $this->headers = [
+            config('webhook-client.0.signature_header_name') => $this->determineSignature($this->payload)
+        ];
     }
 
     /** @test */
     public function it_can_process_a_webhook_request()
     {
-        $payload = ['a' => 1];
-
-        $headers = [
-            config('webhook-client.0.signature_header_name') => $this->determineSignature($payload)
-        ];
-
         $this
-            ->postJson('incoming-webhooks', $payload, $headers)
+            ->postJson('incoming-webhooks', $this->payload, $this->headers)
             ->assertSuccessful();
 
         $this->assertCount(1, WebhookCall::get());
@@ -44,8 +57,20 @@ class WebhookControllerTest extends TestCase
             $this->assertEquals(1, $job->webhookCall->id);
                 return true;
         });
+    }
 
+    /** @test */
+    public function a_request_with_an_invalid_payload_will_not_get_processed()
+    {
+        $headers = $this->headers;
+        $headers['Signature'] .= 'invalid';
 
+        $this
+            ->postJson('incoming-webhooks', $this->payload, $headers)
+            ->assertStatus(Response::HTTP_INTERNAL_SERVER_ERROR);
+
+        $this->assertCount(0, WebhookCall::get());
+        Queue::assertNothingPushed();
     }
 
     private function determineSignature(array $payload): string
@@ -53,6 +78,19 @@ class WebhookControllerTest extends TestCase
         $secret = config('webhook-client.0.signing_secret');
 
         return hash_hmac('sha256', json_encode($payload), $secret);
+    }
+
+    /**
+     * @return array
+     */
+    protected function getValidPayloadAndHeaders(): array
+    {
+        $payload = ['a' => 1];
+
+        $headers = [
+            config('webhook-client.0.signature_header_name') => $this->determineSignature($payload)
+        ];
+        return [$payload, $headers];
     }
 }
 
