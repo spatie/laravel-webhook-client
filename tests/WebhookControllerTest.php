@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Route;
 use Spatie\WebhookClient\Events\InvalidSignatureEvent;
 use Spatie\WebhookClient\Models\WebhookCall;
+use Spatie\WebhookClient\Tests\TestClasses\ProcessNothingWebhookProfile;
 use Spatie\WebhookClient\Tests\TestClasses\ProcessWebhookJobTestClass;
 
 class WebhookControllerTest extends TestCase
@@ -73,6 +74,20 @@ class WebhookControllerTest extends TestCase
         $this->assertCount(0, WebhookCall::get());
         Queue::assertNothingPushed();
         Event::assertDispatched(InvalidSignatureEvent::class);
+    }
+
+    /** @test */
+    public function it_can_work_with_an_alternative_profile()
+    {
+        config()->set('webhook-client.0.webhook_profile', ProcessNothingWebhookProfile::class);
+
+        $this
+            ->postJson('incoming-webhooks', $this->payload, $this->headers)
+            ->assertSuccessful();
+
+        Queue::assertNothingPushed();
+        Event::assertNotDispatched(InvalidSignatureEvent::class);
+        $this->assertCount(0, WebhookCall::get());
     }
 
     private function determineSignature(array $payload): string
