@@ -2,9 +2,9 @@
 
 namespace Spatie\WebhookClient;
 
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Str;
 use Spatie\WebhookClient\Exceptions\InvalidConfig;
 
 class WebhookController
@@ -36,4 +36,3 @@ class WebhookController
         return new WebhookConfig($config);
     }
 }
-

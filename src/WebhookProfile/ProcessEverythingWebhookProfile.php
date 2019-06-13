@@ -11,4 +11,3 @@ class ProcessEverythingWebhookProfile implements WebhookProfile
         return true;
     }
 }
-

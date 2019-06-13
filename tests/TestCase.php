@@ -34,7 +34,7 @@ class TestCase extends Orchestra
 
     protected function setUpDatabase()
     {
-        include_once __DIR__ . '/../migrations/create_webhook_calls_table.php.stub';
+        include_once __DIR__.'/../migrations/create_webhook_calls_table.php.stub';
 
         (new CreateWebhookCallsTable())->up();
     }

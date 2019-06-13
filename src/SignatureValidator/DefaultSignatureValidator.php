@@ -3,8 +3,8 @@
 namespace Spatie\WebhookClient\SignatureValidator;
 
 use Illuminate\Http\Request;
-use Spatie\WebhookClient\Exceptions\WebhookFailed;
 use Spatie\WebhookClient\WebhookConfig;
+use Spatie\WebhookClient\Exceptions\WebhookFailed;
 
 class DefaultSignatureValidator implements SignatureValidator
 {
@@ -27,4 +27,3 @@ class DefaultSignatureValidator implements SignatureValidator
         return hash_equals($signature, $computedSignature);
     }
 }
-

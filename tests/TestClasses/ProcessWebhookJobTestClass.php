@@ -8,7 +8,5 @@ class ProcessWebhookJobTestClass extends ProcessWebhookJob
 {
     public function handle()
     {
-
     }
 }
-
