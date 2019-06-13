@@ -22,18 +22,18 @@ class WebhookController
     {
         $routeName = Route::currentRouteName();
 
-        $activeConfigName = Str::after($routeName, 'webhook-client-');
+        $configName = Str::after($routeName, 'webhook-client-');
 
-        $activeConfig = collect(config('webhook-client'))
-            ->first(function (array $config) use ($activeConfigName) {
-                return $config['name'] === $activeConfigName;
+        $config = collect(config('webhook-client'))
+            ->first(function (array $config) use ($configName) {
+                return $config['name'] === $configName;
             });
 
-        if (is_null($activeConfig)) {
-            throw InvalidConfig::couldNotFindConfig($activeConfigName);
+        if (is_null($config)) {
+            throw InvalidConfig::couldNotFindConfig($configName);
         }
 
-        return new WebhookConfig($activeConfig);
+        return new WebhookConfig($config);
     }
 }
 
