@@ -20,10 +20,7 @@ composer require spatie/laravel-webhook-client
 
 ## Usage
 
-``` php
-$WebhookClient = new Spatie\WebhookClient();
-echo $WebhookClient->echoPhrase('Hello, Spatie!');
-```
+Coming soon
 
 ### Testing
 
