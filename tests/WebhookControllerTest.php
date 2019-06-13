@@ -90,6 +90,23 @@ class WebhookControllerTest extends TestCase
         $this->assertCount(0, WebhookCall::get());
     }
 
+    /** @test */
+    public function it_can_work_with_an_alternative_config()
+    {
+        Route::webhooks('incoming-webhooks-alternative-config', 'alternative-config');
+
+        $this
+            ->postJson('incoming-webhooks-alternative-config', $this->payload, $this->headers)
+            ->assertStatus(Response::HTTP_INTERNAL_SERVER_ERROR);
+
+        config()->set('webhook-client.0.name', 'alternative-config');
+
+        $this
+            ->postJson('incoming-webhooks-alternative-config', $this->payload, $this->headers)
+            ->assertSuccessful();
+
+    }
+
     private function determineSignature(array $payload): string
     {
         $secret = config('webhook-client.0.signing_secret');
