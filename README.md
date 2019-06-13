@@ -8,7 +8,7 @@
 [![Quality Score](https://img.shields.io/scrutinizer/g/spatie/laravel-webhook-client.svg?style=flat-square)](https://scrutinizer-ci.com/g/spatie/laravel-webhook-client)
 [![Total Downloads](https://img.shields.io/packagist/dt/spatie/laravel-webhook-client.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-webhook-client)
 
-This is where your description should go. Try and limit it to a paragraph or two.
+Coming soon...
 
 ## Installation
 
@@ -17,6 +17,64 @@ You can install the package via composer:
 ```bash
 composer require spatie/laravel-webhook-client
 ```
+
+You can publish the config file with:
+
+```bash
+php artisan vendor:publish --provider="Spatie\WebhookClient\WebhookClientServiceProvider"
+```
+
+This is the contents of the file that will be published at `config/webhook-client.php`:
+
+```php
+return [
+    [
+        /*
+         * This package support multiple webhook receiving endpoints. If you only have
+         * one endpoint receiving webhooks, you can use 'default'.
+         */
+        'name' => 'default',
+
+        /*
+         * We expect that every webhook call will be signed using a secret. This secret
+         * is used to verify that the payload has not been tampered with.
+         */
+        'signing_secret' => env('WEBHOOK_CLIENT_SECRET'),
+
+        /*
+         * The name of the header containing the signature.
+         */
+        'signature_header_name' => 'Signature',
+
+        /*
+         *  This class will verify that the content of the signature header is valid.
+         *
+         * It should implement \Spatie\WebhookClient\SignatureValidator\SignatureValidator
+         */
+        'signature_validator' => \Spatie\WebhookClient\SignatureValidator\DefaultSignatureValidator::class,
+
+        /*
+         * This class determines if the webhook call should be stored and processed.
+         */
+        'webhook_profile' => \Spatie\WebhookClient\WebhookProfile\ProcessEverythingWebhookProfile::class,
+
+        /*
+         * The classname of the model to be used to store call. The class should be equal 
+         * or extend Spatie\WebhookClient\Models\WebhookCall.
+         */
+        'webhook_model' => \Spatie\WebhookClient\Models\WebhookCall::class,
+
+        /*
+         * The class name of the job that will process the webhook request.
+         *
+         * This should be set to a class that extends \Spatie\WebhookClient\Spatie\WebhookClient.
+         */
+        'process_webhook_job' => '',
+    ],
+];
+```
+
+This package will try to store and respond to the webhook as fast as possible. Processing the payload of the request is done via a queued.  It's recommended to not use the `sync` driver but a real queue driver.
 
 ## Usage
 
