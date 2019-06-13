@@ -2,10 +2,10 @@
 
 # Receive webhooks in Laravel apps
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/spatie/laravel-webhook-client.svg?style=flat-square)](https://packagist.org/packages/spatie/:package_name)
-[![Build Status](https://img.shields.io/travis/spatie/laravel-webhook-client/master.svg?style=flat-square)](https://travis-ci.org/spatie/:package_name)
-[![Quality Score](https://img.shields.io/scrutinizer/g/spatie/laravel-webhook-client.svg?style=flat-square)](https://scrutinizer-ci.com/g/spatie/:package_name)
-[![Total Downloads](https://img.shields.io/packagist/dt/spatie/laravel-webhook-client.svg?style=flat-square)](https://packagist.org/packages/spatie/:package_name)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/spatie/laravel-webhook-client.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-webhook-client)
+[![Build Status](https://img.shields.io/travis/spatie/laravel-webhook-client/master.svg?style=flat-square)](https://travis-ci.org/spatie/laravel-webhook-client)
+[![Quality Score](https://img.shields.io/scrutinizer/g/spatie/laravel-webhook-client.svg?style=flat-square)](https://scrutinizer-ci.com/g/spatie/laravel-webhook-client)
+[![Total Downloads](https://img.shields.io/packagist/dt/spatie/laravel-webhook-client.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-webhook-client)
 
 
 This is where your description should go. Try and limit it to a paragraph or two.
