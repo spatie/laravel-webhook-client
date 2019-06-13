@@ -2,13 +2,12 @@
 
 namespace Spatie\WebhookClient\Tests;
 
-use PHPUnit\Framework\TestCase;
-
-class ExampleTest extends TestCase
+class WebhookConfigTest extends TestCase
 {
     /** @test */
-    public function true_is_true()
+    public function it_can_handle_a_valid_configuration()
     {
         $this->assertTrue(true);
     }
 }
+
