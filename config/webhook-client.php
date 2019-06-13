@@ -4,7 +4,7 @@ return [
     [
         'name' => 'default',
 
-        'signing_secret' => env('WEBHOOKS_SECRET'),
+        'signing_secret' => env('WEBHOOK_CLIENT_SECRET'),
 
         'signature_validator' => \Spatie\WebhookClient\SignatureValidator\DefaultSignatureValidator::class,
 
