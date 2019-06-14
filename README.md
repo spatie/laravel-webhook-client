@@ -123,7 +123,7 @@ If the webhook determines that request should be stored and processed, we'll fir
 
 After the job has been dispatched the controller will respond with a `200` status code. 
 
-## Verify the signature of incoming webhooks
+## Verifying the signature of incoming webhooks
 
 This package assumes that an incoming webhook request has a header that can be used to verify the payload has not been tampered with. The name of the header containing the signature can be configured in the `signing_secret` key of the config file. By default the package uses the `DefaultSignatureValidator` to validate signatures. This is how that class will compute the signature.
 
@@ -255,8 +255,6 @@ $webhookConfig = new \Spatie\WebhookClient\WebhookConfig([
 
 (new WebhookProcessor($request, $webhookConfig))->process();
 ```
-
- 
 
 ### Testing
 
