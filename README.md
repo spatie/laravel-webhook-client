@@ -123,7 +123,7 @@ If the webhook determines that request should be stored and processed, we'll fir
 
 After the job has been dispatched the controller will respond with a `200` status code. 
 
-## Verifying the signature of incoming webhooks
+### Verifying the signature of incoming webhooks
 
 This package assumes that an incoming webhook request has a header that can be used to verify the payload has not been tampered with. The name of the header containing the signature can be configured in the `signing_secret` key of the config file. By default the package uses the `DefaultSignatureValidator` to validate signatures. This is how that class will compute the signature.
 
@@ -151,7 +151,7 @@ interface SignatureValidator
 
 After creating your own `SignatureValidator` you must register in the `signature_validator` in the `webhook-client` config file.
 
-## Determining which webhook requests should be stored and processed
+### Determining which webhook requests should be stored and processed
 
 After the signature of an incoming webhook request is validated, the request will be passed to a webhook profile. A webhook profile is a class that determines if the request should be stored and processed. If the webhook sending app sends out request where your app isn't interested in, you can use this class to filter out such events.
 
@@ -256,13 +256,13 @@ $webhookConfig = new \Spatie\WebhookClient\WebhookConfig([
 (new WebhookProcessor($request, $webhookConfig))->process();
 ```
 
-### Testing
+## Testing
 
 ``` bash
 composer test
 ```
 
-### Changelog
+## Changelog
 
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
 
@@ -270,7 +270,7 @@ Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed re
 
 Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 
-### Security
+## Security
 
 If you discover any security related issues, please email freek@spatie.be instead of using the issue tracker.
 
