@@ -117,7 +117,7 @@ protected $except = [
 
 With the installation out of the way. Let's take a look at how this package handles webhooks. First, it will verify if the signature of the request is valid. If it is not, we'll throw an exception and fire off the `InvalidSignatureEvent` event. Request with invalid signatures will not be stored in the database. 
 
-Next, the request will be passed to a webhook profile. A webhook profile is a class that determines is a request should be stored an processed by your app. It allows you to filter out webhook requests that are of interest to your app. You can easily create [your own webhook profile](#determining-which-webhook-requests-should-be-stored-and-processed).
+Next, the request will be passed to a webhook profile. A webhook profile is a class that determines if a request should be stored an processed by your app. It allows you to filter out webhook requests that are of interest to your app. You can easily create [your own webhook profile](#determining-which-webhook-requests-should-be-stored-and-processed).
 
 If the webhook determines that request should be stored and processed, we'll first store it in the `webhook_calls` table. After that we'll pass that newly created `WebhookCall` model to a queued job.Most webhook sending apps expect you to respond very quickly. Offloading the real processing work allows for very fast responses. You can specify which job should process the webhook in the `process_webhook_job` in the `webhook-client` config file. Should an exception be thrown while queueing the job, the package will store that exception in the `exception` attribute on the `WebhookCall` model.
 
