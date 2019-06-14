@@ -180,7 +180,7 @@ After the signature is validated and the webhook profile has determined that the
 
 The request will first be stored in the `webhook_calls` table. This is done using the `WebhookCall` model. Should you want to customize the table name or anything on the storage behaviour, you can let the package use an alternative model. A webhook storing model can be specified in the `webhook_model`. Make sure you model extends `Spatie\WebhookClient\Models\WebhookCall`.
 
-Next, the newly created `WebhookCall` model will be passed to a queued job that will process the request. Any class that extends `\Spatie\WebhookClient\Spatie\WebhookClient` is a valid job. Here's an example:
+Next, the newly created `WebhookCall` model will be passed to a queued job that will process the request. Any class that extends `\Spatie\WebhookClient\ProcessWebhookJob` is a valid job. Here's an example:
 
 ```php
 namespace App\Jobs;
