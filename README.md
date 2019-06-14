@@ -244,13 +244,13 @@ It can be used like this:
 
 ```php
 $webhookConfig = new \Spatie\WebhookClient\WebhookConfig([
-        'name' => 'webhook-sending-app-1',
-        'signing_secret' => 'secret-for-webhook-sending-app1,
-        'signature_header_name' => 'Signature',
-        'signature_validator' => \Spatie\WebhookClient\SignatureValidator\DefaultSignatureValidator::class,
-        'webhook_profile' => \Spatie\WebhookClient\WebhookProfile\ProcessEverythingWebhookProfile::class,
-        'webhook_model' => \Spatie\WebhookClient\Models\WebhookCall::class,
-        'process_webhook_job' => '',
+    'name' => 'webhook-sending-app-1',
+    'signing_secret' => 'secret-for-webhook-sending-app1,
+    'signature_header_name' => 'Signature',
+    'signature_validator' => \Spatie\WebhookClient\SignatureValidator\DefaultSignatureValidator::class,
+    'webhook_profile' => \Spatie\WebhookClient\WebhookProfile\ProcessEverythingWebhookProfile::class,
+    'webhook_model' => \Spatie\WebhookClient\Models\WebhookCall::class,
+    'process_webhook_job' => '',
 ]);
 
 (new \Spatie\WebhookClient\WebhookProcessor($request, $webhookConfig))->process();
