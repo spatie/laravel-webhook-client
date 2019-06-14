@@ -32,7 +32,7 @@ This is the contents of the file that will be published at `config/webhook-clien
 
 ```php
 return [
-    [
+   'configs' => [
         /*
          * This package support multiple webhook receiving endpoints. If you only have
          * one endpoint receiving webhooks, you can use 'default'.
