@@ -241,7 +241,7 @@ Route::webhooks('receiving-url-for-app-2', 'webhook-sending-app-2');
 
 If you don't want to use the routes and controller provided by your macro, you can programmatically add support for webhooks to your own controller.
 
-`Spatie\WebhookClient\WebhookProcessor` is a class that verifies the signature, calls the web profile, stores the webhook request and starts a queued job to process the stored webhook request. The controller provided by this package also uses that class [under the hood)[https://github.com/spatie/laravel-webhook-client/blob/74b1af2063325c6e03e226f7fcf28e8812f87ace/src/WebhookController.php#L16].
+`Spatie\WebhookClient\WebhookProcessor` is a class that verifies the signature, calls the web profile, stores the webhook request and starts a queued job to process the stored webhook request. The controller provided by this package also uses that class [under the hood)[https://github.com/spatie/laravel-webhook-client/blob/2172f79eda7d6f86a01554be9b444b9e31343610/src/WebhookController.php#L11].
 
 It can be used like this:
 
