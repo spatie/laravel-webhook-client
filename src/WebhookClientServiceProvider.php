@@ -2,9 +2,9 @@
 
 namespace Spatie\WebhookClient;
 
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Str;
 use Spatie\WebhookClient\Exceptions\InvalidConfig;
 
 class WebhookClientServiceProvider extends ServiceProvider
@@ -13,7 +13,7 @@ class WebhookClientServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__ . '/../config/webhook-client.php' => config_path('webhook-client.php'),
+                __DIR__.'/../config/webhook-client.php' => config_path('webhook-client.php'),
             ], 'config');
         }
 
@@ -21,7 +21,7 @@ class WebhookClientServiceProvider extends ServiceProvider
             $timestamp = date('Y_m_d_His', time());
 
             $this->publishes([
-                __DIR__ . '/../database/migrations/create_webhook_calls_table.php.stub' => database_path("migrations/{$timestamp}_create_webhook_calls_table.php"),
+                __DIR__.'/../database/migrations/create_webhook_calls_table.php.stub' => database_path("migrations/{$timestamp}_create_webhook_calls_table.php"),
             ], 'migrations');
         }
 
@@ -49,6 +49,6 @@ class WebhookClientServiceProvider extends ServiceProvider
 
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__ . '/../config/webhook-client.php', 'webhook-client');
+        $this->mergeConfigFrom(__DIR__.'/../config/webhook-client.php', 'webhook-client');
     }
 }
