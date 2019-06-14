@@ -117,7 +117,93 @@ protected $except = [
 
 ## Usage
 
-Coming soon
+With the installation out of the way. Let's take a look at how this package handles webhooks. First, it will verify if the signature of the request is valid. If it is not, we'll throw an exception and fire off the `InvalidSignatureEvent` event. Request with invalid signatures will not be stored in the database. 
+
+Next, the request will be passed to a webhook profile. A webhook profile is a class that determines is a request should be stored an processed by your app. It allows you to filter out webhook requests that are of interest to your app. You can easily create [your own webhook profile](TODO:add-link).
+
+If the webhook determines that request should be stored and processed, we'll first store it in the `webhook_calls` table. After that we'll pass that newly created `WebhookCall` model to a queued job.Most webhook sending apps expect you to respond very quickly. Offloading the real processing work allows for very fast responses. You can specify which job should process the webhook in the `process_webhook_job` in the `webhook-client` config file. Should an exception be thrown while queueing the job, the package will store that exception in the `exception` attribute on the `WebhookCall` model.
+
+After the job has been dispatched the controller will respond with a `200` status code. 
+
+## Verify the signature of incoming webhooks
+
+This package assumes that an incoming webhook request has a header that can be used to verify the payload has not been tampered with. The name of the header containing the signature can be configured in the `signing_secret` key of the config file. By default the package uses the `DefaultSignatureValidator` to validate signatures. This is how that class will compute the signature.
+
+```php
+$computedSignature = hash_hmac('sha256', $request->getContent(), $configuredSigningSecret);
+```
+
+If the `$computedSignature` does match the value, the request will be [passed to the webhook profile](TODO: add link). It  `$computedSignature` does not match the value in the signature header, the package will respond with a `500` and discard the request.
+
+### Creating your own signature validator
+
+A signature validator is any class that implements `Spatie\WebhookClient\SignatureValidator\SignatureValidator`. Here's what that interface looks like. 
+
+```php
+use Illuminate\Http\Request;
+use Spatie\WebhookClient\WebhookConfig;
+
+interface SignatureValidator
+{
+    public function isValid(Request $request, WebhookConfig $config);
+}
+```
+
+`WebhookConfig` is a value object that lets you easily pull up the config (containing the header name that contains the signature and the secret) for the webhook request. 
+
+After creating your own `SignatureValidator` you must register in the `signature_validator` in the `webhook-client` config file.
+
+## Determining which webhook requests should be stored and processed
+
+After the signature of an incoming webhook request is validated, the request will be passed to a webhook profile. A webhook profile is a class that determines if the request should be stored and processed. If the webhook sending app sends out request where your app isn't interested in, you can use this class to filter out such events.
+
+By default the `\Spatie\WebhookClient\WebhookProfile\ProcessEverythingWebhookProfile` class is used. As it's name implies this default class will determine that all incoming requests should be stored and processed.
+
+### Creating your own webhook profile
+
+A webhook profile is any class that implements `\Spatie\WebhookClient\WebhookProfileWebhookProfile`. This is what that interface looks like:
+
+```php
+namespace Spatie\WebhookClient\WebhookProfile;
+
+use Illuminate\Http\Request;
+
+interface WebhookProfile
+{
+    public function shouldProcess(Request $request): bool;
+}
+```
+
+After creating your own `WebhookProfile` you must register it in the `webhook_profile` key in the `webhook-client` config file.
+
+### Storing and processing webhooks
+
+After the signature is validated and the webhook profile has determined that the request should be processed, the package will store and process the request. 
+
+The request will first be stored in the `webhook_calls` table. This is done using the `WebhookCall` model. Should you want to customize the table name or anything on the storage behaviour, you can let the package use an alternative model. A webhook storing model can be specified in the `webhook_model`. Make sure you model extends `Spatie\WebhookClient\Models\WebhookCall`.
+
+Next, the newly created `WebhookCall` model will be passed to a queued job that will process the request. Any class that extends `\Spatie\WebhookClient\Spatie\WebhookClient` is a valid job. Here's an example:
+
+```php
+namespace App\Jobs;
+
+use \Spatie\WebhookClient\ProcessWebhookJob;
+
+class ProcessWebhookJob extends SpatieProcessWebhookJob
+{
+    public function handle()
+    {
+        // $this->webhookCall // contains an instance of `WebhookCall`
+    
+        // perform the work here
+    }
+}
+```
+
+You should specify the class name of your job in the `process_webhook_job` of the `webhook-client` config file. 
+
+### Handling incoming webhook request for multiple apps
+
 
 ### Testing
 

@@ -12,10 +12,6 @@ class DefaultSignatureValidator implements SignatureValidator
     {
         $signature = $request->header($config->signatureHeaderName);
 
-        if (! $signature) {
-            throw WebhookFailed::missingSignature($config->signatureHeaderName);
-        }
-
         $signingSecret = $config->signingSecret;
 
         if (empty($signingSecret)) {
