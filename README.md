@@ -143,7 +143,7 @@ use Spatie\WebhookClient\WebhookConfig;
 
 interface SignatureValidator
 {
-    public function isValid(Request $request, WebhookConfig $config);
+    public function isValid(Request $request, WebhookConfig $config): bool;
 }
 ```
 

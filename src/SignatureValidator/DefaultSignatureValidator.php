@@ -8,7 +8,7 @@ use Spatie\WebhookClient\Exceptions\WebhookFailed;
 
 class DefaultSignatureValidator implements SignatureValidator
 {
-    public function isValid(Request $request, WebhookConfig $config)
+    public function isValid(Request $request, WebhookConfig $config): bool
     {
         $signature = $request->header($config->signatureHeaderName);
 

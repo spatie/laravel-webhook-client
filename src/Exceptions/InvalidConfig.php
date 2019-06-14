@@ -9,26 +9,26 @@ use Spatie\WebhookClient\SignatureValidator\SignatureValidator;
 
 class InvalidConfig extends Exception
 {
-    public static function couldNotFindConfig(string $notFoundConfigName)
+    public static function couldNotFindConfig(string $notFoundConfigName): InvalidConfig
     {
         return new static("Could not find the configuration for `{$notFoundConfigName}`");
     }
 
-    public static function invalidSignatureValidator(string $invalidSignatureValidator)
+    public static function invalidSignatureValidator(string $invalidSignatureValidator): InvalidConfig
     {
         $signatureValidatorInterface = SignatureValidator::class;
 
         return new static("`{$invalidSignatureValidator}` is not a valid signature validator class. A valid signature validator is a class that implements `{$signatureValidatorInterface}`.");
     }
 
-    public static function invalidWebhookProfile(string $webhookProfile)
+    public static function invalidWebhookProfile(string $webhookProfile): InvalidConfig
     {
         $webhookProfileInterface = WebhookProfile::class;
 
         return new static("`{$webhookProfile}` is not a valid webhook profile class. A valid web hook profile is a class that implements `{$webhookProfileInterface}`.");
     }
 
-    public static function invalidProcessWebhookJob(string $processWebhookJob)
+    public static function invalidProcessWebhookJob(string $processWebhookJob): InvalidConfig
     {
         $abstractProcessWebhookJob = ProcessWebhookJob::class;
 
