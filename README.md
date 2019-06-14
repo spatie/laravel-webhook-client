@@ -204,6 +204,61 @@ You should specify the class name of your job in the `process_webhook_job` of th
 
 ### Handling incoming webhook request for multiple apps
 
+This package allows webhooks to be received from multiple different apps. In the `webhook-client` can hold multiple configurations. Let's take a look at an example config file where we add support for two webhook urls. All comments from the config have been removed for brevity.
+
+```php
+return [
+    [
+        'name' => 'webhook-sending-app-1',
+        'signing_secret' => 'secret-for-webhook-sending-app1,
+        'signature_header_name' => 'Signature',
+        'signature_validator' => \Spatie\WebhookClient\SignatureValidator\DefaultSignatureValidator::class,
+        'webhook_profile' => \Spatie\WebhookClient\WebhookProfile\ProcessEverythingWebhookProfile::class,
+        'webhook_model' => \Spatie\WebhookClient\Models\WebhookCall::class,
+        'process_webhook_job' => '',
+    ],
+    [
+        'name' => 'webhook-sending-app-2',
+        'signing_secret' => 'secret-for-webhook-sending-app2,
+        'signature_header_name' => 'Signature',
+        'signature_validator' => \Spatie\WebhookClient\SignatureValidator\DefaultSignatureValidator::class,
+        'webhook_profile' => \Spatie\WebhookClient\WebhookProfile\ProcessEverythingWebhookProfile::class,
+        'webhook_model' => \Spatie\WebhookClient\Models\WebhookCall::class,
+        'process_webhook_job' => '',
+    ],
+];
+```
+
+When registering routes for the package you should pass the `name` of the config as a second parameter.
+
+```php
+Route::webhooks('receiving-url-for-app-1', 'webhook-sending-app-1');
+Route::webhooks('receiving-url-for-app-2', 'webhook-sending-app-2');
+```
+
+### Using the package without a controller
+
+If you don't want to use the routes and controller provided by your macro, you can programmatically add support for webhooks to your own controller.
+
+`Spatie\WebhookClient\WebhookProcessor` is a class that verifies the signature, calls the web profile, stores the webhook request and starts a queued job to process the stored webhook request. The controller provided by this package also uses that class [under the hood)[TODO: add link].
+
+It can be used like this:
+
+```php
+$webhookConfig = new \Spatie\WebhookClient\WebhookConfig([
+        'name' => 'webhook-sending-app-1',
+        'signing_secret' => 'secret-for-webhook-sending-app1,
+        'signature_header_name' => 'Signature',
+        'signature_validator' => \Spatie\WebhookClient\SignatureValidator\DefaultSignatureValidator::class,
+        'webhook_profile' => \Spatie\WebhookClient\WebhookProfile\ProcessEverythingWebhookProfile::class,
+        'webhook_model' => \Spatie\WebhookClient\Models\WebhookCall::class,
+        'process_webhook_job' => '',
+]);
+
+(new WebhookProcessor($request, $webhookConfig))->process();
+```
+
+ 
 
 ### Testing
 
