@@ -80,7 +80,7 @@ return [
 
 In the `signing_secret` key of the config file you should add a valid webhook secret. This value should be provided by the app that will send you webhooks.
 
-This package will try to store and respond to the webhook as fast as possible. Processing the payload of the request is done via a queued.  It's recommended to not use the `sync` driver but a real queue driver. You should specify the job that will handle processing webhook requests in the `process_webhook_job` of the config file. A valid job is any class that extends `Spatie\WebhookClient\ProcessWebhookJob`. 
+This package will try to store and respond to the webhook as fast as possible. Processing the payload of the request is done via a queued job.  It's recommended to not use the `sync` driver but a real queue driver. You should specify the job that will handle processing webhook requests in the `process_webhook_job` of the config file. A valid job is any class that extends `Spatie\WebhookClient\ProcessWebhookJob`. 
 
 ### Preparing the database
 
