@@ -208,8 +208,8 @@ This package allows webhooks to be received from multiple different apps. In the
 return [
     [
         'name' => 'webhook-sending-app-1',
-        'signing_secret' => 'secret-for-webhook-sending-app1',
-        'signature_header_name' => 'Signature',
+        'signing_secret' => 'secret-for-webhook-sending-app-1',
+        'signature_header_name' => 'Signature-for-app-1',
         'signature_validator' => \Spatie\WebhookClient\SignatureValidator\DefaultSignatureValidator::class,
         'webhook_profile' => \Spatie\WebhookClient\WebhookProfile\ProcessEverythingWebhookProfile::class,
         'webhook_model' => \Spatie\WebhookClient\Models\WebhookCall::class,
@@ -217,8 +217,8 @@ return [
     ],
     [
         'name' => 'webhook-sending-app-2',
-        'signing_secret' => 'secret-for-webhook-sending-app2',
-        'signature_header_name' => 'Signature',
+        'signing_secret' => 'secret-for-webhook-sending-app-2',
+        'signature_header_name' => 'Signature-for-app-2',
         'signature_validator' => \Spatie\WebhookClient\SignatureValidator\DefaultSignatureValidator::class,
         'webhook_profile' => \Spatie\WebhookClient\WebhookProfile\ProcessEverythingWebhookProfile::class,
         'webhook_model' => \Spatie\WebhookClient\Models\WebhookCall::class,
