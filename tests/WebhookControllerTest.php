@@ -26,8 +26,8 @@ class WebhookControllerTest extends TestCase
     {
         parent::setUp();
 
-        config()->set('webhook-client.0.signing_secret', 'abc123');
-        config()->set('webhook-client.0.process_webhook_job', ProcessWebhookJobTestClass::class);
+        config()->set('webhook-client.configs.0.signing_secret', 'abc123');
+        config()->set('webhook-client.configs.0.process_webhook_job', ProcessWebhookJobTestClass::class);
 
         Route::webhooks('incoming-webhooks');
 
@@ -38,13 +38,15 @@ class WebhookControllerTest extends TestCase
         $this->payload = ['a' => 1];
 
         $this->headers = [
-            config('webhook-client.0.signature_header_name') => $this->determineSignature($this->payload),
+            config('webhook-client.configs.0.signature_header_name') => $this->determineSignature($this->payload),
         ];
     }
 
     /** @test */
     public function it_can_process_a_webhook_request()
     {
+        $this->withoutExceptionHandling();
+
         $this
             ->postJson('incoming-webhooks', $this->payload, $this->headers)
             ->assertSuccessful();
@@ -79,7 +81,7 @@ class WebhookControllerTest extends TestCase
     /** @test */
     public function it_can_work_with_an_alternative_profile()
     {
-        config()->set('webhook-client.0.webhook_profile', ProcessNothingWebhookProfile::class);
+        config()->set('webhook-client.configs.0.webhook_profile', ProcessNothingWebhookProfile::class);
 
         $this
             ->postJson('incoming-webhooks', $this->payload, $this->headers)
@@ -99,7 +101,7 @@ class WebhookControllerTest extends TestCase
             ->postJson('incoming-webhooks-alternative-config', $this->payload, $this->headers)
             ->assertStatus(Response::HTTP_INTERNAL_SERVER_ERROR);
 
-        config()->set('webhook-client.0.name', 'alternative-config');
+        config()->set('webhook-client.configs.0.name', 'alternative-config');
 
         $this
             ->postJson('incoming-webhooks-alternative-config', $this->payload, $this->headers)
@@ -108,7 +110,7 @@ class WebhookControllerTest extends TestCase
 
     private function determineSignature(array $payload): string
     {
-        $secret = config('webhook-client.0.signing_secret');
+        $secret = config('webhook-client.configs.0.signing_secret');
 
         return hash_hmac('sha256', json_encode($payload), $secret);
     }
@@ -121,7 +123,7 @@ class WebhookControllerTest extends TestCase
         $payload = ['a' => 1];
 
         $headers = [
-            config('webhook-client.0.signature_header_name') => $this->determineSignature($payload),
+            config('webhook-client.configs.0.signature_header_name') => $this->determineSignature($payload),
         ];
 
         return [$payload, $headers];

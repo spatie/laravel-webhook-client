@@ -24,7 +24,7 @@ class WebhookController
 
         $configName = Str::after($routeName, 'webhook-client-');
 
-        $config = collect(config('webhook-client'))
+        $config = collect(config('webhook-client.configs'))
             ->first(function (array $config) use ($configName) {
                 return $config['name'] === $configName;
             });
