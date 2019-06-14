@@ -22,6 +22,8 @@ You can install the package via composer:
 composer require spatie/laravel-webhook-client
 ```
 
+### Configuring the package
+
 You can publish the config file with:
 
 ```bash
@@ -78,7 +80,40 @@ return [
 ];
 ```
 
-This package will try to store and respond to the webhook as fast as possible. Processing the payload of the request is done via a queued.  It's recommended to not use the `sync` driver but a real queue driver.
+In the `signing_secret` key of the config file you should add a valid webhook secret. This value should be provided by the app that will send you webhooks.
+
+This package will try to store and respond to the webhook as fast as possible. Processing the payload of the request is done via a queued.  It's recommended to not use the `sync` driver but a real queue driver. You should specify the job that will handle processing webhook requests in the `process_webhook_job` of the config file. A valid job is any class that extends `Spatie\WebhookClient\ProcessWebhookJob`. 
+
+### Preparing the database
+
+By default, all webhook calls will get saved in the database.
+
+To create the table that holds the webhook calls, you must publish the migration with:
+```bash
+php artisan vendor:publish --provider="Spatie\WebhookClient\WebhookClientServiceProvider" --tag="migrations"
+```
+
+After the migration has been published you can create the `webhook_calls` table by running the migrations:
+
+```bash
+php artisan migrate
+```
+
+### Taking care of routing
+
+Finally, let's take care of the routing. At the app that sends webhooks you probably configure an url where you want your webhook requests to be sent. In the routes file of your app you must pass that route to `Route::webhooks`. Here's an example:
+
+```php
+Route::webHooks('webhook-receiving-url')
+```
+
+Behind the scenes this will register a `POST` route to a controller provided by this package. Because the app that send webhooks to you has no way of getting a csrf-token, you must add that route to the `except` array of the `VerifyCsrfToken` middleware:
+
+```php
+protected $except = [
+    'webhook-receiving-url',
+];
+```
 
 ## Usage
 
