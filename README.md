@@ -8,7 +8,11 @@
 [![Quality Score](https://img.shields.io/scrutinizer/g/spatie/laravel-webhook-client.svg?style=flat-square)](https://scrutinizer-ci.com/g/spatie/laravel-webhook-client)
 [![Total Downloads](https://img.shields.io/packagist/dt/spatie/laravel-webhook-client.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-webhook-client)
 
-Coming soon...
+A webhook is a way for an app to provide information to another app about a certain event. The way the two apps communicate is with a simple HTTP request. 
+
+This package allows you to easily receive webhooks in a Laravel app. It has support for [verifying signed calls](TODO:add link), storing payloads and processing the payloads in a queued job.
+
+If you need to send webhooks take a look at our [laravel-webhook-server](https://github.com/spatie/laravel-webhook-server) package.
 
 ## Installation
 
