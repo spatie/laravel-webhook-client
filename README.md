@@ -202,7 +202,7 @@ You should specify the class name of your job in the `process_webhook_job` of th
 
 ### Handling incoming webhook request for multiple apps
 
-This package allows webhooks to be received from multiple different apps. In the `webhook-client` can hold multiple configurations. Let's take a look at an example config file where we add support for two webhook urls. All comments from the config have been removed for brevity.
+This package allows webhooks to be received from multiple different apps. Let's take a look at an example config file where we add support for two webhook urls. All comments from the config have been removed for brevity.
 
 ```php
 return [
