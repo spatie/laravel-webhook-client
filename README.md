@@ -8,7 +8,7 @@
 
 A webhook is a way for an app to provide information to another app about a certain event. The way the two apps communicate is with a simple HTTP request. 
 
-This package allows you to easily receive webhooks in a Laravel app. It has support for [verifying signed calls](TODO:add link), storing payloads and processing the payloads in a queued job.
+This package allows you to easily receive webhooks in a Laravel app. It has support for [verifying signed calls](#verifying-the-signature-of-incoming-webhooks), [storing payloads and processing the payloads](#storing-and-processing-webhooks) in a queued job.
 
 If you need to send webhooks take a look at our [laravel-webhook-server](https://github.com/spatie/laravel-webhook-server) package.
 
@@ -117,7 +117,7 @@ protected $except = [
 
 With the installation out of the way. Let's take a look at how this package handles webhooks. First, it will verify if the signature of the request is valid. If it is not, we'll throw an exception and fire off the `InvalidSignatureEvent` event. Request with invalid signatures will not be stored in the database. 
 
-Next, the request will be passed to a webhook profile. A webhook profile is a class that determines is a request should be stored an processed by your app. It allows you to filter out webhook requests that are of interest to your app. You can easily create [your own webhook profile](TODO:add-link).
+Next, the request will be passed to a webhook profile. A webhook profile is a class that determines is a request should be stored an processed by your app. It allows you to filter out webhook requests that are of interest to your app. You can easily create [your own webhook profile](#determining-which-webhook-requests-should-be-stored-and-processed).
 
 If the webhook determines that request should be stored and processed, we'll first store it in the `webhook_calls` table. After that we'll pass that newly created `WebhookCall` model to a queued job.Most webhook sending apps expect you to respond very quickly. Offloading the real processing work allows for very fast responses. You can specify which job should process the webhook in the `process_webhook_job` in the `webhook-client` config file. Should an exception be thrown while queueing the job, the package will store that exception in the `exception` attribute on the `WebhookCall` model.
 
@@ -131,7 +131,7 @@ This package assumes that an incoming webhook request has a header that can be u
 $computedSignature = hash_hmac('sha256', $request->getContent(), $configuredSigningSecret);
 ```
 
-If the `$computedSignature` does match the value, the request will be [passed to the webhook profile](TODO: add link). It  `$computedSignature` does not match the value in the signature header, the package will respond with a `500` and discard the request.
+If the `$computedSignature` does match the value, the request will be [passed to the webhook profile](#determining-which-webhook-requests-should-be-stored-and-processed). It  `$computedSignature` does not match the value in the signature header, the package will respond with a `500` and discard the request.
 
 ### Creating your own signature validator
 
@@ -238,7 +238,7 @@ Route::webhooks('receiving-url-for-app-2', 'webhook-sending-app-2');
 
 If you don't want to use the routes and controller provided by your macro, you can programmatically add support for webhooks to your own controller.
 
-`Spatie\WebhookClient\WebhookProcessor` is a class that verifies the signature, calls the web profile, stores the webhook request and starts a queued job to process the stored webhook request. The controller provided by this package also uses that class [under the hood)[TODO: add link].
+`Spatie\WebhookClient\WebhookProcessor` is a class that verifies the signature, calls the web profile, stores the webhook request and starts a queued job to process the stored webhook request. The controller provided by this package also uses that class [under the hood)[https://github.com/spatie/laravel-webhook-client/blob/74b1af2063325c6e03e226f7fcf28e8812f87ace/src/WebhookController.php#L16].
 
 It can be used like this:
 
