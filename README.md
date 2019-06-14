@@ -253,7 +253,7 @@ $webhookConfig = new \Spatie\WebhookClient\WebhookConfig([
         'process_webhook_job' => '',
 ]);
 
-(new WebhookProcessor($request, $webhookConfig))->process();
+(new \Spatie\WebhookClient\WebhookProcessor($request, $webhookConfig))->process();
 ```
 
 ## Testing
