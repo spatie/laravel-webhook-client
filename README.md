@@ -148,7 +148,7 @@ interface SignatureValidator
 }
 ```
 
-`WebhookConfig` is a value object that lets you easily pull up the config (containing the header name that contains the signature and the secret) for the webhook request. 
+`WebhookConfig` is a data transfer object that lets you easily pull up the config (containing the header name that contains the signature and the secret) for the webhook request. 
 
 After creating your own `SignatureValidator` you must register it in the `signature_validator` in the `webhook-client` config file.
 
