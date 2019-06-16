@@ -103,7 +103,7 @@ php artisan migrate
 Finally, let's take care of the routing. At the app that sends webhooks, you probably configure an URL where you want your webhook requests to be sent. In the routes file of your app, you must pass that route to `Route::webhooks`. Here's an example:
 
 ```php
-Route::webHooks('webhook-receiving-url')
+Route::webHooks('webhook-receiving-url');
 ```
 
 Behind the scenes, this will register a `POST` route to a controller provided by this package. Because the app that sends webhooks to you has no way of getting a csrf-token, you must add that route to the `except` array of the `VerifyCsrfToken` middleware:
