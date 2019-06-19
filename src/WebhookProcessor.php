@@ -25,7 +25,7 @@ class WebhookProcessor
 
     public function process()
     {
-        $this->guardAgainstInvalidSignature();
+        $this->validateSignature();
 
         if (! $this->config->webhookProfile->shouldProcess($this->request)) {
             return;
@@ -36,18 +36,13 @@ class WebhookProcessor
         $this->processWebhook($webhookCall);
     }
 
-    protected function guardAgainstInvalidSignature()
+    protected function validateSignature()
     {
-        $headerName = $this->config->signatureHeaderName;
-
-        $signature = $this->request->header($headerName);
-
-        if (! $signature) {
-            event(new InvalidSignatureEvent($this->request, $signature));
-            throw WebhookFailed::missingSignature($headerName);
-        }
-
         if (! $this->config->signatureValidator->isValid($this->request, $this->config)) {
+            $signature = $this->request->header(
+                $this->config->signatureHeaderName
+            );
+
             event(new InvalidSignatureEvent($this->request, $signature));
 
             throw WebhookFailed::invalidSignature($signature, $this->config->signatureHeaderName);
