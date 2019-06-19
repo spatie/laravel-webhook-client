@@ -41,7 +41,7 @@ return [
             /*
              * The class name of the job that will process the webhook request.
              *
-             * This should be set to a class that extends \Spatie\WebhookClient\Spatie\WebhookClient.
+             * This should be set to a class that extends \Spatie\WebhookClient\ProcessWebhookJob.
              */
             'process_webhook_job' => '',
         ],
