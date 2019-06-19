@@ -64,7 +64,7 @@ class WebhookControllerTest extends TestCase
     }
 
     /** @test */
-    public function a_request_with_an_invalid_payload_will_not_get_processed()
+    public function a_request_with_an_invalid_payload_will_not_get_processed_by_default()
     {
         $headers = $this->headers;
         $headers['Signature'] .= 'invalid';
@@ -76,6 +76,22 @@ class WebhookControllerTest extends TestCase
         $this->assertCount(0, WebhookCall::get());
         Queue::assertNothingPushed();
         Event::assertDispatched(InvalidSignatureEvent::class);
+    }
+
+    /**
+     * @test
+     */
+    public function a_request_with_no_header_will_be_processed_if_signing_is_switched_off_for_webhook()
+    {
+        Route::webhooks('incoming-webhooks-no-signing', 'no-signing');
+
+        config()->set('webhook-client.configs.0.name', 'no-signing');
+        config()->set('webhook-client.configs.0.is_signed', false);
+        config()->set('webhook-client.configs.0.signing_secret', '');
+
+        $this
+            ->postJson('incoming-webhooks-no-signing', $this->payload)
+            ->assertSuccessful();
     }
 
     /** @test */

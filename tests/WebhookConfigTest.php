@@ -19,12 +19,26 @@ class WebhookConfigTest extends TestCase
         $webhookConfig = new WebhookConfig($configArray);
 
         $this->assertEquals($configArray['name'], $webhookConfig->name);
+        $this->assertTrue($webhookConfig->isSigned);
         $this->assertEquals($configArray['signing_secret'], $webhookConfig->signingSecret);
         $this->assertEquals($configArray['signature_header_name'], $webhookConfig->signatureHeaderName);
         $this->assertInstanceOf($configArray['signature_validator'], $webhookConfig->signatureValidator);
         $this->assertInstanceOf($configArray['webhook_profile'], $webhookConfig->webhookProfile);
         $this->assertEquals($configArray['webhook_model'], $webhookConfig->webhookModel);
         $this->assertInstanceOf($configArray['process_webhook_job'], $webhookConfig->processWebhookJob);
+    }
+
+    /**
+     * @test
+     */
+    public function should_sign_defaults_to_true_when_not_specified_in_config()
+    {
+        $configArray = $this->getValidConfig();
+        unset($configArray['is_signed']);
+
+        $webhookConfig = new WebhookConfig($configArray);
+
+        $this->assertTrue($webhookConfig->isSigned);
     }
 
     /** @test */
@@ -36,6 +50,22 @@ class WebhookConfigTest extends TestCase
         $this->expectException(InvalidConfig::class);
 
         new WebhookConfig($config);
+    }
+
+    /**
+     * @test
+     */
+    public function can_skip_signature_validation_entirely_by_setting_is_signed_to_false()
+    {
+        $config = $this->getValidConfig();
+        $config['is_signed'] = false;
+        $config['signature_validator'] = 'invalid-signature-validator';
+
+        $webhookConfig = new WebhookConfig($config);
+
+        $this->assertEmpty($webhookConfig->signingSecret);
+        $this->assertEmpty($webhookConfig->signatureHeaderName);
+        $this->assertEmpty($webhookConfig->signatureValidator);
     }
 
     /** @test */
@@ -50,7 +80,7 @@ class WebhookConfigTest extends TestCase
     }
 
     /** @test */
-    public function it_validates_the_process_webhook_ojb()
+    public function it_validates_the_process_webhook_job()
     {
         $config = $this->getValidConfig();
         $config['process_webhook_job'] = 'invalid-process-webhook-job';
@@ -64,6 +94,7 @@ class WebhookConfigTest extends TestCase
     {
         return [
             'name' => 'default',
+            'is_signed' => true,
             'signing_secret' => 'my-secret',
             'signature_header_name' => 'Signature',
             'signature_validator' => DefaultSignatureValidator::class,

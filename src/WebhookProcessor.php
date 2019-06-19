@@ -25,7 +25,9 @@ class WebhookProcessor
 
     public function process()
     {
-        $this->guardAgainstInvalidSignature();
+        if ($this->config->isSigned) {
+            $this->guardAgainstInvalidSignature();
+        }
 
         if (! $this->config->webhookProfile->shouldProcess($this->request)) {
             return;

@@ -10,6 +10,13 @@ return [
             'name' => 'default',
 
             /*
+             * By setting this to false you can skip signature validation entirely. If true
+             * then the signing/signature validation settings below will be honoured. If
+             * false then no signature validation or header checks will occur.
+             */
+            'is_signed' => true,
+
+            /*
              * We expect that every webhook call will be signed using a secret. This secret
              * is used to verify that the payload has not been tampered with.
              */

@@ -11,6 +11,9 @@ class WebhookConfig
     /** @var string */
     public $name;
 
+    /** @var bool */
+    public $isSigned = true;
+
     /** @var string */
     public $signingSecret;
 
@@ -33,14 +36,20 @@ class WebhookConfig
     {
         $this->name = $properties['name'];
 
-        $this->signingSecret = $properties['signing_secret'];
-
-        $this->signatureHeaderName = $properties['signature_header_name'];
-
-        if (! is_subclass_of($properties['signature_validator'], SignatureValidator::class)) {
-            throw InvalidConfig::invalidSignatureValidator($properties['signature_validator']);
+        if (isset($properties['is_signed'])) {
+            $this->isSigned = $properties['is_signed'];
         }
-        $this->signatureValidator = app($properties['signature_validator']);
+
+        if ($this->isSigned) {
+            $this->signingSecret = $properties['signing_secret'];
+
+            $this->signatureHeaderName = $properties['signature_header_name'];
+
+            if (! is_subclass_of($properties['signature_validator'], SignatureValidator::class)) {
+                throw InvalidConfig::invalidSignatureValidator($properties['signature_validator']);
+            }
+            $this->signatureValidator = app($properties['signature_validator']);
+        }
 
         if (! is_subclass_of($properties['webhook_profile'], WebhookProfile::class)) {
             throw InvalidConfig::invalidWebhookProfile($properties['webhook_profile']);
