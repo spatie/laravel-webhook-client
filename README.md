@@ -100,7 +100,7 @@ php artisan migrate
 
 ### Taking care of routing
 
-Finally, let's take care of the routing. At the app that sends webhooks, you probably configure an URL where you want your webhook requests to be sent. In the routes file of your app, you must pass that route to `Route::webhooks`. Here's an example:
+Finally, let's take care of the routing. As the app that sends webhooks, you probably configure an URL where you want your webhook requests to be sent. In the routes file of your app, you must pass that route to `Route::webhooks`. Here's an example:
 
 ```php
 Route::webhooks('webhook-receiving-url');
