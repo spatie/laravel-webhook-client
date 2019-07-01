@@ -20,6 +20,4 @@ abstract class ProcessWebhookJob implements ShouldQueue
     {
         $this->webhookCall = $webhookCall;
     }
-
-    abstract public function handle();
 }
