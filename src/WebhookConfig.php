@@ -5,6 +5,7 @@ namespace Spatie\WebhookClient;
 use Spatie\WebhookClient\Exceptions\InvalidConfig;
 use Spatie\WebhookClient\WebhookProfile\WebhookProfile;
 use Spatie\WebhookClient\SignatureValidator\SignatureValidator;
+use Spatie\WebhookClient\WebhookStore\WebhookStore;
 
 class WebhookConfig
 {
@@ -25,6 +26,9 @@ class WebhookConfig
 
     /** @var string */
     public $webhookModel;
+
+    /** @var \Spatie\WebhookClient\WebhookStore\WebhookStore */
+    public $webhookStore;
 
     /** @var \Spatie\WebhookClient\ProcessWebhookJob */
     public $processWebhookJob;
@@ -49,8 +53,13 @@ class WebhookConfig
 
         $this->webhookModel = $properties['webhook_model'];
 
+        if (! is_subclass_of($properties['webhook_store'], WebhookStore::class)) {
+            throw InvalidConfig::invalidProcessWebhookJob($properties['webhook_store']);
+        }
+        $this->webhookStore = app($properties['webhook_store']);
+
         if (! is_subclass_of($properties['process_webhook_job'], ProcessWebhookJob::class)) {
-            throw InvalidConfig::invalidProcessWebhookJob($properties['process_webhook_job']);
+            throw InvalidConfig::invalidProcessWebhookStore($properties['process_webhook_job']);
         }
         $this->processWebhookJob = app($properties['process_webhook_job']);
     }

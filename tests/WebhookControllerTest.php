@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Route;
 use Spatie\WebhookClient\Models\WebhookCall;
 use Spatie\WebhookClient\Events\InvalidSignatureEvent;
+use Spatie\WebhookClient\Tests\TestClasses\EmptyPayloadWebhookStore;
 use Spatie\WebhookClient\Tests\TestClasses\ProcessWebhookJobTestClass;
 use Spatie\WebhookClient\Tests\TestClasses\ProcessNothingWebhookProfile;
 
@@ -90,6 +91,20 @@ class WebhookControllerTest extends TestCase
         Queue::assertNothingPushed();
         Event::assertNotDispatched(InvalidSignatureEvent::class);
         $this->assertCount(0, WebhookCall::get());
+    }
+
+    /** @test */
+    public function it_can_work_with_an_alternative_store()
+    {
+        config()->set('webhook-client.configs.0.webhook_store', EmptyPayloadWebhookStore::class);
+
+        $this
+            ->postJson('incoming-webhooks', $this->payload, $this->headers)
+            ->assertSuccessful();
+
+        $this->assertCount(1, WebhookCall::get());
+        $webhookCall = WebhookCall::first();
+        $this->assertEquals([], $webhookCall->payload);
     }
 
     /** @test */

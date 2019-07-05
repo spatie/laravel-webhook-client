@@ -39,6 +39,14 @@ return [
             'webhook_model' => \Spatie\WebhookClient\Models\WebhookCall::class,
 
             /*
+             * This class will store a webhook model in the database. It should return a
+             * model equal or extended from Spatie\WebhookClient\Models\WebhookCall.
+             *
+             * It should implement \Spatie\WebhookClient\WebhookStore\WebhookStore
+             */
+            'webhook_store' => \Spatie\WebhookClient\WebhookStore\DefaultWebhookStore::class,
+
+            /*
              * The class name of the job that will process the webhook request.
              *
              * This should be set to a class that extends \Spatie\WebhookClient\ProcessWebhookJob.

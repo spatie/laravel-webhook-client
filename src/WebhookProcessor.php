@@ -31,7 +31,7 @@ class WebhookProcessor
             return;
         }
 
-        $webhookCall = $this->storeWebhook();
+        $webhookCall = $this->config->webhookStore->store($this->config, $this->request);
 
         $this->processWebhook($webhookCall);
     }
@@ -56,13 +56,6 @@ class WebhookProcessor
         return $this;
     }
 
-    protected function storeWebhook(): WebhookCall
-    {
-        return $this->config->webhookModel::create([
-            'name' => $this->config->name,
-            'payload' => $this->request->input(),
-        ]);
-    }
 
     protected function processWebhook(WebhookCall $webhookCall): void
     {

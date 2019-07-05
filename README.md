@@ -68,6 +68,14 @@ return [
              * or extend Spatie\WebhookClient\Models\WebhookCall.
              */
             'webhook_model' => \Spatie\WebhookClient\Models\WebhookCall::class,
+            
+            /*
+             * This class will store a webhook model in the database. It should return a
+             * model equal or extended from Spatie\WebhookClient\Models\WebhookCall.
+             *
+             * It should implement \Spatie\WebhookClient\WebhookStore\WebhookStore
+             */
+            'webhook_store' => \Spatie\WebhookClient\WebhookStore\DefaultWebhookStore::class,
 
             /*
              * The class name of the job that will process the webhook request.
@@ -160,7 +168,7 @@ By default the `\Spatie\WebhookClient\WebhookProfile\ProcessEverythingWebhookPro
 
 ### Creating your own webhook profile
 
-A webhook profile is any class that implements `\Spatie\WebhookClient\WebhookProfileWebhookProfile`. This is what that interface looks like:
+A webhook profile is any class that implements `\Spatie\WebhookClient\WebhookProfile\WebhookProfile`. This is what that interface looks like:
 
 ```php
 namespace Spatie\WebhookClient\WebhookProfile;
@@ -181,6 +189,7 @@ After the signature is validated and the webhook profile has determined that the
 
 The request will first be stored in the `webhook_calls` table. This is done using the `WebhookCall` model. Should you want to customize the table name or anything on the storage behavior, you can let the package use an alternative model. A webhook storing model can be specified in the `webhook_model`. Make sure you model extends `Spatie\WebhookClient\Models\WebhookCall`.
 
+
 Next, the newly created `WebhookCall` model will be passed to a queued job that will process the request. Any class that extends `\Spatie\WebhookClient\ProcessWebhookJob` is a valid job. Here's an example:
 
 ```php
@@ -200,6 +209,26 @@ class ProcessWebhookJob extends SpatieProcessWebhookJob
 ```
 
 You should specify the class name of your job in the `process_webhook_job` of the `webhook-client` config file. 
+
+
+### Create your own webhook call
+If you want to change how a webhook call is stored, then you can change the webhook store by implementing `\Spatie\WebhookClient\WebhookStore\WebhookStore`. This is what that interface looks like:
+
+```php
+namespace Spatie\WebhookClient\WebhookStore;
+
+use Illuminate\Http\Request;
+use Spatie\WebhookClient\WebhookConfig;
+
+interface WebhookStore
+{
+    public function store(WebhookConfig $config, Request $request);
+}
+```
+
+You should return a model equal or extended from `\Spatie\WebhookClient\Models\WebhookCall::class` when creating a model via the `store` method.
+
+After creating your own `WebhookStore` you must register it in the `webhook_store` key in the `webhook-client` config file.
 
 ### Handling incoming webhook request for multiple apps
 

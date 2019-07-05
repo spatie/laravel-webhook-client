@@ -8,6 +8,7 @@ use Spatie\WebhookClient\Exceptions\InvalidConfig;
 use Spatie\WebhookClient\SignatureValidator\DefaultSignatureValidator;
 use Spatie\WebhookClient\Tests\TestClasses\ProcessWebhookJobTestClass;
 use Spatie\WebhookClient\WebhookProfile\ProcessEverythingWebhookProfile;
+use Spatie\WebhookClient\WebhookStore\DefaultWebhookStore;
 
 class WebhookConfigTest extends TestCase
 {
@@ -24,6 +25,7 @@ class WebhookConfigTest extends TestCase
         $this->assertInstanceOf($configArray['signature_validator'], $webhookConfig->signatureValidator);
         $this->assertInstanceOf($configArray['webhook_profile'], $webhookConfig->webhookProfile);
         $this->assertEquals($configArray['webhook_model'], $webhookConfig->webhookModel);
+        $this->assertInstanceOf($configArray['webhook_store'], $webhookConfig->webhookStore);
         $this->assertInstanceOf($configArray['process_webhook_job'], $webhookConfig->processWebhookJob);
     }
 
@@ -50,10 +52,21 @@ class WebhookConfigTest extends TestCase
     }
 
     /** @test */
-    public function it_validates_the_process_webhook_ojb()
+    public function it_validates_the_process_webhook_job()
     {
         $config = $this->getValidConfig();
         $config['process_webhook_job'] = 'invalid-process-webhook-job';
+
+        $this->expectException(InvalidConfig::class);
+
+        new WebhookConfig($config);
+    }
+
+    /** @test */
+    public function it_validates_the_store_webhook()
+    {
+        $config = $this->getValidConfig();
+        $config['webhook_store'] = 'invalid-webhook-store';
 
         $this->expectException(InvalidConfig::class);
 
@@ -69,6 +82,7 @@ class WebhookConfigTest extends TestCase
             'signature_validator' => DefaultSignatureValidator::class,
             'webhook_profile' => ProcessEverythingWebhookProfile::class,
             'webhook_model' => WebhookCall::class,
+            'webhook_store' => DefaultWebhookStore::class,
             'process_webhook_job' => ProcessWebhookJobTestClass::class,
         ];
     }
