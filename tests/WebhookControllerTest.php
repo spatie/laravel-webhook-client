@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Route;
 use Spatie\WebhookClient\Models\WebhookCall;
 use Spatie\WebhookClient\Events\InvalidSignatureEvent;
+use Spatie\WebhookClient\Tests\TestClasses\EverythingIsValidSignatureValidator;
+use Spatie\WebhookClient\Tests\TestClasses\NothingIsValidSignatureValidator;
 use Spatie\WebhookClient\Tests\TestClasses\ProcessWebhookJobTestClass;
 use Spatie\WebhookClient\Tests\TestClasses\ProcessNothingWebhookProfile;
 
@@ -45,8 +47,6 @@ class WebhookControllerTest extends TestCase
     /** @test */
     public function it_can_process_a_webhook_request()
     {
-        $this->withoutExceptionHandling();
-
         $this
             ->postJson('incoming-webhooks', $this->payload, $this->headers)
             ->assertSuccessful();
@@ -76,6 +76,22 @@ class WebhookControllerTest extends TestCase
         $this->assertCount(0, WebhookCall::get());
         Queue::assertNothingPushed();
         Event::assertDispatched(InvalidSignatureEvent::class);
+    }
+
+    /** @test */
+    public function it_can_work_with_an_alternative_signature_validator()
+    {
+        config()->set('webhook-client.configs.0.signature_validator', EverythingIsValidSignatureValidator::class);
+
+        $this
+            ->postJson('incoming-webhooks', $this->payload, [])
+            ->assertOk();
+
+        config()->set('webhook-client.configs.0.signature_validator', NothingIsValidSignatureValidator::class);
+
+        $this
+            ->postJson('incoming-webhooks', $this->payload, [])
+            ->assertStatus(500);
     }
 
     /** @test */

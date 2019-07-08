@@ -9,13 +9,8 @@ class InvalidSignatureEvent
     /** @var \Illuminate\Http\Request */
     public $request;
 
-    /** @var string|null */
-    public $invalidSignature;
-
-    public function __construct(Request $request, ?string $invalidSignature)
+    public function __construct(Request $request)
     {
         $this->request = $request;
-
-        $this->invalidSignature = $invalidSignature;
     }
 }
