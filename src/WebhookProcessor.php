@@ -56,7 +56,6 @@ class WebhookProcessor
         return $this;
     }
 
-
     protected function processWebhook(WebhookCall $webhookCall): void
     {
         try {
