@@ -33,9 +33,9 @@ class WebhookConfig
     {
         $this->name = $properties['name'];
 
-        $this->signingSecret = $properties['signing_secret'];
+        $this->signingSecret = $properties['signing_secret'] ?? '';
 
-        $this->signatureHeaderName = $properties['signature_header_name'];
+        $this->signatureHeaderName = $properties['signature_header_name'] ?? '';
 
         if (! is_subclass_of($properties['signature_validator'], SignatureValidator::class)) {
             throw InvalidConfig::invalidSignatureValidator($properties['signature_validator']);

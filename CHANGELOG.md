@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-webhook-client` will be documented in this file
 
+## 2.0.1 - 2019-07-08
+
+- make `signing_secret` and `signature_header_name` config keys optional
+
 ## 2.0.0 - 2019-07-08
 
 - `DefaultSignatureValidator` is now responsible for verifying that a signature header has been set
