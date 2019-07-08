@@ -3,9 +3,9 @@
 namespace Spatie\WebhookClient;
 
 use Spatie\WebhookClient\Exceptions\InvalidConfig;
+use Spatie\WebhookClient\WebhookStore\WebhookStore;
 use Spatie\WebhookClient\WebhookProfile\WebhookProfile;
 use Spatie\WebhookClient\SignatureValidator\SignatureValidator;
-use Spatie\WebhookClient\WebhookStore\WebhookStore;
 
 class WebhookConfig
 {

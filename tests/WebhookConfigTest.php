@@ -5,10 +5,10 @@ namespace Spatie\WebhookClient\Tests;
 use Spatie\WebhookClient\WebhookConfig;
 use Spatie\WebhookClient\Models\WebhookCall;
 use Spatie\WebhookClient\Exceptions\InvalidConfig;
+use Spatie\WebhookClient\WebhookStore\DefaultWebhookStore;
 use Spatie\WebhookClient\SignatureValidator\DefaultSignatureValidator;
 use Spatie\WebhookClient\Tests\TestClasses\ProcessWebhookJobTestClass;
 use Spatie\WebhookClient\WebhookProfile\ProcessEverythingWebhookProfile;
-use Spatie\WebhookClient\WebhookStore\DefaultWebhookStore;
 
 class WebhookConfigTest extends TestCase
 {
