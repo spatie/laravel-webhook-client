@@ -3,8 +3,8 @@
 namespace Spatie\WebhookClient\Tests\TestClasses;
 
 use Illuminate\Http\Request;
-use Spatie\WebhookClient\Models\WebhookCall;
 use Spatie\WebhookClient\WebhookConfig;
+use Spatie\WebhookClient\Models\WebhookCall;
 
 class WebhookModelWithoutPayloadSaved extends WebhookCall
 {

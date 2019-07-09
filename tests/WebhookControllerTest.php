@@ -8,11 +8,11 @@ use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Route;
 use Spatie\WebhookClient\Models\WebhookCall;
 use Spatie\WebhookClient\Events\InvalidSignatureEvent;
-use Spatie\WebhookClient\Tests\TestClasses\EverythingIsValidSignatureValidator;
-use Spatie\WebhookClient\Tests\TestClasses\NothingIsValidSignatureValidator;
 use Spatie\WebhookClient\Tests\TestClasses\ProcessWebhookJobTestClass;
 use Spatie\WebhookClient\Tests\TestClasses\ProcessNothingWebhookProfile;
 use Spatie\WebhookClient\Tests\TestClasses\WebhookModelWithoutPayloadSaved;
+use Spatie\WebhookClient\Tests\TestClasses\NothingIsValidSignatureValidator;
+use Spatie\WebhookClient\Tests\TestClasses\EverythingIsValidSignatureValidator;
 
 class WebhookControllerTest extends TestCase
 {
