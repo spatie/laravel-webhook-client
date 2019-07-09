@@ -179,9 +179,11 @@ After creating your own `WebhookProfile` you must register it in the `webhook_pr
 
 After the signature is validated and the webhook profile has determined that the request should be processed, the package will store and process the request. 
 
-The request will first be stored in the `webhook_calls` table. This is done using the `WebhookCall` model. Should you want to customize the table name or anything on the storage behavior, you can let the package use an alternative model. A webhook storing model can be specified in the `webhook_model`. Make sure you model extends `Spatie\WebhookClient\Models\WebhookCall`.
+The request will first be stored in the `webhook_calls` table. This is done using the `WebhookCall` model. 
 
-You can change how the  `WebhookCall` model is stored, by overriding the `storeWebhook` method of `WebhookCall`. In the `storeWebhook` method you should return a in the database stored model.
+Should you want to customize the table name or anything on the storage behavior, you can let the package use an alternative model. A webhook storing model can be specified in the `webhook_model`. Make sure you model extends `Spatie\WebhookClient\Models\WebhookCall`.
+
+You can change how the webhook is stored by overriding the `storeWebhook` method of `WebhookCall`. In the `storeWebhook` method you should return a saved model.
 
 Next, the newly created `WebhookCall` model will be passed to a queued job that will process the request. Any class that extends `\Spatie\WebhookClient\ProcessWebhookJob` is a valid job. Here's an example:
 
