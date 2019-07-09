@@ -8,7 +8,7 @@ class WebhookFailed extends Exception
 {
     public static function invalidSignature(): WebhookFailed
     {
-        return new static("The signature is invalid.");
+        return new static('The signature is invalid.');
     }
 
     public static function signingSecretNotSet(): WebhookFailed
