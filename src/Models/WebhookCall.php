@@ -4,6 +4,8 @@ namespace Spatie\WebhookClient\Models;
 
 use Exception;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
+use Spatie\WebhookClient\WebhookConfig;
 
 class WebhookCall extends Model
 {
@@ -13,6 +15,14 @@ class WebhookCall extends Model
         'payload' => 'array',
         'exception' => 'array',
     ];
+
+    public static function storeWebhook(WebhookConfig $config, Request $request): WebhookCall
+    {
+        return self::create([
+            'name' => $config->name,
+            'payload' => $request->input(),
+        ]);
+    }
 
     public function saveException(Exception $exception)
     {

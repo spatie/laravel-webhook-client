@@ -12,6 +12,7 @@ use Spatie\WebhookClient\Tests\TestClasses\EverythingIsValidSignatureValidator;
 use Spatie\WebhookClient\Tests\TestClasses\NothingIsValidSignatureValidator;
 use Spatie\WebhookClient\Tests\TestClasses\ProcessWebhookJobTestClass;
 use Spatie\WebhookClient\Tests\TestClasses\ProcessNothingWebhookProfile;
+use Spatie\WebhookClient\Tests\TestClasses\WebhookModelWithoutPayloadSaved;
 
 class WebhookControllerTest extends TestCase
 {
@@ -122,6 +123,19 @@ class WebhookControllerTest extends TestCase
         $this
             ->postJson('incoming-webhooks-alternative-config', $this->payload, $this->headers)
             ->assertSuccessful();
+    }
+
+    /** @test */
+    public function it_can_work_with_an_alternative_model()
+    {
+        config()->set('webhook-client.configs.0.webhook_model', WebhookModelWithoutPayloadSaved::class);
+
+        $this
+            ->postJson('incoming-webhooks', $this->payload, $this->headers)
+            ->assertSuccessful();
+
+        $this->assertCount(1, WebhookCall::get());
+        $this->assertEquals([], WebhookCall::first()->payload);
     }
 
     private function determineSignature(array $payload): string
