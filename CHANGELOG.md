@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-webhook-client` will be documented in this file
 
+## 2.1.0 - 2019-07-09
+
+- added an overridable method `storeWebhook` on the `WebhookCall` model.
+
 ## 2.0.1 - 2019-07-08
 
 - make `signing_secret` and `signature_header_name` config keys optional
