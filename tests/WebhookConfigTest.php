@@ -50,7 +50,7 @@ class WebhookConfigTest extends TestCase
     }
 
     /** @test */
-    public function it_validates_the_process_webhook_ojb()
+    public function it_validates_the_process_webhook_job()
     {
         $config = $this->getValidConfig();
         $config['process_webhook_job'] = 'invalid-process-webhook-job';
