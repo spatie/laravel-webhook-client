@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-webhook-client` will be documented in this file
 
+## 2.1.1 - 2019-09-02
+
+- use `bigInteger` by default
+
 ## 2.1.0 - 2019-07-09
 
 - added an overridable method `storeWebhook` on the `WebhookCall` model.
