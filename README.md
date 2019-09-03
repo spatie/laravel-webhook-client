@@ -190,7 +190,7 @@ Next, the newly created `WebhookCall` model will be passed to a queued job that 
 ```php
 namespace App\Jobs;
 
-use \Spatie\WebhookClient\ProcessWebhookJob;
+use \Spatie\WebhookClient\ProcessWebhookJob as SpatieProcessWebhookJob;
 
 class ProcessWebhookJob extends SpatieProcessWebhookJob
 {
