@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-webhook-client` will be documented in this file
 
+## 2.2.0 - 2019-09-04
+
+- Add Laravel 6 support
+
 ## 2.1.1 - 2019-09-02
 
 - use `bigInteger` by default
