@@ -160,7 +160,7 @@ By default the `\Spatie\WebhookClient\WebhookProfile\ProcessEverythingWebhookPro
 
 ### Creating your own webhook profile
 
-A webhook profile is any class that implements `\Spatie\WebhookClient\WebhookProfileWebhookProfile`. This is what that interface looks like:
+A webhook profile is any class that implements `\Spatie\WebhookClient\WebhookProfile\WebhookProfile`. This is what that interface looks like:
 
 ```php
 namespace Spatie\WebhookClient\WebhookProfile;
