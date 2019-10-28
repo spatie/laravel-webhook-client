@@ -2,9 +2,9 @@
 
 namespace Spatie\WebhookClient\Tests;
 
-use Spatie\WebhookClient\Storage\InMemoryWebhookCallStorage;
 use Spatie\WebhookClient\WebhookConfig;
 use Spatie\WebhookClient\Exceptions\InvalidConfig;
+use Spatie\WebhookClient\Storage\InMemoryWebhookCallStorage;
 use Spatie\WebhookClient\SignatureValidator\DefaultSignatureValidator;
 use Spatie\WebhookClient\Tests\TestClasses\ProcessWebhookJobTestClass;
 use Spatie\WebhookClient\WebhookProfile\ProcessEverythingWebhookProfile;

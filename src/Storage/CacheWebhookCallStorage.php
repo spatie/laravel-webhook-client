@@ -2,12 +2,12 @@
 
 namespace Spatie\WebhookClient\Storage;
 
-use Illuminate\Contracts\Cache\Repository as CacheContract;
-use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use Spatie\WebhookClient\Models\DefaultWebhookCall;
-use Spatie\WebhookClient\Models\WebhookCall;
+use Illuminate\Http\Request;
 use Spatie\WebhookClient\WebhookConfig;
+use Spatie\WebhookClient\Models\WebhookCall;
+use Spatie\WebhookClient\Models\DefaultWebhookCall;
+use Illuminate\Contracts\Cache\Repository as CacheContract;
 
 class CacheWebhookCallStorage implements WebhookCallStorage
 {
@@ -93,6 +93,6 @@ class CacheWebhookCallStorage implements WebhookCallStorage
      */
     protected function getCacheKey(string $id)
     {
-        return $this->prefix . $id;
+        return $this->prefix.$id;
     }
 }

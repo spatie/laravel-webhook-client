@@ -2,8 +2,8 @@
 
 namespace Spatie\WebhookClient\Listeners;
 
-use Spatie\WebhookClient\Events\WebhookCallProcessingEvent;
 use Spatie\WebhookClient\Models\EloquentWebhookCall;
+use Spatie\WebhookClient\Events\WebhookCallProcessingEvent;
 
 class ResetEloquentExceptionListener
 {

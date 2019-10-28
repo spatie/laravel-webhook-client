@@ -2,7 +2,6 @@
 
 namespace Spatie\WebhookClient;
 
-use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Foundation\Application;
 use Spatie\WebhookClient\Exceptions\InvalidConfig;
 use Spatie\WebhookClient\Storage\WebhookCallStorage;

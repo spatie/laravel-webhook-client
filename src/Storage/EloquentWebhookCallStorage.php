@@ -2,11 +2,11 @@
 
 namespace Spatie\WebhookClient\Storage;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
-use Spatie\WebhookClient\Models\WebhookCall;
+use Illuminate\Database\Eloquent\Model;
 use Spatie\WebhookClient\WebhookConfig;
+use Spatie\WebhookClient\Models\WebhookCall;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class EloquentWebhookCallStorage implements WebhookCallStorage
 {
@@ -21,7 +21,7 @@ class EloquentWebhookCallStorage implements WebhookCallStorage
      */
     public function __construct(string $class)
     {
-        if (!is_subclass_of($class, Model::class)) {
+        if (! is_subclass_of($class, Model::class)) {
             throw new \RuntimeException(sprintf(
                 'Given class [%s] must be subclass of [%s]',
                 $class,
@@ -29,7 +29,7 @@ class EloquentWebhookCallStorage implements WebhookCallStorage
             ));
         }
 
-        if (!is_subclass_of($class, WebhookCall::class)) {
+        if (! is_subclass_of($class, WebhookCall::class)) {
             throw new \RuntimeException(sprintf(
                 'Given class [%s] must be subclass of [%s]',
                 $class,

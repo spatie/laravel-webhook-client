@@ -2,14 +2,14 @@
 
 namespace Spatie\WebhookClient\Tests;
 
+use InvalidArgumentException;
 use Illuminate\Cache\CacheManager;
 use Illuminate\Foundation\Application;
-use InvalidArgumentException;
+use Spatie\WebhookClient\StorageManager;
 use Spatie\WebhookClient\Models\EloquentWebhookCall;
 use Spatie\WebhookClient\Storage\CacheWebhookCallStorage;
 use Spatie\WebhookClient\Storage\EloquentWebhookCallStorage;
 use Spatie\WebhookClient\Storage\InMemoryWebhookCallStorage;
-use Spatie\WebhookClient\StorageManager;
 
 class StorageManagerTest extends \PHPUnit\Framework\TestCase
 {

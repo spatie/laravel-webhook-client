@@ -2,15 +2,15 @@
 
 namespace Spatie\WebhookClient\Tests\Storage;
 
-use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
-use Spatie\WebhookClient\Models\EloquentWebhookCall;
-use Spatie\WebhookClient\SignatureValidator\DefaultSignatureValidator;
-use Spatie\WebhookClient\Storage\EloquentWebhookCallStorage;
-use Spatie\WebhookClient\Tests\TestCase;
-use Spatie\WebhookClient\Tests\TestClasses\NonWebhookCallModel;
-use Spatie\WebhookClient\Tests\TestClasses\ProcessWebhookJobTestClass;
+use Illuminate\Foundation\Application;
 use Spatie\WebhookClient\WebhookConfig;
+use Spatie\WebhookClient\Tests\TestCase;
+use Spatie\WebhookClient\Models\EloquentWebhookCall;
+use Spatie\WebhookClient\Storage\EloquentWebhookCallStorage;
+use Spatie\WebhookClient\Tests\TestClasses\NonWebhookCallModel;
+use Spatie\WebhookClient\SignatureValidator\DefaultSignatureValidator;
+use Spatie\WebhookClient\Tests\TestClasses\ProcessWebhookJobTestClass;
 use Spatie\WebhookClient\WebhookProfile\ProcessEverythingWebhookProfile;
 
 class EloquentWebhookCallStorateTest extends TestCase

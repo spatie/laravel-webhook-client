@@ -2,11 +2,11 @@
 
 namespace Spatie\WebhookClient\Storage;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use Spatie\WebhookClient\Models\DefaultWebhookCall;
-use Spatie\WebhookClient\Models\WebhookCall;
+use Illuminate\Http\Request;
 use Spatie\WebhookClient\WebhookConfig;
+use Spatie\WebhookClient\Models\WebhookCall;
+use Spatie\WebhookClient\Models\DefaultWebhookCall;
 
 class InMemoryWebhookCallStorage implements WebhookCallStorage
 {

@@ -33,12 +33,12 @@ This is the contents of the file that will be published at `config/webhook-clien
 ```php
 return [
     'storage' => [
-        /**
+        /*
          * Default webhook storage driver.
          */
         'default' => env('WEBHOOK_CLIENT_STORAGE', 'eloquent'),
 
-        /**
+        /*
          * List of webhook storage drivers.
          * Supported drivers: eloquent, memory, cache
          */

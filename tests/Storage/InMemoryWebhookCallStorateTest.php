@@ -2,13 +2,13 @@
 
 namespace Spatie\WebhookClient\Tests\Storage;
 
-use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use PHPUnit\Framework\TestCase;
-use Spatie\WebhookClient\SignatureValidator\DefaultSignatureValidator;
-use Spatie\WebhookClient\Storage\InMemoryWebhookCallStorage;
-use Spatie\WebhookClient\Tests\TestClasses\ProcessWebhookJobTestClass;
+use Illuminate\Foundation\Application;
 use Spatie\WebhookClient\WebhookConfig;
+use Spatie\WebhookClient\Storage\InMemoryWebhookCallStorage;
+use Spatie\WebhookClient\SignatureValidator\DefaultSignatureValidator;
+use Spatie\WebhookClient\Tests\TestClasses\ProcessWebhookJobTestClass;
 use Spatie\WebhookClient\WebhookProfile\ProcessEverythingWebhookProfile;
 
 class InMemoryWebhookCallStorateTest extends TestCase

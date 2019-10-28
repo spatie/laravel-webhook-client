@@ -2,13 +2,13 @@
 
 namespace Spatie\WebhookClient;
 
-use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use Spatie\WebhookClient\Exceptions\InvalidConfig;
 use Spatie\WebhookClient\Events\WebhookCallFailedEvent;
 use Spatie\WebhookClient\Events\WebhookCallProcessingEvent;
-use Spatie\WebhookClient\Exceptions\InvalidConfig;
 
 class WebhookClientServiceProvider extends ServiceProvider
 {

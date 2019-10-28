@@ -2,12 +2,12 @@
 
 return [
     'storage' => [
-        /**
+        /*
          * Default webhook storage driver.
          */
         'default' => env('WEBHOOK_CLIENT_STORAGE', 'eloquent'),
 
-        /**
+        /*
          * List of webhook storage drivers.
          * Supported drivers: eloquent, memory, cache
          */
