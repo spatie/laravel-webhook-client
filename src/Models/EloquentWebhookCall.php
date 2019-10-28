@@ -18,14 +18,6 @@ class EloquentWebhookCall extends Model implements WebhookCall
         'exception' => 'array',
     ];
 
-    public static function storeWebhook(WebhookConfig $config, Request $request): WebhookCall
-    {
-        return self::create([
-            'name' => $config->name,
-            'payload' => $request->input(),
-        ]);
-    }
-
     public function saveException(Exception $exception)
     {
         $this->exception = [
