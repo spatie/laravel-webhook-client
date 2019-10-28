@@ -2,34 +2,59 @@
 
 namespace Spatie\WebhookClient;
 
+use Illuminate\Contracts\Container\Container;
+use Illuminate\Contracts\Foundation\Application;
 use Spatie\WebhookClient\Exceptions\InvalidConfig;
+use Spatie\WebhookClient\Storage\WebhookCallStorage;
 use Spatie\WebhookClient\WebhookProfile\WebhookProfile;
 use Spatie\WebhookClient\SignatureValidator\SignatureValidator;
 
 class WebhookConfig
 {
-    /** @var string */
+    /**
+     * @var string
+     */
     public $name;
 
-    /** @var string */
+    /**
+     * @var string
+     */
     public $signingSecret;
 
-    /** @var string */
+    /**
+     * @var string
+     */
     public $signatureHeaderName;
 
-    /** @var \Spatie\WebhookClient\SignatureValidator\SignatureValidator */
+    /**
+     * @var SignatureValidator
+     */
     public $signatureValidator;
 
-    /** @var \Spatie\WebhookClient\WebhookProfile\WebhookProfile */
+    /**
+     * @var WebhookProfile
+     */
     public $webhookProfile;
 
-    /** @var string */
-    public $webhookModel;
+    /**
+     * @var WebhookCallStorage
+     */
+    public $webhookStorage;
 
-    /** @var \Spatie\WebhookClient\ProcessWebhookJob */
+    /**
+     * @var ProcessWebhookJob
+     */
     public $processWebhookJob;
 
-    public function __construct(array $properties)
+    /**
+     * WebhookConfig constructor.
+     * @param Application $app
+     * @param WebhookCallStorage $storage
+     * @param array $properties
+     * @throws InvalidConfig
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     */
+    public function __construct(Application $app, Storage\WebhookCallStorage $storage, array $properties)
     {
         $this->name = $properties['name'];
 
@@ -40,18 +65,18 @@ class WebhookConfig
         if (! is_subclass_of($properties['signature_validator'], SignatureValidator::class)) {
             throw InvalidConfig::invalidSignatureValidator($properties['signature_validator']);
         }
-        $this->signatureValidator = app($properties['signature_validator']);
+        $this->signatureValidator = $app->make($properties['signature_validator']);
 
         if (! is_subclass_of($properties['webhook_profile'], WebhookProfile::class)) {
             throw InvalidConfig::invalidWebhookProfile($properties['webhook_profile']);
         }
-        $this->webhookProfile = app($properties['webhook_profile']);
+        $this->webhookProfile = $app->make($properties['webhook_profile']);
 
-        $this->webhookModel = $properties['webhook_model'];
+        $this->webhookStorage = $storage;
 
         if (! is_subclass_of($properties['process_webhook_job'], ProcessWebhookJob::class)) {
             throw InvalidConfig::invalidProcessWebhookJob($properties['process_webhook_job']);
         }
-        $this->processWebhookJob = app($properties['process_webhook_job']);
+        $this->processWebhookJob = $properties['process_webhook_job'];
     }
 }

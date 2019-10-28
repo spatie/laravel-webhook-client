@@ -4,6 +4,7 @@ namespace Spatie\WebhookClient\Exceptions;
 
 use Exception;
 use Spatie\WebhookClient\ProcessWebhookJob;
+use Spatie\WebhookClient\Storage\WebhookCallStorage;
 use Spatie\WebhookClient\WebhookProfile\WebhookProfile;
 use Spatie\WebhookClient\SignatureValidator\SignatureValidator;
 
@@ -33,5 +34,12 @@ class InvalidConfig extends Exception
         $abstractProcessWebhookJob = ProcessWebhookJob::class;
 
         return new static("`{$processWebhookJob}` is not a valid process webhook job class. A valid class should implement `{$abstractProcessWebhookJob}`.");
+    }
+
+    public static function invalidWebhookStorage(string $invalidWebhookStorage): InvalidConfig
+    {
+        $webhookStorageInterface = WebhookCallStorage::class;
+
+        return new static("`{$invalidWebhookStorage}` is not a valid signature validator class. A valid storage is a class that implements `{$webhookStorageInterface}`.");
     }
 }

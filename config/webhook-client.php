@@ -1,6 +1,33 @@
 <?php
 
 return [
+    'storage' => [
+        /**
+         * Default webhook storage driver.
+         */
+        'default' => env('WEBHOOK_CLIENT_STORAGE', 'eloquent'),
+
+        /**
+         * List of webhook storage drivers.
+         */
+        'config' => [
+            'eloquent' => [
+                'driver' => 'eloquent',
+                'model' => env('WEBHOOK_CLIENT_ELOQUENT_MODEL', Spatie\WebhookClient\Models\EloquentWebhookCall::class),
+            ],
+
+            'memory' => [
+                'driver' => 'memory',
+            ],
+
+            'cache' => [
+                'driver' => 'cache',
+                'store' => env('WEBHOOK_CLIENT_CACHE_STORE', 'file'),
+                'lifetime' => env('WEBHOOK_CLIENT_CACHE_LIFETIME', 60),
+            ],
+        ],
+    ],
+
     'configs' => [
         [
             /*
@@ -25,18 +52,17 @@ return [
              *
              * It should implement \Spatie\WebhookClient\SignatureValidator\SignatureValidator
              */
-            'signature_validator' => \Spatie\WebhookClient\SignatureValidator\DefaultSignatureValidator::class,
+            'signature_validator' => Spatie\WebhookClient\SignatureValidator\DefaultSignatureValidator::class,
 
             /*
              * This class determines if the webhook call should be stored and processed.
              */
-            'webhook_profile' => \Spatie\WebhookClient\WebhookProfile\ProcessEverythingWebhookProfile::class,
+            'webhook_profile' => Spatie\WebhookClient\WebhookProfile\ProcessEverythingWebhookProfile::class,
 
             /*
-             * The classname of the model to be used to store call. The class should be equal
-             * or extend Spatie\WebhookClient\Models\WebhookCall.
+             * One of configured webhook storage name.
              */
-            'webhook_model' => \Spatie\WebhookClient\Models\WebhookCall::class,
+            'webhook_storage' => 'eloquent',
 
             /*
              * The class name of the job that will process the webhook request.

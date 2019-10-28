@@ -2,47 +2,26 @@
 
 namespace Spatie\WebhookClient\Models;
 
-use Exception;
-use Illuminate\Http\Request;
-use Illuminate\Database\Eloquent\Model;
-use Spatie\WebhookClient\WebhookConfig;
-
-class WebhookCall extends Model
+interface WebhookCall
 {
-    public $guarded = [];
+    /**
+     * Return webhook's ID.
+     *
+     * @return string
+     */
+    public function getId(): string;
 
-    protected $casts = [
-        'payload' => 'array',
-        'exception' => 'array',
-    ];
+    /**
+     * Returns called webhook's name.
+     *
+     * @return string
+     */
+    public function getName(): string;
 
-    public static function storeWebhook(WebhookConfig $config, Request $request): WebhookCall
-    {
-        return self::create([
-            'name' => $config->name,
-            'payload' => $request->input(),
-        ]);
-    }
-
-    public function saveException(Exception $exception)
-    {
-        $this->exception = [
-            'code' => $exception->getCode(),
-            'message' => $exception->getMessage(),
-            'trace' => $exception->getTraceAsString(),
-        ];
-
-        $this->save();
-
-        return $this;
-    }
-
-    public function clearException()
-    {
-        $this->exception = null;
-
-        $this->save();
-
-        return $this;
-    }
+    /**
+     * Returns webhook's payload.
+     *
+     * @return array
+     */
+    public function getPayload(): array;
 }

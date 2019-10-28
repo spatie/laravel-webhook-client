@@ -2,9 +2,12 @@
 
 namespace Spatie\WebhookClient;
 
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use Spatie\WebhookClient\Events\WebhookCallFailedEvent;
+use Spatie\WebhookClient\Events\WebhookCallProcessingEvent;
 use Spatie\WebhookClient\Exceptions\InvalidConfig;
 
 class WebhookClientServiceProvider extends ServiceProvider
@@ -29,7 +32,7 @@ class WebhookClientServiceProvider extends ServiceProvider
             return Route::post($url, '\Spatie\WebhookClient\WebhookController')->name("webhook-client-{$name}");
         });
 
-        $this->app->bind(WebhookConfig::class, function () {
+        $this->app->bind(WebhookConfig::class, function ($app) {
             $routeName = Route::currentRouteName();
 
             $configName = Str::after($routeName, 'webhook-client-');
@@ -43,12 +46,22 @@ class WebhookClientServiceProvider extends ServiceProvider
                 throw InvalidConfig::couldNotFindConfig($configName);
             }
 
-            return new WebhookConfig($config);
+            /** @var Storage\Factory $storageManger */
+            $storageManger = $app['webhook-client.storage'];
+
+            return new WebhookConfig($app, $storageManger->storage($config['webhook_storage']), $config);
         });
+
+        Event::listen(WebhookCallProcessingEvent::class, Listeners\ResetEloquentExceptionListener::class);
+        Event::listen(WebhookCallFailedEvent::class, Listeners\LogEloquentExceptionListener::class);
     }
 
     public function register()
     {
         $this->mergeConfigFrom(__DIR__.'/../config/webhook-client.php', 'webhook-client');
+
+        $this->app->bind('webhook-client.storage', function ($app) {
+            return new StorageManager($app);
+        });
     }
 }

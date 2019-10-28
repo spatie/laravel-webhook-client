@@ -2,8 +2,8 @@
 
 namespace Spatie\WebhookClient\Tests;
 
+use Spatie\WebhookClient\Storage\InMemoryWebhookCallStorage;
 use Spatie\WebhookClient\WebhookConfig;
-use Spatie\WebhookClient\Models\WebhookCall;
 use Spatie\WebhookClient\Exceptions\InvalidConfig;
 use Spatie\WebhookClient\SignatureValidator\DefaultSignatureValidator;
 use Spatie\WebhookClient\Tests\TestClasses\ProcessWebhookJobTestClass;
@@ -16,15 +16,17 @@ class WebhookConfigTest extends TestCase
     {
         $configArray = $this->getValidConfig();
 
-        $webhookConfig = new WebhookConfig($configArray);
+        $storage = new InMemoryWebhookCallStorage();
+
+        $webhookConfig = new WebhookConfig($this->app, $storage, $configArray);
 
         $this->assertEquals($configArray['name'], $webhookConfig->name);
         $this->assertEquals($configArray['signing_secret'], $webhookConfig->signingSecret);
         $this->assertEquals($configArray['signature_header_name'], $webhookConfig->signatureHeaderName);
         $this->assertInstanceOf($configArray['signature_validator'], $webhookConfig->signatureValidator);
         $this->assertInstanceOf($configArray['webhook_profile'], $webhookConfig->webhookProfile);
-        $this->assertEquals($configArray['webhook_model'], $webhookConfig->webhookModel);
-        $this->assertInstanceOf($configArray['process_webhook_job'], $webhookConfig->processWebhookJob);
+        $this->assertEquals($storage, $webhookConfig->webhookStorage);
+        $this->assertEquals($configArray['process_webhook_job'], $webhookConfig->processWebhookJob);
     }
 
     /** @test */
@@ -35,7 +37,7 @@ class WebhookConfigTest extends TestCase
 
         $this->expectException(InvalidConfig::class);
 
-        new WebhookConfig($config);
+        new WebhookConfig($this->app, new InMemoryWebhookCallStorage(), $config);
     }
 
     /** @test */
@@ -46,7 +48,7 @@ class WebhookConfigTest extends TestCase
 
         $this->expectException(InvalidConfig::class);
 
-        new WebhookConfig($config);
+        new WebhookConfig($this->app, new InMemoryWebhookCallStorage(), $config);
     }
 
     /** @test */
@@ -57,7 +59,7 @@ class WebhookConfigTest extends TestCase
 
         $this->expectException(InvalidConfig::class);
 
-        new WebhookConfig($config);
+        new WebhookConfig($this->app, new InMemoryWebhookCallStorage(), $config);
     }
 
     protected function getValidConfig(): array
@@ -68,7 +70,7 @@ class WebhookConfigTest extends TestCase
             'signature_header_name' => 'Signature',
             'signature_validator' => DefaultSignatureValidator::class,
             'webhook_profile' => ProcessEverythingWebhookProfile::class,
-            'webhook_model' => WebhookCall::class,
+            'webhook_storage' => 'default',
             'process_webhook_job' => ProcessWebhookJobTestClass::class,
         ];
     }

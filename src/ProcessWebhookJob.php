@@ -13,9 +13,14 @@ abstract class ProcessWebhookJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    /** @var \Spatie\WebhookClient\Models\WebhookCall */
+    /**
+     * @var WebhookCall
+     */
     public $webhookCall;
 
+    /**
+     * @param WebhookCall $webhookCall
+     */
     public function __construct(WebhookCall $webhookCall)
     {
         $this->webhookCall = $webhookCall;

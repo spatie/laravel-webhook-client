@@ -4,18 +4,28 @@ namespace Spatie\WebhookClient;
 
 use Exception;
 use Illuminate\Http\Request;
-use Spatie\WebhookClient\Models\WebhookCall;
+use Spatie\WebhookClient\Events\WebhookCallFailedEvent;
+use Spatie\WebhookClient\Events\WebhookCallProcessingEvent;
 use Spatie\WebhookClient\Exceptions\WebhookFailed;
 use Spatie\WebhookClient\Events\InvalidSignatureEvent;
+use Spatie\WebhookClient\Models\WebhookCall;
 
 class WebhookProcessor
 {
-    /** @var \Illuminate\Http\Request */
+    /**
+     * @var Request
+     */
     protected $request;
 
-    /** @var \Spatie\WebhookClient\WebhookConfig */
+    /**
+     * @var WebhookConfig
+     */
     protected $config;
 
+    /**
+     * @param Request $request
+     * @param WebhookConfig $config
+     */
     public function __construct(Request $request, WebhookConfig $config)
     {
         $this->request = $request;
@@ -23,19 +33,32 @@ class WebhookProcessor
         $this->config = $config;
     }
 
+    /**
+     * Process given webhook.
+     *
+     * @return WebhookCall|null
+     * @throws WebhookFailed
+     * @throws Exception
+     */
     public function process()
     {
         $this->ensureValidSignature();
 
         if (! $this->config->webhookProfile->shouldProcess($this->request)) {
-            return;
+            return null;
         }
 
         $webhookCall = $this->storeWebhook();
 
         $this->processWebhook($webhookCall);
+
+        return $webhookCall;
     }
 
+    /**
+     * @return $this
+     * @throws WebhookFailed
+     */
     protected function ensureValidSignature()
     {
         if (! $this->config->signatureValidator->isValid($this->request, $this->config)) {
@@ -47,23 +70,30 @@ class WebhookProcessor
         return $this;
     }
 
+    /**
+     * Store given webhook to a storage.
+     *
+     * @return WebhookCall
+     */
     protected function storeWebhook(): WebhookCall
     {
-        return $this->config->webhookModel::storeWebhook($this->config, $this->request);
+        return $this->config->webhookStorage->storeWebhookCall($this->config, $this->request);
     }
 
+    /**
+     * @param WebhookCall $webhookCall
+     * @throws Exception
+     */
     protected function processWebhook(WebhookCall $webhookCall): void
     {
         try {
-            $job = new $this->config->processWebhookJob($webhookCall);
+            event(new WebhookCallProcessingEvent($webhookCall));
 
-            $webhookCall->clearException();
+            dispatch(new $this->config->processWebhookJob($webhookCall));
+        } catch (\Exception $e) {
+            event(new WebhookCallFailedEvent($webhookCall, $e));
 
-            dispatch($job);
-        } catch (Exception $exception) {
-            $webhookCall->saveException($exception);
-
-            throw $exception;
+            throw $e;
         }
     }
 }

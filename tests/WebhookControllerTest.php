@@ -6,11 +6,10 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Route;
-use Spatie\WebhookClient\Models\WebhookCall;
 use Spatie\WebhookClient\Events\InvalidSignatureEvent;
+use Spatie\WebhookClient\Events\WebhookCallProcessingEvent;
 use Spatie\WebhookClient\Tests\TestClasses\ProcessWebhookJobTestClass;
 use Spatie\WebhookClient\Tests\TestClasses\ProcessNothingWebhookProfile;
-use Spatie\WebhookClient\Tests\TestClasses\WebhookModelWithoutPayloadSaved;
 use Spatie\WebhookClient\Tests\TestClasses\NothingIsValidSignatureValidator;
 use Spatie\WebhookClient\Tests\TestClasses\EverythingIsValidSignatureValidator;
 
@@ -31,6 +30,7 @@ class WebhookControllerTest extends TestCase
 
         config()->set('webhook-client.configs.0.signing_secret', 'abc123');
         config()->set('webhook-client.configs.0.process_webhook_job', ProcessWebhookJobTestClass::class);
+        config()->set('webhook-client.configs.0.webhook_storage', 'memory');
 
         Route::webhooks('incoming-webhooks');
 
@@ -48,20 +48,21 @@ class WebhookControllerTest extends TestCase
     /** @test */
     public function it_can_process_a_webhook_request()
     {
-        $this
-            ->postJson('incoming-webhooks', $this->payload, $this->headers)
-            ->assertSuccessful();
+        $response = $this->postJson('incoming-webhooks', $this->payload, $this->headers);
 
-        $this->assertCount(1, WebhookCall::get());
-        $webhookCall = WebhookCall::first();
-        $this->assertEquals('default', $webhookCall->name);
-        $this->assertEquals(['a' => 1], $webhookCall->payload);
+        $ref = $response->json('reference');
 
-        Queue::assertPushed(ProcessWebhookJobTestClass::class, function (ProcessWebhookJobTestClass $job) {
-            $this->assertEquals(1, $job->webhookCall->id);
+        $response->assertSuccessful();
+
+        $this->assertNotEmpty($ref);
+
+        Queue::assertPushed(ProcessWebhookJobTestClass::class, function (ProcessWebhookJobTestClass $job) use ($ref) {
+            $this->assertEquals($ref, $job->webhookCall->getId());
 
             return true;
         });
+
+        Event::assertDispatched(WebhookCallProcessingEvent::class);
     }
 
     /** @test */
@@ -74,7 +75,6 @@ class WebhookControllerTest extends TestCase
             ->postJson('incoming-webhooks', $this->payload, $headers)
             ->assertStatus(Response::HTTP_INTERNAL_SERVER_ERROR);
 
-        $this->assertCount(0, WebhookCall::get());
         Queue::assertNothingPushed();
         Event::assertDispatched(InvalidSignatureEvent::class);
     }
@@ -106,7 +106,6 @@ class WebhookControllerTest extends TestCase
 
         Queue::assertNothingPushed();
         Event::assertNotDispatched(InvalidSignatureEvent::class);
-        $this->assertCount(0, WebhookCall::get());
     }
 
     /** @test */
@@ -123,19 +122,6 @@ class WebhookControllerTest extends TestCase
         $this
             ->postJson('incoming-webhooks-alternative-config', $this->payload, $this->headers)
             ->assertSuccessful();
-    }
-
-    /** @test */
-    public function it_can_work_with_an_alternative_model()
-    {
-        config()->set('webhook-client.configs.0.webhook_model', WebhookModelWithoutPayloadSaved::class);
-
-        $this
-            ->postJson('incoming-webhooks', $this->payload, $this->headers)
-            ->assertSuccessful();
-
-        $this->assertCount(1, WebhookCall::get());
-        $this->assertEquals([], WebhookCall::first()->payload);
     }
 
     private function determineSignature(array $payload): string
