@@ -2,14 +2,14 @@
 
 namespace Spatie\WebhookClient\Tests\Storage;
 
-use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Http\Request;
 use PHPUnit\Framework\TestCase;
 use Illuminate\Foundation\Application;
-use Spatie\WebhookClient\Events\WebhookCallDeletedEvent;
-use Spatie\WebhookClient\Events\WebhookCallStoredEvent;
-use Spatie\WebhookClient\Storage\WebhookCallStorageAdapter;
 use Spatie\WebhookClient\WebhookConfig;
+use Illuminate\Contracts\Events\Dispatcher;
+use Spatie\WebhookClient\Events\WebhookCallStoredEvent;
+use Spatie\WebhookClient\Events\WebhookCallDeletedEvent;
+use Spatie\WebhookClient\Storage\WebhookCallStorageAdapter;
 use Spatie\WebhookClient\Storage\InMemoryWebhookCallStorage;
 use Spatie\WebhookClient\SignatureValidator\DefaultSignatureValidator;
 use Spatie\WebhookClient\Tests\TestClasses\ProcessWebhookJobTestClass;

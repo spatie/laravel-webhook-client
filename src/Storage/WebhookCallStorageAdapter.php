@@ -2,12 +2,12 @@
 
 namespace Spatie\WebhookClient\Storage;
 
-use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Http\Request;
-use Spatie\WebhookClient\Events\WebhookCallDeletedEvent;
-use Spatie\WebhookClient\Events\WebhookCallStoredEvent;
 use Spatie\WebhookClient\WebhookConfig;
+use Illuminate\Contracts\Events\Dispatcher;
 use Spatie\WebhookClient\Models\WebhookCall;
+use Spatie\WebhookClient\Events\WebhookCallStoredEvent;
+use Spatie\WebhookClient\Events\WebhookCallDeletedEvent;
 
 class WebhookCallStorageAdapter implements WebhookCallStorage
 {
