@@ -32,6 +32,35 @@ This is the contents of the file that will be published at `config/webhook-clien
 
 ```php
 return [
+    'storage' => [
+        /**
+         * Default webhook storage driver.
+         */
+        'default' => env('WEBHOOK_CLIENT_STORAGE', 'eloquent'),
+
+        /**
+         * List of webhook storage drivers.
+         * Supported drivers: eloquent, memory, cache
+         */
+        'config' => [
+            'eloquent' => [
+                'driver' => 'eloquent',
+                'model' => env('WEBHOOK_CLIENT_ELOQUENT_MODEL', Spatie\WebhookClient\Models\EloquentWebhookCall::class),
+            ],
+
+            'memory' => [
+                'driver' => 'memory',
+            ],
+
+            'cache' => [
+                'driver' => 'cache',
+                'store' => env('WEBHOOK_CLIENT_CACHE_STORE', 'file'),
+                'lifetime' => env('WEBHOOK_CLIENT_CACHE_LIFETIME', 60),
+                'prefix' => env('WEBHOOK_CLIENT_CACHE_PREFIX', 'webhook_call:'),
+            ],
+        ],
+    ],
+
     'configs' => [
         [
             /*
@@ -64,10 +93,9 @@ return [
             'webhook_profile' => \Spatie\WebhookClient\WebhookProfile\ProcessEverythingWebhookProfile::class,
 
             /*
-             * The classname of the model to be used to store call. The class should be equal
-             * or extend Spatie\WebhookClient\Models\WebhookCall.
+             * One of configured webhook storage name.
              */
-            'webhook_model' => \Spatie\WebhookClient\Models\WebhookCall::class,
+            'webhook_storage' => 'eloquent',
 
             /*
              * The class name of the job that will process the webhook request.
@@ -116,11 +144,11 @@ protected $except = [
 
 ## Usage
 
-With the installation out of the way, let's take a look at how this package handles webhooks. First, it will verify if the signature of the request is valid. If it is not, we'll throw an exception and fire off the `InvalidSignatureEvent` event. Requests with invalid signatures will not be stored in the database. 
+With the installation out of the way, let's take a look at how this package handles webhooks. First, it will verify if the signature of the request is valid. If it is not, we'll throw an exception and fire off the `InvalidSignatureEvent` event. Requests with invalid signatures will not be stored in the storage. 
 
 Next, the request will be passed to a webhook profile. A webhook profile is a class that determines if a request should be stored and processed by your app. It allows you to filter out webhook requests that are of interest to your app. You can easily create [your own webhook profile](#determining-which-webhook-requests-should-be-stored-and-processed).
 
-If the webhook profile determines that request should be stored and processed, we'll first store it in the `webhook_calls` table. After that, we'll pass that newly created `WebhookCall` model to a queued job. Most webhook sending apps expect you to respond very quickly. Offloading the real processing work allows for speedy responses. You can specify which job should process the webhook in the `process_webhook_job` in the `webhook-client` config file. Should an exception be thrown while queueing the job, the package will store that exception in the `exception` attribute on the `WebhookCall` model.
+If the webhook profile determines that request should be stored and processed, we'll first store it in the configured storage (default is `eloquent` which uses `webhook_calls` table). After that, we'll pass that newly created `WebhookCall` model to a queued job. Most webhook sending apps expect you to respond very quickly. Offloading the real processing work allows for speedy responses. You can specify which job should process the webhook in the `process_webhook_job` in the `webhook-client` config file. Should an exception be thrown while queueing the job, the package will store that exception in the `exception` attribute on the `WebhookCall` model.
 
 After the job has been dispatched, the controller will respond with a `200` status code. 
 
@@ -179,11 +207,9 @@ After creating your own `WebhookProfile` you must register it in the `webhook_pr
 
 After the signature is validated and the webhook profile has determined that the request should be processed, the package will store and process the request. 
 
-The request will first be stored in the `webhook_calls` table. This is done using the `WebhookCall` model. 
+The request will first be stored in the configured webhook call storage provider. By default it uses `eloquent` driver and `EloquentWebhookCall` model. 
 
-Should you want to customize the table name or anything on the storage behavior, you can let the package use an alternative model. A webhook storing model can be specified in the `webhook_model`. Make sure you model extends `Spatie\WebhookClient\Models\WebhookCall`.
-
-You can change how the webhook is stored by overriding the `storeWebhook` method of `WebhookCall`. In the `storeWebhook` method you should return a saved model.
+Should you want to customize the table name or anything on the storage behavior, you can let the package use an alternative model. A webhook storing driver can be specified in the `webhook_storage`. When using `eloquent` with a custom model Make sure you model extends `Spatie\WebhookClient\Models\EloquentWebhookCall`.
 
 Next, the newly created `WebhookCall` model will be passed to a queued job that will process the request. Any class that extends `\Spatie\WebhookClient\ProcessWebhookJob` is a valid job. Here's an example:
 
@@ -218,7 +244,7 @@ return [
             'signature_header_name' => 'Signature-for-app-1',
             'signature_validator' => \Spatie\WebhookClient\SignatureValidator\DefaultSignatureValidator::class,
             'webhook_profile' => \Spatie\WebhookClient\WebhookProfile\ProcessEverythingWebhookProfile::class,
-            'webhook_model' => \Spatie\WebhookClient\Models\WebhookCall::class,
+            'webhook_storage' => 'eloquent',
             'process_webhook_job' => '',
         ],
         [
@@ -227,7 +253,7 @@ return [
             'signature_header_name' => 'Signature-for-app-2',
             'signature_validator' => \Spatie\WebhookClient\SignatureValidator\DefaultSignatureValidator::class,
             'webhook_profile' => \Spatie\WebhookClient\WebhookProfile\ProcessEverythingWebhookProfile::class,
-            'webhook_model' => \Spatie\WebhookClient\Models\WebhookCall::class,
+            'webhook_storage' => 'eloquent',
             'process_webhook_job' => '',
         ],
     ],
@@ -256,7 +282,7 @@ $webhookConfig = new \Spatie\WebhookClient\WebhookConfig([
     'signature_header_name' => 'Signature',
     'signature_validator' => \Spatie\WebhookClient\SignatureValidator\DefaultSignatureValidator::class,
     'webhook_profile' => \Spatie\WebhookClient\WebhookProfile\ProcessEverythingWebhookProfile::class,
-    'webhook_model' => \Spatie\WebhookClient\Models\WebhookCall::class,
+    'webhook_storage' => 'eloquent',
     'process_webhook_job' => '',
 ]);
 

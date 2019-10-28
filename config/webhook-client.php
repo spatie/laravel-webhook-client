@@ -9,6 +9,7 @@ return [
 
         /**
          * List of webhook storage drivers.
+         * Supported drivers: eloquent, memory, cache
          */
         'config' => [
             'eloquent' => [
