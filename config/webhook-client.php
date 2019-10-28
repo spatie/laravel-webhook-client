@@ -24,6 +24,7 @@ return [
                 'driver' => 'cache',
                 'store' => env('WEBHOOK_CLIENT_CACHE_STORE', 'file'),
                 'lifetime' => env('WEBHOOK_CLIENT_CACHE_LIFETIME', 60),
+                'prefix' => env('WEBHOOK_CLIENT_CACHE_PREFIX', 'webhook_call:'),
             ],
         ],
     ],

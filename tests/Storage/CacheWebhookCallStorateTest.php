@@ -20,7 +20,7 @@ class CacheWebhookCallStorateTest extends TestCase
      */
     public function it_should_store_webhook()
     {
-        $storage = new CacheWebhookCallStorage(new Repository(new ArrayStore()), 10);
+        $storage = new CacheWebhookCallStorage(new Repository(new ArrayStore()), 10, 'webhook_call:');
 
         $webhook = $storage->storeWebhookCall(
             new WebhookConfig(new Application(), $storage, $this->getValidConfig()),
@@ -41,7 +41,7 @@ class CacheWebhookCallStorateTest extends TestCase
     {
         $this->expectException(\OutOfBoundsException::class);
 
-        $storage = new CacheWebhookCallStorage(new Repository(new ArrayStore()), 10);
+        $storage = new CacheWebhookCallStorage(new Repository(new ArrayStore()), 10, 'webhook_call:');
 
         $webhook = $storage->storeWebhookCall(
             new WebhookConfig(new Application(), $storage, $this->getValidConfig()),

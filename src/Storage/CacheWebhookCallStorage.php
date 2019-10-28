@@ -22,13 +22,20 @@ class CacheWebhookCallStorage implements WebhookCallStorage
     protected $minutes;
 
     /**
+     * @var string
+     */
+    protected $prefix;
+
+    /**
      * @param CacheContract $cache
      * @param int $minutes
+     * @param string $prefix
      */
-    public function __construct(CacheContract $cache, $minutes)
+    public function __construct(CacheContract $cache, int $minutes, string $prefix)
     {
         $this->cache = $cache;
         $this->minutes = $minutes;
+        $this->prefix = $prefix;
     }
 
     /**
@@ -42,7 +49,7 @@ class CacheWebhookCallStorage implements WebhookCallStorage
     {
         $webhook = new DefaultWebhookCall((string) Str::uuid(), (string) $config->name, (array) $request->input());
 
-        $this->cache->put($webhook->getId(), $webhook, $this->minutes * 60);
+        $this->cache->put($this->getCacheKey($webhook->getId()), $webhook, $this->minutes * 60);
 
         return $webhook;
     }
@@ -57,8 +64,10 @@ class CacheWebhookCallStorage implements WebhookCallStorage
      */
     public function retrieveWebhookCall(string $id): WebhookCall
     {
-        if ($this->cache->has($id)) {
-            return $this->cache->get($id);
+        $cacheKey = $this->getCacheKey($id);
+
+        if ($this->cache->has($cacheKey)) {
+            return $this->cache->get($cacheKey);
         }
 
         throw new \OutOfBoundsException(sprintf('Given webhook call does not exist in storage [%s]', $id));
@@ -73,8 +82,17 @@ class CacheWebhookCallStorage implements WebhookCallStorage
      */
     public function deleteWebhookCall(string $id): bool
     {
-        $this->cache->forget($id);
+        $this->cache->forget($this->getCacheKey($id));
 
         return true;
+    }
+
+    /**
+     * @param string $id
+     * @return string
+     */
+    protected function getCacheKey(string $id)
+    {
+        return $this->prefix . $id;
     }
 }

@@ -126,6 +126,21 @@ class StorageManager implements Storage\Factory
     }
 
     /**
+     * Create a cache store instance.
+     *
+     * @param array $config
+     * @return Storage\CacheWebhookCallStorage
+     */
+    protected function createCacheDriver($config)
+    {
+        return new Storage\CacheWebhookCallStorage(
+            $this->app['cache']->store($config['store']),
+            $config['lifetime'],
+            $config['prefix']
+        );
+    }
+
+    /**
      * Get the storage connection configuration.
      *
      * @param string $name
