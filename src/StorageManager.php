@@ -4,6 +4,7 @@ namespace Spatie\WebhookClient;
 
 use Closure;
 use InvalidArgumentException;
+use Spatie\WebhookClient\Storage\WebhookCallStorage;
 
 class StorageManager implements Storage\Factory
 {
@@ -107,37 +108,46 @@ class StorageManager implements Storage\Factory
      * Create a eloquent store instance.
      *
      * @param array $config
-     * @return Storage\EloquentWebhookCallStorage
+     * @return Storage\WebhookCallStorage
      */
     protected function createEloquentDriver($config)
     {
-        return new Storage\EloquentWebhookCallStorage($config['model']);
+        return $this->adapt(new Storage\EloquentWebhookCallStorage($config['model']));
     }
 
     /**
      * Create a memory store instance.
      *
      * @param array $config
-     * @return Storage\InMemoryWebhookCallStorage
+     * @return Storage\WebhookCallStorage
      */
     protected function createMemoryDriver($config)
     {
-        return new Storage\InMemoryWebhookCallStorage();
+        return $this->adapt(new Storage\InMemoryWebhookCallStorage());
     }
 
     /**
      * Create a cache store instance.
      *
      * @param array $config
-     * @return Storage\CacheWebhookCallStorage
+     * @return Storage\WebhookCallStorage
      */
     protected function createCacheDriver($config)
     {
-        return new Storage\CacheWebhookCallStorage(
+        return $this->adapt(new Storage\CacheWebhookCallStorage(
             $this->app['cache']->store($config['store']),
             $config['lifetime'],
             $config['prefix']
-        );
+        ));
+    }
+
+    /**
+     * @param WebhookCallStorage $storage
+     * @return Storage\WebhookCallStorageAdapter
+     */
+    protected function adapt(WebhookCallStorage $storage)
+    {
+        return new Storage\WebhookCallStorageAdapter($storage, $this->app['events']);
     }
 
     /**

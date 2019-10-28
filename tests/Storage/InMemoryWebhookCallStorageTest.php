@@ -11,7 +11,7 @@ use Spatie\WebhookClient\SignatureValidator\DefaultSignatureValidator;
 use Spatie\WebhookClient\Tests\TestClasses\ProcessWebhookJobTestClass;
 use Spatie\WebhookClient\WebhookProfile\ProcessEverythingWebhookProfile;
 
-class InMemoryWebhookCallStorateTest extends TestCase
+class InMemoryWebhookCallStorageTest extends TestCase
 {
     /**
      * @test

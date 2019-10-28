@@ -35,7 +35,7 @@ class StorageManagerTest extends \PHPUnit\Framework\TestCase
             $app['config'] = ['webhook-client.storage.config.memory' => ['driver' => 'memory']];
         }));
 
-        $this->assertInstanceOf(InMemoryWebhookCallStorage::class, $manager->storage('memory'));
+        $this->assertInstanceOf(InMemoryWebhookCallStorage::class, $manager->storage('memory')->getStorage());
     }
 
     /**
@@ -50,7 +50,7 @@ class StorageManagerTest extends \PHPUnit\Framework\TestCase
             ]];
         }));
 
-        $this->assertInstanceOf(EloquentWebhookCallStorage::class, $manager->storage('eloquent'));
+        $this->assertInstanceOf(EloquentWebhookCallStorage::class, $manager->storage('eloquent')->getStorage());
     }
 
     /**
@@ -74,6 +74,6 @@ class StorageManagerTest extends \PHPUnit\Framework\TestCase
             ];
         }));
 
-        $this->assertInstanceOf(CacheWebhookCallStorage::class, $manager->storage('cache'));
+        $this->assertInstanceOf(CacheWebhookCallStorage::class, $manager->storage('cache')->getStorage());
     }
 }
