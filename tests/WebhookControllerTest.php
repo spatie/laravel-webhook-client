@@ -13,6 +13,9 @@ use Spatie\WebhookClient\Tests\TestClasses\ProcessNothingWebhookProfile;
 use Spatie\WebhookClient\Tests\TestClasses\WebhookModelWithoutPayloadSaved;
 use Spatie\WebhookClient\Tests\TestClasses\NothingIsValidSignatureValidator;
 use Spatie\WebhookClient\Tests\TestClasses\EverythingIsValidSignatureValidator;
+use Spatie\WebhookClient\WebhookClientServiceProvider;
+use Spatie\WebhookClient\WebhookConfig;
+use Spatie\WebhookClient\WebhookConfigRepository;
 
 class WebhookControllerTest extends TestCase
 {
@@ -48,6 +51,8 @@ class WebhookControllerTest extends TestCase
     /** @test */
     public function it_can_process_a_webhook_request()
     {
+        $this->withoutExceptionHandling();
+
         $this
             ->postJson('incoming-webhooks', $this->payload, $this->headers)
             ->assertSuccessful();
@@ -83,12 +88,14 @@ class WebhookControllerTest extends TestCase
     public function it_can_work_with_an_alternative_signature_validator()
     {
         config()->set('webhook-client.configs.0.signature_validator', EverythingIsValidSignatureValidator::class);
+        $this->refreshWebhookConfigRepository();
 
         $this
             ->postJson('incoming-webhooks', $this->payload, [])
             ->assertOk();
 
         config()->set('webhook-client.configs.0.signature_validator', NothingIsValidSignatureValidator::class);
+        $this->refreshWebhookConfigRepository();
 
         $this
             ->postJson('incoming-webhooks', $this->payload, [])
@@ -99,6 +106,7 @@ class WebhookControllerTest extends TestCase
     public function it_can_work_with_an_alternative_profile()
     {
         config()->set('webhook-client.configs.0.webhook_profile', ProcessNothingWebhookProfile::class);
+        $this->refreshWebhookConfigRepository();
 
         $this
             ->postJson('incoming-webhooks', $this->payload, $this->headers)
@@ -119,6 +127,7 @@ class WebhookControllerTest extends TestCase
             ->assertStatus(Response::HTTP_INTERNAL_SERVER_ERROR);
 
         config()->set('webhook-client.configs.0.name', 'alternative-config');
+        $this->refreshWebhookConfigRepository();
 
         $this
             ->postJson('incoming-webhooks-alternative-config', $this->payload, $this->headers)
@@ -129,6 +138,7 @@ class WebhookControllerTest extends TestCase
     public function it_can_work_with_an_alternative_model()
     {
         config()->set('webhook-client.configs.0.webhook_model', WebhookModelWithoutPayloadSaved::class);
+        $this->refreshWebhookConfigRepository();
 
         $this
             ->postJson('incoming-webhooks', $this->payload, $this->headers)
@@ -157,5 +167,12 @@ class WebhookControllerTest extends TestCase
         ];
 
         return [$payload, $headers];
+    }
+
+    protected function refreshWebhookConfigRepository()
+    {
+        $webhookConfig = new WebhookConfig(config('webhook-client.configs.0'));
+
+        app(WebhookConfigRepository::class)->addConfig($webhookConfig);
     }
 }

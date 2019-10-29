@@ -29,21 +29,32 @@ class WebhookClientServiceProvider extends ServiceProvider
             return Route::post($url, '\Spatie\WebhookClient\WebhookController')->name("webhook-client-{$name}");
         });
 
+        $this->app->singleton(WebhookConfigRepository::class, function() {
+            $configRepository = new WebhookConfigRepository();
+
+            collect(config('webhook-client.configs'))
+                ->map(function (array $config) {
+                    return new WebhookConfig($config);
+                })
+                ->each(function(WebhookConfig $webhookConfig) use ($configRepository) {
+                    $configRepository->addConfig($webhookConfig);
+                });
+
+            return $configRepository;
+        });
+
         $this->app->bind(WebhookConfig::class, function () {
             $routeName = Route::currentRouteName();
 
             $configName = Str::after($routeName, 'webhook-client-');
 
-            $config = collect(config('webhook-client.configs'))
-                ->first(function (array $config) use ($configName) {
-                    return $config['name'] === $configName;
-                });
+            $webhookConfig = app(WebhookConfigRepository::class)->getConfig($configName);
 
-            if (is_null($config)) {
+            if (is_null($webhookConfig)) {
                 throw InvalidConfig::couldNotFindConfig($configName);
             }
 
-            return new WebhookConfig($config);
+            return $webhookConfig;
         });
     }
 

@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-webhook-client` will be documented in this file
 
+## 2.3.0 - 2019-10-30
+
+- add `WebhookConfigRepository` to make it easier to programmatically add config 
+
 ## 2.2.0 - 2019-09-04
 
 - Add Laravel 6 support
