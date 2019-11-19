@@ -132,7 +132,7 @@ This package assumes that an incoming webhook request has a header that can be u
 $computedSignature = hash_hmac('sha256', $request->getContent(), $configuredSigningSecret);
 ```
 
-If the `$computedSignature` does match the value, the request will be [passed to the webhook profile](#determining-which-webhook-requests-should-be-stored-and-processed). It  `$computedSignature` does not match the value in the signature header, the package will respond with a `500` and discard the request.
+If the `$computedSignature` does match the value, the request will be [passed to the webhook profile](#determining-which-webhook-requests-should-be-stored-and-processed). If  `$computedSignature` does not match the value in the signature header, the package will respond with a `500` and discard the request.
 
 ### Creating your own signature validator
 
