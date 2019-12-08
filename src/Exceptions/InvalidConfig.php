@@ -4,8 +4,8 @@ namespace Spatie\WebhookClient\Exceptions;
 
 use Exception;
 use Spatie\WebhookClient\ProcessWebhookJob;
-use Spatie\WebhookClient\WebhookProfile\WebhookProfile;
 use Spatie\WebhookClient\SignatureValidator\SignatureValidator;
+use Spatie\WebhookClient\WebhookProfile\WebhookProfile;
 
 class InvalidConfig extends Exception
 {
