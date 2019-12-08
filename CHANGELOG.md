@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-webhook-client` will be documented in this file
 
+## 2.4.0 - 2019-12-08
+
+- drop support for PHP 7.3 and below
+
 ## 2.3.0 - 2019-10-30
 
 - add `WebhookConfigRepository` to make it easier to programmatically add config 
