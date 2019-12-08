@@ -3,8 +3,8 @@
 namespace Spatie\WebhookClient\Models;
 
 use Exception;
-use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 use Spatie\WebhookClient\WebhookConfig;
 
 class WebhookCall extends Model

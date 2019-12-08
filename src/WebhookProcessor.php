@@ -4,9 +4,9 @@ namespace Spatie\WebhookClient;
 
 use Exception;
 use Illuminate\Http\Request;
-use Spatie\WebhookClient\Models\WebhookCall;
-use Spatie\WebhookClient\Exceptions\WebhookFailed;
 use Spatie\WebhookClient\Events\InvalidSignatureEvent;
+use Spatie\WebhookClient\Exceptions\WebhookFailed;
+use Spatie\WebhookClient\Models\WebhookCall;
 
 class WebhookProcessor
 {

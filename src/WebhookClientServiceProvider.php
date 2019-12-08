@@ -2,9 +2,9 @@
 
 namespace Spatie\WebhookClient;
 
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
 use Spatie\WebhookClient\Exceptions\InvalidConfig;
 
 class WebhookClientServiceProvider extends ServiceProvider
