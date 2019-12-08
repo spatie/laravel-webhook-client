@@ -8,26 +8,19 @@ use Spatie\WebhookClient\SignatureValidator\SignatureValidator;
 
 class WebhookConfig
 {
-    /** @var string */
-    public $name;
+    public string $name;
 
-    /** @var string */
-    public $signingSecret;
+    public string $signingSecret;
 
-    /** @var string */
-    public $signatureHeaderName;
+    public string $signatureHeaderName;
 
-    /** @var \Spatie\WebhookClient\SignatureValidator\SignatureValidator */
-    public $signatureValidator;
+    public SignatureValidator $signatureValidator;
 
-    /** @var \Spatie\WebhookClient\WebhookProfile\WebhookProfile */
-    public $webhookProfile;
+    public WebhookProfile $webhookProfile;
 
-    /** @var string */
-    public $webhookModel;
+    public string $webhookModel;
 
-    /** @var \Spatie\WebhookClient\ProcessWebhookJob */
-    public $processWebhookJob;
+    public ProcessWebhookJob $processWebhookJob;
 
     public function __construct(array $properties)
     {

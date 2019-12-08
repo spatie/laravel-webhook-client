@@ -18,14 +18,11 @@ use Spatie\WebhookClient\Tests\TestClasses\EverythingIsValidSignatureValidator;
 
 class WebhookControllerTest extends TestCase
 {
-    /** @var array */
-    private $payload;
+    private array $payload;
 
-    /** @var string */
-    private $signature;
+    private string $signature;
 
-    /** @var array */
-    private $headers;
+    private array $headers;
 
     public function setUp(): void
     {

@@ -10,11 +10,9 @@ use Spatie\WebhookClient\Events\InvalidSignatureEvent;
 
 class WebhookProcessor
 {
-    /** @var \Illuminate\Http\Request */
-    protected $request;
+    protected Request $request;
 
-    /** @var \Spatie\WebhookClient\WebhookConfig */
-    protected $config;
+    protected WebhookConfig $config;
 
     public function __construct(Request $request, WebhookConfig $config)
     {
