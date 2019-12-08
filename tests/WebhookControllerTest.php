@@ -20,8 +20,6 @@ class WebhookControllerTest extends TestCase
 {
     private array $payload;
 
-    private string $signature;
-
     private array $headers;
 
     public function setUp(): void
