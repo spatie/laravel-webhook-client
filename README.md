@@ -25,7 +25,7 @@ composer require spatie/laravel-webhook-client
 You can publish the config file with:
 
 ```bash
-php artisan vendor:publish --provider="Spatie\WebhookClient\WebhookClientServiceProvider"
+php artisan vendor:publish --provider="Spatie\WebhookClient\WebhookClientServiceProvider" --tag="config"
 ```
 
 This is the contents of the file that will be published at `config/webhook-client.php`:
