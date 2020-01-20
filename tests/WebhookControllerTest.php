@@ -86,7 +86,7 @@ class WebhookControllerTest extends TestCase
 
         $this
             ->postJson('incoming-webhooks', $this->payload, [])
-            ->assertOk();
+            ->assertStatus(200);
 
         config()->set('webhook-client.configs.0.signature_validator', NothingIsValidSignatureValidator::class);
         $this->refreshWebhookConfigRepository();
