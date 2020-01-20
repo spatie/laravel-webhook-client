@@ -10,6 +10,10 @@ class WebhookController
     {
         (new WebhookProcessor($request, $config))->process();
 
+        if ($config->webhookResponse) {
+            return $config->webhookReponse->response($request);
+        }
+
         return response()->json(['message' => 'ok']);
     }
 }
