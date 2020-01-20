@@ -39,6 +39,12 @@ return [
             'webhook_model' => \Spatie\WebhookClient\Models\WebhookCall::class,
 
             /*
+             * The controller to use when handling the initial webhook response.  This will use
+             * the Spatie package default if not provided.
+             */
+            'webhook_response' => null,
+
+            /*
              * The class name of the job that will process the webhook request.
              *
              * This should be set to a class that extends \Spatie\WebhookClient\ProcessWebhookJob.
