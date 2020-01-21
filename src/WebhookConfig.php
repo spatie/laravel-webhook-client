@@ -20,6 +20,8 @@ class WebhookConfig
 
     public string $webhookModel;
 
+    public string $webhookResponse;
+
     public ProcessWebhookJob $processWebhookJob;
 
     public function __construct(array $properties)
@@ -42,7 +44,9 @@ class WebhookConfig
 
         $this->webhookModel = $properties['webhook_model'];
 
-        $this->webhookResponse = $properties['webhook_response'] ? app($properties['webhook_response']) : '';
+        $this->webhookResponse = array_key_exists('webhook_response', $properties) && $properties['webhook_response']
+            ? $properties['webhook_response']
+            : '';
 
         if (! is_subclass_of($properties['process_webhook_job'], ProcessWebhookJob::class)) {
             throw InvalidConfig::invalidProcessWebhookJob($properties['process_webhook_job']);

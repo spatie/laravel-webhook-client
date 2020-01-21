@@ -9,9 +9,10 @@ class WebhookController
     public function __invoke(Request $request, WebhookConfig $config)
     {
         (new WebhookProcessor($request, $config))->process();
+        if ($class = $config->webhookResponse) {
+            $handler = new $class;
 
-        if ($config->webhookResponse) {
-            return $config->webhookReponse->response($request);
+            return $handler->response($request);
         }
 
         return response()->json(['message' => 'ok']);
