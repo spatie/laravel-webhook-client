@@ -40,7 +40,7 @@ return [
 
             /*
              * The controller to use when handling the initial webhook response.  This will use
-             * the Spatie package default if not provided.
+             * the Spatie package default if not provided. This should return a valid Illuminate\Http\Response.
              */
             'webhook_response' => null,
 
