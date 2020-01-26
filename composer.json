@@ -1,6 +1,6 @@
 {
     "name": "spatie/laravel-webhook-client",
-    "description": "Receive webhoops in Laravel apps",
+    "description": "Receive webhooks in Laravel apps",
     "keywords": [
         "spatie",
         "laravel-webhook-client"
