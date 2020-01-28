@@ -5,7 +5,7 @@ on: [push, pull_request]
 jobs:
   test:
 
-    runs-on: {{ matrix.os }}
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         php: [7.4]
@@ -24,7 +24,7 @@ jobs:
           - laravel: 5.5.*
             testbench: 3.5.*
 
-    name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.dependency-version }} - {{ matrix.os }}
+    name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.dependency-version }} - ${{ matrix.os }}
 
     steps:
       - name: Checkout code
