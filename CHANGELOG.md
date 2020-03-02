@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-webhook-client` will be documented in this file
 
+## 2.5.0 - 2020-03-02
+
+- add support for Laravel 7
+
 ## 2.4.1 - 2020-01-20
 
 - support older Laravel versions
