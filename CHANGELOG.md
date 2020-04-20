@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-webhook-client` will be documented in this file
 
+## unreleased
+
+- use job class instead of instance in webhook config
+
 ## 2.6.0 - 2020-04-15
 
 - drop support for Laravel 5
