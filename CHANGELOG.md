@@ -2,7 +2,7 @@
 
 All notable changes to `laravel-webhook-client` will be documented in this file
 
-## unreleased
+## 2.6.1 - 2020-04-20
 
 - use job class instead of instance in webhook config
 
