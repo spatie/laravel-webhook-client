@@ -24,7 +24,7 @@ class WebhookConfigTest extends TestCase
         $this->assertInstanceOf($configArray['signature_validator'], $webhookConfig->signatureValidator);
         $this->assertInstanceOf($configArray['webhook_profile'], $webhookConfig->webhookProfile);
         $this->assertEquals($configArray['webhook_model'], $webhookConfig->webhookModel);
-        $this->assertInstanceOf($configArray['process_webhook_job'], $webhookConfig->processWebhookJob);
+        $this->assertEquals($configArray['process_webhook_job'], $webhookConfig->processWebhookJobClass);
     }
 
     /** @test */

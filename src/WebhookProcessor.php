@@ -53,7 +53,7 @@ class WebhookProcessor
     protected function processWebhook(WebhookCall $webhookCall): void
     {
         try {
-            $job = new $this->config->processWebhookJob($webhookCall);
+            $job = new $this->config->processWebhookJobClass($webhookCall);
 
             $webhookCall->clearException();
 
