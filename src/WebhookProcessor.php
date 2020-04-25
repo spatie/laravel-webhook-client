@@ -34,7 +34,6 @@ class WebhookProcessor
         $this->processWebhook($webhookCall);
 
         return $this->createResponse();
-
     }
 
     protected function ensureValidSignature()
