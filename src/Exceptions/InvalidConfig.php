@@ -6,6 +6,7 @@ use Exception;
 use Spatie\WebhookClient\ProcessWebhookJob;
 use Spatie\WebhookClient\SignatureValidator\SignatureValidator;
 use Spatie\WebhookClient\WebhookProfile\WebhookProfile;
+use Spatie\WebhookClient\WebhookResponse\WebhookResponse;
 
 class InvalidConfig extends Exception
 {
@@ -26,6 +27,13 @@ class InvalidConfig extends Exception
         $webhookProfileInterface = WebhookProfile::class;
 
         return new static("`{$webhookProfile}` is not a valid webhook profile class. A valid web hook profile is a class that implements `{$webhookProfileInterface}`.");
+    }
+
+    public static function invalidWebhookResponse(string $webhookResponse): InvalidConfig
+    {
+        $webhookResponseInterface = WebhookResponse::class;
+
+        return new static("`{$webhookResponse}` is not a valid webhook response class. A valid webhook response is a class that implements `{$webhookResponseInterface}`.");
     }
 
     public static function invalidProcessWebhookJob(string $processWebhookJob): InvalidConfig

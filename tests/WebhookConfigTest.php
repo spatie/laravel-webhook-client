@@ -8,6 +8,7 @@ use Spatie\WebhookClient\SignatureValidator\DefaultSignatureValidator;
 use Spatie\WebhookClient\Tests\TestClasses\ProcessWebhookJobTestClass;
 use Spatie\WebhookClient\WebhookConfig;
 use Spatie\WebhookClient\WebhookProfile\ProcessEverythingWebhookProfile;
+use Spatie\WebhookClient\WebhookResponse\DefaultResponse;
 
 class WebhookConfigTest extends TestCase
 {
@@ -50,6 +51,17 @@ class WebhookConfigTest extends TestCase
     }
 
     /** @test */
+    public function it_validates_the_webhook_response()
+    {
+        $config = $this->getValidConfig();
+        $config['webhook_response'] = 'invalid-webhook-response';
+
+        $this->expectException(InvalidConfig::class);
+
+        new WebhookConfig($config);
+    }
+
+    /** @test */
     public function it_validates_the_process_webhook_job()
     {
         $config = $this->getValidConfig();
@@ -68,6 +80,7 @@ class WebhookConfigTest extends TestCase
             'signature_header_name' => 'Signature',
             'signature_validator' => DefaultSignatureValidator::class,
             'webhook_profile' => ProcessEverythingWebhookProfile::class,
+            'webhook_response' => DefaultResponse::class,
             'webhook_model' => WebhookCall::class,
             'process_webhook_job' => ProcessWebhookJobTestClass::class,
         ];

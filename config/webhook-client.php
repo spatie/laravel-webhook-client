@@ -33,6 +33,11 @@ return [
             'webhook_profile' => \Spatie\WebhookClient\WebhookProfile\ProcessEverythingWebhookProfile::class,
 
             /*
+             * This class determines the response on a valid webhook call.
+             */
+            'webhook_response' => \Spatie\WebhookClient\WebhookResponse\DefaultResponse::class,
+
+            /*
              * The classname of the model to be used to store call. The class should be equal
              * or extend Spatie\WebhookClient\Models\WebhookCall.
              */
