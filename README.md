@@ -132,7 +132,7 @@ After the job has been dispatched, the controller will respond with a `200` stat
 
 ### Verifying the signature of incoming webhooks
 
-This package assumes that an incoming webhook request has a header that can be used to verify the payload has not been tampered with. The name of the header containing the signature can be configured in the `signing_secret` key of the config file. By default, the package uses the `DefaultSignatureValidator` to validate signatures. This is how that class will compute the signature.
+This package assumes that an incoming webhook request has a header that can be used to verify the payload has not been tampered with. The name of the header containing the signature can be configured in the `signature_header_name` key of the config file. By default, the package uses the `DefaultSignatureValidator` to validate signatures. This is how that class will compute the signature.
 
 ```php
 $computedSignature = hash_hmac('sha256', $request->getContent(), $configuredSigningSecret);
