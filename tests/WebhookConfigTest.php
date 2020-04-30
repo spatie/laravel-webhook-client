@@ -62,6 +62,15 @@ class WebhookConfigTest extends TestCase
     }
 
     /** @test */
+    public function it_uses_the_default_webhook_response_if_none_provided()
+    {
+        $config = $this->getValidConfig();
+        $config['webhook_response'] = null;
+
+        $this->assertInstanceOf(DefaultRespondsTo::class, (new WebhookConfig($config))->webhookResponse);
+    }
+
+    /** @test */
     public function it_validates_the_process_webhook_job()
     {
         $config = $this->getValidConfig();
