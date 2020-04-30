@@ -8,8 +8,6 @@ class WebhookController
 {
     public function __invoke(Request $request, WebhookConfig $config)
     {
-        (new WebhookProcessor($request, $config))->process();
-
-        return response()->json(['message' => 'ok']);
+        return (new WebhookProcessor($request, $config))->process();
     }
 }
