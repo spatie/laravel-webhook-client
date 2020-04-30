@@ -43,8 +43,9 @@ class WebhookConfig
         }
         $this->webhookProfile = app($properties['webhook_profile']);
 
-        if (! is_subclass_of($properties['webhook_response'], RespondsToWebhook::class)) {
-            throw InvalidConfig::invalidWebhookResponse($properties['webhook_response']);
+        $webhookResponseClass = $properties['webhook_response'] ?? RespondsToWebhook::class;
+        if (! is_subclass_of($webhookResponseClass, RespondsToWebhook::class)) {
+            throw InvalidConfig::invalidWebhookResponse($webhookResponseClass);
         }
         $this->webhookResponse = app($properties['webhook_response']);
 
