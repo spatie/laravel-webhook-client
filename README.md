@@ -72,7 +72,7 @@ return [
             /*
              * This class determines the response on a valid webhook call.
              */
-            'webhook_response' => \Spatie\WebhookClient\WebhookResponse\DefaultResponse::class,
+            'webhook_response' => \Spatie\WebhookClient\WebhookResponse\DefaultRespondsTo::class,
 
             /*
              * The classname of the model to be used to store call. The class should be equal
@@ -218,7 +218,7 @@ You should specify the class name of your job in the `process_webhook_job` of th
 
 ### Creating your own webhook response
 
-A webhook response is any class that implements `\Spatie\WebhookClient\WebhookResponse\WebhookResponse`. This is what that interface looks like:
+A webhook response is any class that implements `\Spatie\WebhookClient\WebhookResponse\RespondsToWebhook`. This is what that interface looks like:
 
 ```php
 namespace Spatie\WebhookClient\WebhookResponse;
@@ -226,9 +226,9 @@ namespace Spatie\WebhookClient\WebhookResponse;
 use Illuminate\Http\Request;
 use Spatie\WebhookClient\WebhookConfig;
 
-interface WebhookResponse
+interface RespondsToWebhook
 {
-    public function respondToValidWebhookRequest(Request $request, WebhookConfig $config);
+    public function respondToValidWebhook(Request $request, WebhookConfig $config);
 }
 ```
 
@@ -248,7 +248,7 @@ return [
             'signature_header_name' => 'Signature-for-app-1',
             'signature_validator' => \Spatie\WebhookClient\SignatureValidator\DefaultSignatureValidator::class,
             'webhook_profile' => \Spatie\WebhookClient\WebhookProfile\ProcessEverythingWebhookProfile::class,
-            'webhook_response' => \Spatie\WebhookClient\WebhookResponse\DefaultResponse::class,
+            'webhook_response' => \Spatie\WebhookClient\WebhookResponse\DefaultRespondsTo::class,
             'webhook_model' => \Spatie\WebhookClient\Models\WebhookCall::class,
             'process_webhook_job' => '',
         ],
@@ -258,7 +258,7 @@ return [
             'signature_header_name' => 'Signature-for-app-2',
             'signature_validator' => \Spatie\WebhookClient\SignatureValidator\DefaultSignatureValidator::class,
             'webhook_profile' => \Spatie\WebhookClient\WebhookProfile\ProcessEverythingWebhookProfile::class,
-            'webhook_response' => \Spatie\WebhookClient\WebhookResponse\DefaultResponse::class,
+            'webhook_response' => \Spatie\WebhookClient\WebhookResponse\DefaultRespondsTo::class,
             'webhook_model' => \Spatie\WebhookClient\Models\WebhookCall::class,
             'process_webhook_job' => '',
         ],
@@ -288,7 +288,7 @@ $webhookConfig = new \Spatie\WebhookClient\WebhookConfig([
     'signature_header_name' => 'Signature',
     'signature_validator' => \Spatie\WebhookClient\SignatureValidator\DefaultSignatureValidator::class,
     'webhook_profile' => \Spatie\WebhookClient\WebhookProfile\ProcessEverythingWebhookProfile::class,
-    'webhook_response' => \Spatie\WebhookClient\WebhookResponse\DefaultResponse::class,
+    'webhook_response' => \Spatie\WebhookClient\WebhookResponse\DefaultRespondsTo::class,
     'webhook_model' => \Spatie\WebhookClient\Models\WebhookCall::class,
     'process_webhook_job' => '',
 ]);

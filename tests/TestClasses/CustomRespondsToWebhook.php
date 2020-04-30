@@ -4,12 +4,12 @@ namespace Spatie\WebhookClient\Tests\TestClasses;
 
 use Illuminate\Http\Request;
 use Spatie\WebhookClient\WebhookConfig;
-use Spatie\WebhookClient\WebhookResponse\WebhookResponse;
+use Spatie\WebhookClient\WebhookResponse\RespondsToWebhook;
 use Symfony\Component\HttpFoundation\Response;
 
-class CustomWebhookResponse implements WebhookResponse
+class CustomRespondsToWebhook implements RespondsToWebhook
 {
-    public function respondToValidWebhookRequest(Request $request, WebhookConfig $config): Response
+    public function respondToValidWebhook(Request $request, WebhookConfig $config): Response
     {
         return response()->json(['foo' => 'bar']);
     }

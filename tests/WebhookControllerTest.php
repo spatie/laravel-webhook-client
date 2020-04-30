@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Route;
 use Spatie\WebhookClient\Events\InvalidSignatureEvent;
 use Spatie\WebhookClient\Models\WebhookCall;
-use Spatie\WebhookClient\Tests\TestClasses\CustomWebhookResponse;
+use Spatie\WebhookClient\Tests\TestClasses\CustomRespondsToWebhook;
 use Spatie\WebhookClient\Tests\TestClasses\EverythingIsValidSignatureValidator;
 use Spatie\WebhookClient\Tests\TestClasses\NothingIsValidSignatureValidator;
 use Spatie\WebhookClient\Tests\TestClasses\ProcessNothingWebhookProfile;
@@ -146,7 +146,7 @@ class WebhookControllerTest extends TestCase
     /** @test */
     public function it_can_respond_with_custom_response()
     {
-        config()->set('webhook-client.configs.0.webhook_response', CustomWebhookResponse::class);
+        config()->set('webhook-client.configs.0.webhook_response', CustomRespondsToWebhook::class);
 
         $this
             ->postJson('incoming-webhooks', $this->payload, $this->headers)

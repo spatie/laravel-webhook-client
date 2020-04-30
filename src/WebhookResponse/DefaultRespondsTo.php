@@ -6,9 +6,9 @@ use Illuminate\Http\Request;
 use Spatie\WebhookClient\WebhookConfig;
 use Symfony\Component\HttpFoundation\Response;
 
-class DefaultResponse implements WebhookResponse
+class DefaultRespondsTo implements RespondsToWebhook
 {
-    public function respondToValidWebhookRequest(Request $request, WebhookConfig $config): Response
+    public function respondToValidWebhook(Request $request, WebhookConfig $config): Response
     {
         return response()->json(['message' => 'ok']);
     }

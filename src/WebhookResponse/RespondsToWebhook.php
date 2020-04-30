@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Spatie\WebhookClient\WebhookConfig;
 use Symfony\Component\HttpFoundation\Response;
 
-interface WebhookResponse
+interface RespondsToWebhook
 {
-    public function respondToValidWebhookRequest(Request $request, WebhookConfig $config): Response;
+    public function respondToValidWebhook(Request $request, WebhookConfig $config): Response;
 }

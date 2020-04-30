@@ -5,7 +5,7 @@ namespace Spatie\WebhookClient;
 use Spatie\WebhookClient\Exceptions\InvalidConfig;
 use Spatie\WebhookClient\SignatureValidator\SignatureValidator;
 use Spatie\WebhookClient\WebhookProfile\WebhookProfile;
-use Spatie\WebhookClient\WebhookResponse\WebhookResponse;
+use Spatie\WebhookClient\WebhookResponse\RespondsToWebhook;
 
 class WebhookConfig
 {
@@ -19,7 +19,7 @@ class WebhookConfig
 
     public WebhookProfile $webhookProfile;
 
-    public WebhookResponse $webhookResponse;
+    public RespondsToWebhook $webhookResponse;
 
     public string $webhookModel;
 
@@ -43,7 +43,7 @@ class WebhookConfig
         }
         $this->webhookProfile = app($properties['webhook_profile']);
 
-        if (! is_subclass_of($properties['webhook_response'], WebhookResponse::class)) {
+        if (! is_subclass_of($properties['webhook_response'], RespondsToWebhook::class)) {
             throw InvalidConfig::invalidWebhookResponse($properties['webhook_response']);
         }
         $this->webhookResponse = app($properties['webhook_response']);

@@ -69,6 +69,6 @@ class WebhookProcessor
 
     protected function createResponse()
     {
-        return $this->config->webhookResponse->respondToValidWebhookRequest($this->request, $this->config);
+        return $this->config->webhookResponse->respondToValidWebhook($this->request, $this->config);
     }
 }
