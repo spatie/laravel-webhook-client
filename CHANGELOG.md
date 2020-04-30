@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-webhook-client` will be documented in this file
 
+## 2.7.0 - 2020-04-30
+
+- add support for creating your own webhook response
+
 ## 2.6.1 - 2020-04-20
 
 - use job class instead of instance in webhook config
