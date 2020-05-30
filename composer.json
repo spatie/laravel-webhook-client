@@ -23,7 +23,9 @@
     },
     "require-dev": {
         "orchestra/testbench": "^4.0|^5.0",
-        "phpunit/phpunit": "^7.0|^8.2|^9.0"
+        "phpunit/phpunit": "^7.0|^8.2|^9.0",
+        "psalm/plugin-laravel": "^1.2",
+        "vimeo/psalm": "^3.11"
     },
     "autoload": {
         "psr-4": {
@@ -36,6 +38,7 @@
         }
     },
     "scripts": {
+        "psalm": "vendor/bin/psalm",
         "test": "vendor/bin/phpunit",
         "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
 
