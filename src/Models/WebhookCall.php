@@ -24,7 +24,7 @@ class WebhookCall extends Model
         ]);
     }
 
-    public function saveException(Exception $exception)
+    public function saveException(Exception $exception): self
     {
         $this->exception = [
             'code' => $exception->getCode(),
@@ -37,7 +37,7 @@ class WebhookCall extends Model
         return $this;
     }
 
-    public function clearException()
+    public function clearException(): self
     {
         $this->exception = null;
 
