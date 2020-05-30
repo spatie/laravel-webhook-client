@@ -2,6 +2,7 @@
 
 namespace Spatie\WebhookClient;
 
+use Exception;
 use Illuminate\Http\Request;
 use Spatie\WebhookClient\Events\InvalidSignatureEvent;
 use Spatie\WebhookClient\Exceptions\WebhookFailed;
@@ -59,7 +60,7 @@ class WebhookProcessor
             $webhookCall->clearException();
 
             dispatch($job);
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $webhookCall->saveException($exception);
 
             throw $exception;
