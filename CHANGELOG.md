@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-webhook-client` will be documented in this file
 
+## 2.7.1 - 2020-04-30
+
+- use default webhook response as fallback (#60)
+
 ## 2.7.0 - 2020-04-30
 
 - add support for creating your own webhook response
