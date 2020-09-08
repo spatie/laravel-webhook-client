@@ -17,14 +17,14 @@
     ],
     "require": {
         "php": "^7.4",
-        "illuminate/bus": "^6.0|^7.0",
-        "illuminate/database": "^6.0|^7.0",
-        "illuminate/support": "^6.0|^7.0"
+        "illuminate/bus": "^6.0|^7.0|^8.0",
+        "illuminate/database": "^6.0|^7.0|^8.0",
+        "illuminate/support": "^6.0|^7.0|^8.0"
     },
     "require-dev": {
-        "orchestra/testbench": "^4.0|^5.0",
-        "phpunit/phpunit": "^7.0|^8.2|^9.0",
-        "psalm/plugin-laravel": "^1.2",
+        "orchestra/testbench": "^4.0|^5.0|^6.0",
+        "phpunit/phpunit": "^7.0|^8.2|^9.0|^9.3",
+        "psalm/plugin-laravel": "^1.2|^1.1",
         "vimeo/psalm": "^3.11"
     },
     "autoload": {
@@ -41,7 +41,6 @@
         "psalm": "vendor/bin/psalm",
         "test": "vendor/bin/phpunit",
         "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
-
     },
     "config": {
         "sort-packages": true
