@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-webhook-client` will be documented in this file
 
+## 2.7.2 - 2020-09-08
+
+- add support for Laravel 8
+
 ## 2.7.1 - 2020-04-30
 
 - use default webhook response as fallback (#60)
