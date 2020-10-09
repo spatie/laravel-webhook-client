@@ -4,7 +4,7 @@ return [
     'configs' => [
         [
             /*
-             * This package support multiple webhook receiving endpoints. If you only have
+             * This package supports multiple webhook receiving endpoints. If you only have
              * one endpoint receiving webhooks, you can use 'default'.
              */
             'name' => 'default',
