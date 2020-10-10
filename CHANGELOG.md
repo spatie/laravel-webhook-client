@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-webhook-client` will be documented in this file
 
+## 2.7.3 - 2020-10-10
+
+- fix docblock
+
 ## 2.7.2 - 2020-09-08
 
 - add support for Laravel 8
