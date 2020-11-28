@@ -16,15 +16,14 @@
         }
     ],
     "require": {
-        "php": "^7.4",
+        "php": "8.0|^7.4",
         "illuminate/bus": "^7.0|^8.0",
         "illuminate/database": "^7.0|^8.0",
         "illuminate/support": "^7.0|^8.0"
     },
     "require-dev": {
         "orchestra/testbench": "^5.0|^6.0",
-        "phpunit/phpunit": "^9.3.8",
-        "vimeo/psalm": "^3.11"
+        "phpunit/phpunit": "^9.3.8"
     },
     "autoload": {
         "psr-4": {
