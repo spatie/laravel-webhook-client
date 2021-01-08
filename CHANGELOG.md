@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-webhook-client` will be documented in this file
 
+## 2.7.5 - 2021-01-08
+
+- Fix php constraint
+
 ## 2.7.4 - 2020-11-28
 
 - add support for PHP 8
