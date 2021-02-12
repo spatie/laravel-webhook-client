@@ -25,7 +25,7 @@ class WebhookClientServiceProvider extends ServiceProvider
             ], 'migrations');
         }
 
-        Route::macro('webhooks', fn (string $url, string $name = 'default') => Route::post($url, '\Spatie\WebhookClient\WebhookController')->name("webhook-client-{$name}"));
+        Route::macro('webhooks', fn (string $url, string $name = 'default', string $method = 'post') => Route::{$method}($url, '\Spatie\WebhookClient\WebhookController')->name("webhook-client-{$name}"));
 
         $this->app->singleton(WebhookConfigRepository::class, function () {
             $configRepository = new WebhookConfigRepository();
