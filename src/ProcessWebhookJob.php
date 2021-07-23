@@ -11,12 +11,13 @@ use Spatie\WebhookClient\Models\WebhookCall;
 
 abstract class ProcessWebhookJob implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
-    public WebhookCall $webhookCall;
-
-    public function __construct(WebhookCall $webhookCall)
-    {
-        $this->webhookCall = $webhookCall;
+    public function __construct(
+        public WebhookCall $webhookCall
+    ) {
     }
 }

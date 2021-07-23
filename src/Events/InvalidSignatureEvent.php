@@ -6,11 +6,8 @@ use Illuminate\Http\Request;
 
 class InvalidSignatureEvent
 {
-    /** @var \Illuminate\Http\Request */
-    public Request $request;
-
-    public function __construct(Request $request)
-    {
-        $this->request = $request;
+    public function __construct(
+        public Request $request
+    ) {
     }
 }

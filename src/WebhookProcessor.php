@@ -10,15 +10,10 @@ use Spatie\WebhookClient\Models\WebhookCall;
 
 class WebhookProcessor
 {
-    protected Request $request;
-
-    protected WebhookConfig $config;
-
-    public function __construct(Request $request, WebhookConfig $config)
-    {
-        $this->request = $request;
-
-        $this->config = $config;
+    public function __construct(
+        protected Request $request,
+        protected WebhookConfig $config
+    ) {
     }
 
     public function process()

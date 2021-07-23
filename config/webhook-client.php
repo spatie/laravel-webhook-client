@@ -38,8 +38,8 @@ return [
             'webhook_response' => \Spatie\WebhookClient\WebhookResponse\DefaultRespondsTo::class,
 
             /*
-             * The classname of the model to be used to store call. The class should be equal
-             * or extend Spatie\WebhookClient\Models\WebhookCall.
+             * The classname of the model to be used to store webhook calls. The class should
+             * be equal or extend Spatie\WebhookClient\Models\WebhookCall.
              */
             'webhook_model' => \Spatie\WebhookClient\Models\WebhookCall::class,
 
