@@ -3,7 +3,6 @@
 namespace Spatie\WebhookClient\Models;
 
 use Exception;
-use Illuminate\Database\Eloquent\MassPrunable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Spatie\WebhookClient\WebhookConfig;

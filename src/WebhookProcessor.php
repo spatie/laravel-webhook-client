@@ -13,7 +13,8 @@ class WebhookProcessor
     public function __construct(
         protected Request $request,
         protected WebhookConfig $config
-    ) {}
+    ) {
+    }
 
     public function process()
     {
