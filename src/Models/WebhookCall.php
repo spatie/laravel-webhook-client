@@ -6,12 +6,14 @@ use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Spatie\WebhookClient\WebhookConfig;
+use Symfony\Component\HttpFoundation\HeaderBag;
 
 class WebhookCall extends Model
 {
     public $guarded = [];
 
     protected $casts = [
+        'headers' => 'array',
         'payload' => 'array',
         'exception' => 'array',
     ];
@@ -20,8 +22,14 @@ class WebhookCall extends Model
     {
         return self::create([
             'name' => $config->name,
+            'headers' => $request->headers->all(),
             'payload' => $request->input(),
         ]);
+    }
+
+    public function headerBag(): HeaderBag
+    {
+        return new HeaderBag($this->headers ?? []);
     }
 
     public function saveException(Exception $exception): self

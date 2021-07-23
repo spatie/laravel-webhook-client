@@ -156,16 +156,25 @@ class WebhookControllerTest extends TestCase
             ]);
     }
 
-    private function determineSignature(array $payload): string
+    /** @test */
+    public function it_will_store_headers()
+    {
+        $this
+            ->postJson('incoming-webhooks', $this->payload, $this->headers)
+            ->assertSuccessful();
+
+        $this->assertCount(1, WebhookCall::get());
+        $this->assertGreaterThan(0, WebhookCall::first()->headers);
+        $this->assertEquals($this->headers['Signature'], WebhookCall::first()->headerBag()->get('Signature'));
+    }
+
+    protected function determineSignature(array $payload): string
     {
         $secret = config('webhook-client.configs.0.signing_secret');
 
         return hash_hmac('sha256', json_encode($payload), $secret);
     }
 
-    /**
-     * @return array
-     */
     protected function getValidPayloadAndHeaders(): array
     {
         $payload = ['a' => 1];
@@ -177,10 +186,13 @@ class WebhookControllerTest extends TestCase
         return [$payload, $headers];
     }
 
-    protected function refreshWebhookConfigRepository()
+
+
+    protected function refreshWebhookConfigRepository(): void
     {
         $webhookConfig = new WebhookConfig(config('webhook-client.configs.0'));
 
         app(WebhookConfigRepository::class)->addConfig($webhookConfig);
     }
+
 }
