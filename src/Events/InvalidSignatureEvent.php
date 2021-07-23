@@ -8,6 +8,6 @@ class InvalidSignatureEvent
 {
     public function __construct(
         public Request $request
-    )
-    { }
+    ) {
+    }
 }

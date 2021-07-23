@@ -3,7 +3,6 @@
 namespace Spatie\WebhookClient;
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
@@ -30,7 +29,7 @@ class WebhookClientServiceProvider extends PackageServiceProvider
 
             collect(config('webhook-client.configs'))
                 ->map(fn (array $config) => new WebhookConfig($config))
-                ->each(fn(WebhookConfig $webhookConfig) => $configRepository->addConfig($webhookConfig));
+                ->each(fn (WebhookConfig $webhookConfig) => $configRepository->addConfig($webhookConfig));
 
             return $configRepository;
         });

@@ -2,7 +2,6 @@
 
 namespace Spatie\WebhookClient\Tests;
 
-use CreateWebhookCallsTable;
 use Orchestra\Testbench\TestCase as Orchestra;
 use Spatie\WebhookClient\WebhookClientServiceProvider;
 
