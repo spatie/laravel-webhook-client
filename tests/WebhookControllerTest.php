@@ -186,13 +186,10 @@ class WebhookControllerTest extends TestCase
         return [$payload, $headers];
     }
 
-
-
     protected function refreshWebhookConfigRepository(): void
     {
         $webhookConfig = new WebhookConfig(config('webhook-client.configs.0'));
 
         app(WebhookConfigRepository::class)->addConfig($webhookConfig);
     }
-
 }
