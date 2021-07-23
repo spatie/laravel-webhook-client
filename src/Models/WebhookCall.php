@@ -38,12 +38,12 @@ class WebhookCall extends Model
         }
 
         $headerNamesToStore = array_map(
-            fn(string $headerName) => strtolower($headerName),
+            fn (string $headerName) => strtolower($headerName),
             $headerNamesToStore,
         );
 
         return collect($request->headers->all())
-            ->filter(fn(array $headerValue, string $headerName) => in_array($headerName, $headerNamesToStore))
+            ->filter(fn (array $headerValue, string $headerName) => in_array($headerName, $headerNamesToStore))
             ->toArray();
     }
 
