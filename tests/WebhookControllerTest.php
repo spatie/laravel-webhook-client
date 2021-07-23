@@ -157,15 +157,49 @@ class WebhookControllerTest extends TestCase
     }
 
     /** @test */
-    public function it_will_store_headers()
+    public function it_can_store_a_specific_header()
     {
+        $this->withoutExceptionHandling();
+
+        config()->set('webhook-client.configs.0.store_headers', ['Signature']);
+
         $this
             ->postJson('incoming-webhooks', $this->payload, $this->headers)
             ->assertSuccessful();
 
         $this->assertCount(1, WebhookCall::get());
-        $this->assertGreaterThan(0, WebhookCall::first()->headers);
+        $this->assertCount(1, WebhookCall::first()->headers);
         $this->assertEquals($this->headers['Signature'], WebhookCall::first()->headerBag()->get('Signature'));
+    }
+
+    /** @test */
+    public function it_can_store_all_headers()
+    {
+        $this->withoutExceptionHandling();
+
+        config()->set('webhook-client.configs.0.store_headers', '*');
+
+        $this
+            ->postJson('incoming-webhooks', $this->payload, $this->headers)
+            ->assertSuccessful();
+
+        $this->assertCount(1, WebhookCall::get());
+        $this->assertGreaterThan(1, count(WebhookCall::first()->headers));
+    }
+
+    /** @test */
+    public function it_can_store_none_of_the_headers()
+    {
+        $this->withoutExceptionHandling();
+
+        config()->set('webhook-client.configs.0.store_headers', []);
+
+        $this
+            ->postJson('incoming-webhooks', $this->payload, $this->headers)
+            ->assertSuccessful();
+
+        $this->assertCount(1, WebhookCall::get());
+        $this->assertEquals(0, count(WebhookCall::first()->headers));
     }
 
     protected function determineSignature(array $payload): string

@@ -24,6 +24,8 @@ class WebhookConfig
 
     public string $webhookModel;
 
+    public array|string $storeHeaders;
+
     public string $processWebhookJobClass;
 
     public function __construct(array $properties)
@@ -51,6 +53,8 @@ class WebhookConfig
         $this->webhookResponse = app($webhookResponseClass);
 
         $this->webhookModel = $properties['webhook_model'];
+
+        $this->storeHeaders = $properties['store_headers'] ?? [];
 
         if (! is_subclass_of($properties['process_webhook_job'], ProcessWebhookJob::class)) {
             throw InvalidConfig::invalidProcessWebhookJob($properties['process_webhook_job']);

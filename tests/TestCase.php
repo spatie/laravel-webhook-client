@@ -3,6 +3,7 @@
 namespace Spatie\WebhookClient\Tests;
 
 use Orchestra\Testbench\TestCase as Orchestra;
+use Spatie\LaravelRay\RayServiceProvider;
 use Spatie\WebhookClient\WebhookClientServiceProvider;
 
 class TestCase extends Orchestra
@@ -18,6 +19,7 @@ class TestCase extends Orchestra
     {
         return [
             WebhookClientServiceProvider::class,
+            RayServiceProvider::class,
         ];
     }
 
