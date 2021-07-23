@@ -19,9 +19,9 @@ use Spatie\WebhookClient\WebhookConfigRepository;
 
 class WebhookControllerTest extends TestCase
 {
-    private array $payload;
+    protected array $payload;
 
-    private array $headers;
+    protected array $headers;
 
     public function setUp(): void
     {

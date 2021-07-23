@@ -55,6 +55,7 @@ class WebhookConfig
         if (! is_subclass_of($properties['process_webhook_job'], ProcessWebhookJob::class)) {
             throw InvalidConfig::invalidProcessWebhookJob($properties['process_webhook_job']);
         }
+
         $this->processWebhookJobClass = $properties['process_webhook_job'];
     }
 }

@@ -10,33 +10,33 @@ use Spatie\WebhookClient\WebhookResponse\RespondsToWebhook;
 
 class InvalidConfig extends Exception
 {
-    public static function couldNotFindConfig(string $notFoundConfigName): InvalidConfig
+    public static function couldNotFindConfig(string $notFoundConfigName): self
     {
         return new static("Could not find the configuration for `{$notFoundConfigName}`");
     }
 
-    public static function invalidSignatureValidator(string $invalidSignatureValidator): InvalidConfig
+    public static function invalidSignatureValidator(string $invalidSignatureValidator): self
     {
         $signatureValidatorInterface = SignatureValidator::class;
 
         return new static("`{$invalidSignatureValidator}` is not a valid signature validator class. A valid signature validator is a class that implements `{$signatureValidatorInterface}`.");
     }
 
-    public static function invalidWebhookProfile(string $webhookProfile): InvalidConfig
+    public static function invalidWebhookProfile(string $webhookProfile): self
     {
         $webhookProfileInterface = WebhookProfile::class;
 
         return new static("`{$webhookProfile}` is not a valid webhook profile class. A valid web hook profile is a class that implements `{$webhookProfileInterface}`.");
     }
 
-    public static function invalidWebhookResponse(string $webhookResponse): InvalidConfig
+    public static function invalidWebhookResponse(string $webhookResponse): self
     {
         $webhookResponseInterface = RespondsToWebhook::class;
 
         return new static("`{$webhookResponse}` is not a valid webhook response class. A valid webhook response is a class that implements `{$webhookResponseInterface}`.");
     }
 
-    public static function invalidProcessWebhookJob(string $processWebhookJob): InvalidConfig
+    public static function invalidProcessWebhookJob(string $processWebhookJob): self
     {
         $abstractProcessWebhookJob = ProcessWebhookJob::class;
 

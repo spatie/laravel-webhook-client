@@ -24,8 +24,8 @@ class TestCase extends Orchestra
 
     protected function getEnvironmentSetUp($app)
     {
-        $app['config']->set('database.default', 'testbench');
-        $app['config']->set('database.connections.testbench', [
+        config()->set('database.default', 'testbench');
+        config()->set('database.connections.testbench', [
             'driver' => 'sqlite',
             'database' => ':memory:',
             'prefix' => '',
@@ -34,8 +34,8 @@ class TestCase extends Orchestra
 
     protected function setUpDatabase()
     {
-        include_once __DIR__.'/../database/migrations/create_webhook_calls_table.php.stub';
+        $migration = include __DIR__.'/../database/migrations/create_webhook_calls_table.php.stub';
 
-        (new CreateWebhookCallsTable())->up();
+        $migration->up();
     }
 }
