@@ -2,6 +2,14 @@
 
 All notable changes to `laravel-webhook-client` will be documented in this file
 
+## 3.0.0 - 2021-07-23
+
+- require PHP 8
+- require Laravel 8
+- internals cleanup
+
+The public API was not changed, so you can safely upgrade from v1 to v2
+
 ## 2.7.5 - 2021-01-08
 
 - Fix php constraint
