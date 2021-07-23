@@ -31,7 +31,7 @@ composer require spatie/laravel-webhook-client
 You can publish the config file with:
 
 ```bash
-php artisan vendor:publish --provider="Spatie\WebhookClient\WebhookClientServiceProvider" --tag="config"
+php artisan vendor:publish --provider="Spatie\WebhookClient\WebhookClientServiceProvider" --tag="webhook-client-config"
 ```
 
 This is the contents of the file that will be published at `config/webhook-client.php`:
@@ -100,7 +100,7 @@ By default, all webhook calls will get saved in the database.
 
 To create the table that holds the webhook calls, you must publish the migration with:
 ```bash
-php artisan vendor:publish --provider="Spatie\WebhookClient\WebhookClientServiceProvider" --tag="migrations"
+php artisan vendor:publish --provider="Spatie\WebhookClient\WebhookClientServiceProvider" --tag="webhook-client-migrations"
 ```
 
 After the migration has been published, you can create the `webhook_calls` table by running the migrations:
