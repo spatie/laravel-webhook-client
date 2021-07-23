@@ -24,7 +24,7 @@ class WebhookConfig
 
     public string $webhookModel;
 
-    public array|string $storeHeaders;
+    public array | string $storeHeaders;
 
     public string $processWebhookJobClass;
 
