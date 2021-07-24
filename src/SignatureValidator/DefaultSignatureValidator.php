@@ -3,7 +3,8 @@
 namespace Spatie\WebhookClient\SignatureValidator;
 
 use Illuminate\Http\Request;
-use Spatie\WebhookClient\Exceptions\WebhookFailed;
+use Spatie\WebhookClient\Exceptions\InvalidConfig;
+use Spatie\WebhookClient\Exceptions\InvalidWebhookSignature;
 use Spatie\WebhookClient\WebhookConfig;
 
 class DefaultSignatureValidator implements SignatureValidator
@@ -19,7 +20,7 @@ class DefaultSignatureValidator implements SignatureValidator
         $signingSecret = $config->signingSecret;
 
         if (empty($signingSecret)) {
-            throw WebhookFailed::signingSecretNotSet();
+            throw InvalidConfig::signingSecretNotSet();
         }
 
         $computedSignature = hash_hmac('sha256', $request->getContent(), $signingSecret);

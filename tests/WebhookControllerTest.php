@@ -6,7 +6,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Route;
-use Spatie\WebhookClient\Events\InvalidSignatureEvent;
+use Spatie\WebhookClient\Events\InvalidWebhookSignatureEvent;
 use Spatie\WebhookClient\Models\WebhookCall;
 use Spatie\WebhookClient\Tests\TestClasses\CustomRespondsToWebhook;
 use Spatie\WebhookClient\Tests\TestClasses\EverythingIsValidSignatureValidator;
@@ -76,7 +76,7 @@ class WebhookControllerTest extends TestCase
 
         $this->assertCount(0, WebhookCall::get());
         Queue::assertNothingPushed();
-        Event::assertDispatched(InvalidSignatureEvent::class);
+        Event::assertDispatched(InvalidWebhookSignatureEvent::class);
     }
 
     /** @test */
@@ -108,7 +108,7 @@ class WebhookControllerTest extends TestCase
             ->assertSuccessful();
 
         Queue::assertNothingPushed();
-        Event::assertNotDispatched(InvalidSignatureEvent::class);
+        Event::assertNotDispatched(InvalidWebhookSignatureEvent::class);
         $this->assertCount(0, WebhookCall::get());
     }
 

@@ -4,8 +4,8 @@ namespace Spatie\WebhookClient;
 
 use Exception;
 use Illuminate\Http\Request;
-use Spatie\WebhookClient\Events\InvalidSignatureEvent;
-use Spatie\WebhookClient\Exceptions\WebhookFailed;
+use Spatie\WebhookClient\Events\InvalidWebhookSignatureEvent;
+use Spatie\WebhookClient\Exceptions\InvalidWebhookSignature;
 use Spatie\WebhookClient\Models\WebhookCall;
 
 class WebhookProcessor
@@ -34,9 +34,9 @@ class WebhookProcessor
     protected function ensureValidSignature()
     {
         if (! $this->config->signatureValidator->isValid($this->request, $this->config)) {
-            event(new InvalidSignatureEvent($this->request));
+            event(new InvalidWebhookSignatureEvent($this->request));
 
-            throw WebhookFailed::invalidSignature();
+            throw InvalidWebhookSignature::make();
         }
 
         return $this;

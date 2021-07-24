@@ -7,3 +7,5 @@ $table->json('headers')->nullable();`
 ```
 
 - add a key `store_headers` to each entry in `configs` of the `webhook-client` config file. See the default config file for an example.
+
+- the `Spatie\WebhookClient\Events\InvalidSignature` event has been renamed to `Spatie\WebhookClient\Events\InvalidWebhookSignatureEvent`
