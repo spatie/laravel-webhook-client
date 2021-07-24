@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Spatie\WebhookClient\Events\InvalidWebhookSignatureEvent;
 use Spatie\WebhookClient\Exceptions\InvalidWebhookSignature;
 use Spatie\WebhookClient\Models\WebhookCall;
+use Symfony\Component\HttpFoundation\Response;
 
 class WebhookProcessor
 {
@@ -16,7 +17,7 @@ class WebhookProcessor
     ) {
     }
 
-    public function process()
+    public function process(): Response
     {
         $this->ensureValidSignature();
 
@@ -31,7 +32,7 @@ class WebhookProcessor
         return $this->createResponse();
     }
 
-    protected function ensureValidSignature()
+    protected function ensureValidSignature(): self
     {
         if (! $this->config->signatureValidator->isValid($this->request, $this->config)) {
             event(new InvalidWebhookSignatureEvent($this->request));
@@ -62,7 +63,7 @@ class WebhookProcessor
         }
     }
 
-    protected function createResponse()
+    protected function createResponse(): Response
     {
         return $this->config->webhookResponse->respondToValidWebhook($this->request, $this->config);
     }
