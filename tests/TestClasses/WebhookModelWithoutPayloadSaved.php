@@ -12,6 +12,7 @@ class WebhookModelWithoutPayloadSaved extends WebhookCall
     {
         return WebhookCall::create([
             'name' => $config->name,
+            'url' => 'https://example.com',
             'payload' => [],
         ]);
     }

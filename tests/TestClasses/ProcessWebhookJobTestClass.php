@@ -2,7 +2,7 @@
 
 namespace Spatie\WebhookClient\Tests\TestClasses;
 
-use Spatie\WebhookClient\ProcessWebhookJob;
+use Spatie\WebhookClient\Jobs\ProcessWebhookJob;
 
 class ProcessWebhookJobTestClass extends ProcessWebhookJob
 {

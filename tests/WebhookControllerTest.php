@@ -132,6 +132,8 @@ class WebhookControllerTest extends TestCase
     /** @test */
     public function it_can_work_with_an_alternative_model()
     {
+        $this->withoutExceptionHandling();
+
         config()->set('webhook-client.configs.0.webhook_model', WebhookModelWithoutPayloadSaved::class);
         $this->refreshWebhookConfigRepository();
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Spatie\WebhookClient;
+namespace Spatie\WebhookClient\Jobs;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
