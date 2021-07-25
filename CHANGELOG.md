@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-webhook-client` will be documented in this file
 
+## 3.0.1 - 2021-07-25
+
+- add `headers` method
+
 ## 3.0.0 - 2021-07-25
 
 - store headers and url
