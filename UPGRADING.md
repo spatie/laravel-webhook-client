@@ -1,8 +1,9 @@
 ## From v2 to v3
 
-- add a migration to add a `headers` column to the `webhook_calls` table.
+- add a migration to add `url` and `headers` columns to the `webhook_calls` table.
   
 ```php
+$table->string('url');`
 $table->json('headers')->nullable();`
 ```
 
