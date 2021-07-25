@@ -4,7 +4,7 @@ namespace Spatie\WebhookClient\Events;
 
 use Illuminate\Http\Request;
 
-class InvalidSignatureEvent
+class InvalidWebhookSignatureEvent
 {
     public function __construct(
         public Request $request

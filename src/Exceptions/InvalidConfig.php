@@ -3,7 +3,7 @@
 namespace Spatie\WebhookClient\Exceptions;
 
 use Exception;
-use Spatie\WebhookClient\ProcessWebhookJob;
+use Spatie\WebhookClient\Jobs\ProcessWebhookJob;
 use Spatie\WebhookClient\SignatureValidator\SignatureValidator;
 use Spatie\WebhookClient\WebhookProfile\WebhookProfile;
 use Spatie\WebhookClient\WebhookResponse\RespondsToWebhook;
@@ -41,5 +41,10 @@ class InvalidConfig extends Exception
         $abstractProcessWebhookJob = ProcessWebhookJob::class;
 
         return new static("`{$processWebhookJob}` is not a valid process webhook job class. A valid class should implement `{$abstractProcessWebhookJob}`.");
+    }
+
+    public static function signingSecretNotSet(): self
+    {
+        return new static('The webhook signing secret is not set. Make sure that the `signing_secret` config key is set to the correct value.');
     }
 }

@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 use Spatie\WebhookClient\Exceptions\InvalidConfig;
+use Spatie\WebhookClient\Http\Controllers\WebhookController;
 
 class WebhookClientServiceProvider extends PackageServiceProvider
 {
