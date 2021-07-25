@@ -53,6 +53,11 @@ class WebhookCall extends Model
         return new HeaderBag($this->headers ?? []);
     }
 
+    public function headers(): HeaderBag
+    {
+        return $this->headerBag();
+    }
+
     public function saveException(Exception $exception): self
     {
         $this->exception = [
