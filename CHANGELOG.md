@@ -4,7 +4,7 @@ All notable changes to `laravel-webhook-client` will be documented in this file
 
 ## 3.0.0 - 2021-07-25
 
-- store headers
+- store headers and url
 - require PHP 8
 - require Laravel 8
 - internals cleanup
