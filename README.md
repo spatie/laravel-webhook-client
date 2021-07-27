@@ -100,7 +100,7 @@ By default, all webhook calls will get saved in the database.
 
 To create the table that holds the webhook calls, you must publish the migration with:
 ```bash
-php artisan vendor:publish --provider="Spatie\WebhookClient\WebhookClientServiceProvider" --tag="webhook-client-migrations"
+php artisan vendor:publish --provider="Spatie\WebhookClient\WebhookClientServiceProvider" --tag="migrations"
 ```
 
 After the migration has been published, you can create the `webhook_calls` table by running the migrations:
