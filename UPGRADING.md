@@ -3,8 +3,8 @@
 - add a migration to add `url` and `headers` columns to the `webhook_calls` table.
   
 ```php
-$table->string('url');`
-$table->json('headers')->nullable();`
+$table->string('url');
+$table->json('headers')->nullable();
 ```
 
 - add a key `store_headers` to each entry in `configs` of the `webhook-client` config file. See the default config file for an example.
