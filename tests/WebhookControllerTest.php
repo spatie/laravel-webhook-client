@@ -65,6 +65,19 @@ class WebhookControllerTest extends TestCase
     }
 
     /** @test */
+    public function it_can_process_github_webhook_request_as_default()
+    {
+        $this->withoutExceptionHandling();
+
+        $headers = $this->headers;
+        $headers['Signature'] = 'sha256=' . $headers['Signature'];
+
+        $this
+            ->postJson('incoming-webhooks', $this->payload, $headers)
+            ->assertSuccessful();
+    }
+
+    /** @test */
     public function a_request_with_an_invalid_payload_will_not_get_processed()
     {
         $headers = $this->headers;
