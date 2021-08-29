@@ -75,6 +75,17 @@ class WebhookControllerTest extends TestCase
         $this
             ->postJson('incoming-webhooks', $this->payload, $headers)
             ->assertSuccessful();
+
+        $this->assertCount(1, WebhookCall::get());
+        $webhookCall = WebhookCall::first();
+        $this->assertEquals('default', $webhookCall->name);
+        $this->assertEquals(['a' => 1], $webhookCall->payload);
+
+        Queue::assertPushed(ProcessWebhookJobTestClass::class, function (ProcessWebhookJobTestClass $job) {
+            $this->assertEquals(1, $job->webhookCall->id);
+
+            return true;
+        });
     }
 
     /** @test */
