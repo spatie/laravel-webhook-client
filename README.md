@@ -83,7 +83,7 @@ return [
             /*
              * The class name of the job that will process the webhook request.
              *
-             * This should be set to a class that extends \Spatie\WebhookClient\ProcessWebhookJob.
+             * This should be set to a class that extends \Spatie\WebhookClient\Jobs\ProcessWebhookJob.
              */
             'process_webhook_job' => '',
         ],
@@ -92,7 +92,7 @@ return [
 
 In the `signing_secret` key of the config file, you should add a valid webhook secret. This value should be provided by the app that will send you webhooks.
 
-This package will try to store and respond to the webhook as fast as possible. Processing the payload of the request is done via a queued job.  It's recommended to not use the `sync` driver but a real queue driver. You should specify the job that will handle processing webhook requests in the `process_webhook_job` of the config file. A valid job is any class that extends `Spatie\WebhookClient\ProcessWebhookJob` and has a `handle` method.
+This package will try to store and respond to the webhook as fast as possible. Processing the payload of the request is done via a queued job.  It's recommended to not use the `sync` driver but a real queue driver. You should specify the job that will handle processing webhook requests in the `process_webhook_job` of the config file. A valid job is any class that extends `Spatie\WebhookClient\Jobs\ProcessWebhookJob` and has a `handle` method.
 
 ### Preparing the database
 
@@ -196,12 +196,12 @@ Should you want to customize the table name or anything on the storage behavior,
 
 You can change how the webhook is stored by overriding the `storeWebhook` method of `WebhookCall`. In the `storeWebhook` method you should return a saved model.
 
-Next, the newly created `WebhookCall` model will be passed to a queued job that will process the request. Any class that extends `\Spatie\WebhookClient\ProcessWebhookJob` is a valid job. Here's an example:
+Next, the newly created `WebhookCall` model will be passed to a queued job that will process the request. Any class that extends `\Spatie\WebhookClient\Jobs\ProcessWebhookJob` is a valid job. Here's an example:
 
 ```php
 namespace App\Jobs;
 
-use Spatie\WebhookClient\ProcessWebhookJob as SpatieProcessWebhookJob;
+use Spatie\WebhookClient\Jobs\ProcessWebhookJob as SpatieProcessWebhookJob;
 
 class ProcessWebhookJob extends SpatieProcessWebhookJob
 {
