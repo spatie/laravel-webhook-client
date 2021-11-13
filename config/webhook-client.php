@@ -59,6 +59,11 @@ return [
              * This should be set to a class that extends \Spatie\WebhookClient\ProcessWebhookJob.
              */
             'process_webhook_job' => '',
+
+            /*
+             * The name of the queue on which you want to dispatch your job
+             */
+            'queue_name' => 'default',
         ],
     ],
 ];
