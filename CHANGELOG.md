@@ -4,6 +4,10 @@ All notable changes to `laravel-webhook-client` will be documented in this file
 
 ## 3.0.2 - 2021-12-07
 
+- PHP 8.1 compatibility
+
+## 3.0.2 - 2021-12-07
+
 - PHP 8.1 support
 
 ## 3.0.1 - 2021-07-25
@@ -63,7 +67,7 @@ All notable changes to `laravel-webhook-client` will be documented in this file
 
 ## 2.3.0 - 2019-10-30
 
-- Add `WebhookConfigRepository` to make it easier to programmatically add config 
+- Add `WebhookConfigRepository` to make it easier to programmatically add config
 
 ## 2.2.0 - 2019-09-04
 
