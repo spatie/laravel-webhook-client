@@ -2,6 +2,18 @@
 
 All notable changes to `laravel-webhook-client` will be documented in this file
 
+## 3.0.3 - 2021-12-07
+
+## What's Changed
+
+- Return the Route object for method chaining by @erikwittek in https://github.com/spatie/laravel-webhook-client/pull/114
+
+## New Contributors
+
+- @erikwittek made their first contribution in https://github.com/spatie/laravel-webhook-client/pull/114
+
+**Full Changelog**: https://github.com/spatie/laravel-webhook-client/compare/3.0.2...3.0.3
+
 ## 3.0.2 - 2021-12-07
 
 - PHP 8.1 compatibility
