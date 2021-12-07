@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-webhook-client` will be documented in this file
 
+## 3.0.2 - 2021-12-07
+
+- PHP 8.1 support
+
 ## 3.0.1 - 2021-07-25
 
 - add `headers` method
