@@ -36,7 +36,7 @@ class WebhookClientServiceProvider extends PackageServiceProvider
         });
 
         $this->app->bind(WebhookConfig::class, function () {
-            $routeName = Route::currentRouteName();
+            $routeName = Route::currentRouteName() ?? '';
 
             $configName = Str::after($routeName, 'webhook-client-');
 
