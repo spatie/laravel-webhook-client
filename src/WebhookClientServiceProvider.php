@@ -22,7 +22,7 @@ class WebhookClientServiceProvider extends PackageServiceProvider
     public function packageBooted()
     {
         Route::macro('webhooks', function (string $url, string $name = 'default') {
-            Route::post($url, WebhookController::class)->name("webhook-client-{$name}");
+            return Route::post($url, WebhookController::class)->name("webhook-client-{$name}");
         });
 
         $this->app->singleton(WebhookConfigRepository::class, function () {
