@@ -14,7 +14,6 @@ abstract class ProcessWebhookJob implements ShouldQueue
     use Dispatchable;
     use InteractsWithQueue;
     use Queueable;
-    use SerializesModels;
 
     public function __construct(
         public WebhookCall $webhookCall
