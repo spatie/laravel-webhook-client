@@ -8,6 +8,27 @@ use Illuminate\Http\Request;
 use Spatie\WebhookClient\WebhookConfig;
 use Symfony\Component\HttpFoundation\HeaderBag;
 
+/**
+ * Class WebhookCall
+ * @package Spatie\WebhookClient\Models
+ *
+ * @property-read int $id
+ * @property string $name
+ * @property string|null $payload
+ * @property string|null $exception
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|WebhookCall newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|WebhookCall newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|WebhookCall query()
+ * @method static \Illuminate\Database\Eloquent\Builder|WebhookCall whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|WebhookCall whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|WebhookCall wherePayload($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|WebhookCall whereException($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|WebhookCall whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|WebhookCall whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class WebhookCall extends Model
 {
     public $guarded = [];
