@@ -31,7 +31,7 @@ use Symfony\Component\HttpFoundation\HeaderBag;
  */
 class WebhookCall extends Model
 {
-    public $guarded = [];
+    public $guarded = ['id'];
 
     protected $casts = [
         'headers' => 'array',
