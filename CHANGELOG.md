@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-webhook-client` will be documented in this file
 
+## 3.1.0 - 2022-01-11
+
+- allow Laravel 9
+
 ## 3.0.3 - 2021-12-07
 
 ## What's Changed
