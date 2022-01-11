@@ -20,7 +20,7 @@
         "illuminate/bus": "^8.50|^9.0",
         "illuminate/database": "^8.50|^9.0",
         "illuminate/support": "^8.50|^9.0",
-        "spatie/laravel-package-tools": "^1.9"
+        "spatie/laravel-package-tools": "^1.11"
     },
     "require-dev": {
         "orchestra/testbench": "^6.0|^7.0",
