@@ -59,7 +59,7 @@ class WebhookProcessor
 
             $webhookCall->clearException();
 
-            dispatch($job);
+            dispatch($job)->onConnection('sync');
         } catch (Exception $exception) {
             $webhookCall->saveException($exception);
 
