@@ -3,7 +3,7 @@
 - add a migration to add `url` and `headers` columns to the `webhook_calls` table.
   
 ```php
-$table->string('url');
+$table->string('url')->nullable();
 $table->json('headers')->nullable();
 ```
 
