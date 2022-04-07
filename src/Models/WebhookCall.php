@@ -14,8 +14,9 @@ use Symfony\Component\HttpFoundation\HeaderBag;
  *
  * @property-read int $id
  * @property string $name
- * @property string|null $payload
- * @property string|null $exception
+ * @property array|null $headers
+ * @property array|null $payload
+ * @property array|null $exception
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @method static \Illuminate\Database\Eloquent\Builder|WebhookCall newModelQuery()
