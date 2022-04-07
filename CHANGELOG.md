@@ -2,6 +2,12 @@
 
 All notable changes to `laravel-webhook-client` will be documented in this file
 
+## 3.1.2 - 2022-04-07
+
+- Change `WebhookConfigRepository` instance to `scoped` (Octane support)
+
+**Full Changelog**: https://github.com/spatie/laravel-webhook-client/compare/3.1.1...3.1.2
+
 ## 3.1.1 - 2022-04-07
 
 ## What's Changed
