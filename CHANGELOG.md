@@ -2,6 +2,24 @@
 
 All notable changes to `laravel-webhook-client` will be documented in this file
 
+## 3.1.1 - 2022-04-07
+
+## What's Changed
+
+- Fix typo by @christophrumpel in https://github.com/spatie/laravel-webhook-client/pull/129
+- Update UPGRADING.md by @binaryk in https://github.com/spatie/laravel-webhook-client/pull/131
+- Typo fix by @chimit in https://github.com/spatie/laravel-webhook-client/pull/139
+- WebhookCall Model @property $payload exception and headers by @wbemanuel in https://github.com/spatie/laravel-webhook-client/pull/140
+
+## New Contributors
+
+- @christophrumpel made their first contribution in https://github.com/spatie/laravel-webhook-client/pull/129
+- @binaryk made their first contribution in https://github.com/spatie/laravel-webhook-client/pull/131
+- @chimit made their first contribution in https://github.com/spatie/laravel-webhook-client/pull/139
+- @wbemanuel made their first contribution in https://github.com/spatie/laravel-webhook-client/pull/140
+
+**Full Changelog**: https://github.com/spatie/laravel-webhook-client/compare/3.1.0...3.1.1
+
 ## 3.1.0 - 2022-01-11
 
 - allow Laravel 9
