@@ -25,7 +25,7 @@ class WebhookClientServiceProvider extends PackageServiceProvider
             return Route::post($url, WebhookController::class)->name("webhook-client-{$name}");
         });
 
-        $this->app->singleton(WebhookConfigRepository::class, function () {
+        $this->app->scoped(WebhookConfigRepository::class, function () {
             $configRepository = new WebhookConfigRepository();
 
             collect(config('webhook-client.configs'))
