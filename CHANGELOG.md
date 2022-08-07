@@ -2,6 +2,19 @@
 
 All notable changes to `laravel-webhook-client` will be documented in this file
 
+## 3.1.3 - 2022-08-07
+
+### What's Changed
+
+- fix: issue #138 by @ankurk91 in https://github.com/spatie/laravel-webhook-client/pull/152
+- Add `Schema` import to the migration stub by @osbre in https://github.com/spatie/laravel-webhook-client/pull/153
+
+### New Contributors
+
+- @osbre made their first contribution in https://github.com/spatie/laravel-webhook-client/pull/153
+
+**Full Changelog**: https://github.com/spatie/laravel-webhook-client/compare/3.1.2...3.1.3
+
 ## 3.1.2 - 2022-04-07
 
 - Change `WebhookConfigRepository` instance to `scoped` (Octane support)
