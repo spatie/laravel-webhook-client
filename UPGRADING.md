@@ -9,8 +9,6 @@ php artisan make:migration add_columns_to_webhook_calls
 ```php
 <?php
 
-declare(strict_types=1);
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
