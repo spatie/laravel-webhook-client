@@ -3,8 +3,11 @@
 namespace Spatie\WebhookClient\Models;
 
 use Exception;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\MassPrunable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Spatie\WebhookClient\Exceptions\InvalidConfig;
 use Spatie\WebhookClient\WebhookConfig;
 use Symfony\Component\HttpFoundation\HeaderBag;
 
@@ -19,19 +22,21 @@ use Symfony\Component\HttpFoundation\HeaderBag;
  * @property array|null $exception
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|WebhookCall newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|WebhookCall newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|WebhookCall query()
- * @method static \Illuminate\Database\Eloquent\Builder|WebhookCall whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|WebhookCall whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|WebhookCall wherePayload($value)
- * @method static \Illuminate\Database\Eloquent\Builder|WebhookCall whereException($value)
- * @method static \Illuminate\Database\Eloquent\Builder|WebhookCall whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|WebhookCall whereUpdatedAt($value)
+ * @method static Builder|WebhookCall newModelQuery()
+ * @method static Builder|WebhookCall newQuery()
+ * @method static Builder|WebhookCall query()
+ * @method static Builder|WebhookCall whereId($value)
+ * @method static Builder|WebhookCall whereName($value)
+ * @method static Builder|WebhookCall wherePayload($value)
+ * @method static Builder|WebhookCall whereException($value)
+ * @method static Builder|WebhookCall whereCreatedAt($value)
+ * @method static Builder|WebhookCall whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class WebhookCall extends Model
 {
+    use MassPrunable;
+
     public $guarded = [];
 
     protected $casts = [
@@ -100,5 +105,16 @@ class WebhookCall extends Model
         $this->save();
 
         return $this;
+    }
+
+    public function prunable(): Builder
+    {
+        $days = config("webhook-client.configs.$this->name.delete_after_days");
+
+        if (! $days || ! is_int($days)) {
+            throw InvalidConfig::invalidPrunable($days);
+        }
+
+        return static::where('created_at', '<=', $days);
     }
 }

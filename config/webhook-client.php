@@ -59,6 +59,14 @@ return [
              * This should be set to a class that extends \Spatie\WebhookClient\Jobs\ProcessWebhookJob.
              */
             'process_webhook_job' => '',
+
+            /*
+             * The amount of days after which models should be deleted.
+             *
+             * Example: now()->subMonth() deletes all models after 1 month.
+             * Set to null if no models should be deleted.
+             */
+            'delete_after_days' => null,
         ],
     ],
 ];

@@ -47,4 +47,9 @@ class InvalidConfig extends Exception
     {
         return new static('The webhook signing secret is not set. Make sure that the `signing_secret` config key is set to the correct value.');
     }
+
+    public static function invalidPrunable(mixed $value): self
+    {
+        return new static("`{$value}` is not a valid amount of days.");
+    }
 }
