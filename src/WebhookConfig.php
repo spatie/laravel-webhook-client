@@ -29,8 +29,6 @@ class WebhookConfig
 
     public string $processWebhookJobClass;
 
-    public int|null $deleteAfterDays;
-
     public function __construct(array $properties)
     {
         $this->name = $properties['name'];
@@ -62,8 +60,6 @@ class WebhookConfig
         if (! is_subclass_of($properties['process_webhook_job'], ProcessWebhookJob::class)) {
             throw InvalidConfig::invalidProcessWebhookJob($properties['process_webhook_job']);
         }
-
-        $this->deleteAfterDays = $properties['delete_after_days'] ?? null;
 
         $this->processWebhookJobClass = $properties['process_webhook_job'];
     }
