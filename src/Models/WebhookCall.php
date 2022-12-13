@@ -109,7 +109,10 @@ class WebhookCall extends Model
 
     public function prunable(): Builder
     {
-        $days = config("webhook-client.configs.$this->name.delete_after_days");
+        $days = collect(config('webhook-client.configs'))
+            ->map(fn (array $config) => new WebhookConfig($config))
+            ->filter(fn (WebhookConfig $webhookConfig) => $webhookConfig->name === $this->name)
+            ->map(fn (WebhookConfig $webhookConfig) => $webhookConfig->deleteAfterDays);
 
         if (! $days || ! is_int($days)) {
             throw InvalidConfig::invalidPrunable($days);
