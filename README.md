@@ -295,6 +295,44 @@ $webhookConfig = new \Spatie\WebhookClient\WebhookConfig([
 (new \Spatie\WebhookClient\WebhookProcessor($request, $webhookConfig))->process();
 ```
 
+### Deleting models
+
+Sometimes you may want to periodically delete models that are no longer needed.
+To reach this, you can customize a config value and run a command.
+
+The `WebhookCall` model has a Prunable trait. To configure the period after which
+the models should be removed, you can customize a config file.
+
+In this example all models will be deleted when older than 30 days.
+
+```php
+return [
+    'configs' => [
+        // ...
+    ],
+
+    'delete_after_days' => 30,
+];
+```
+
+After configuring the model, you should schedule the `model:prune` Artisan command in your
+application's `Kernel` class. You are free to choose the appropriate interval at which this command should be run:
+
+```php
+<?php
+
+namespace App\Console;
+
+use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+
+class Kernel extends ConsoleKernel
+
+protected function schedule(Schedule $schedule)
+{
+    $schedule->command('model:prune')->daily();
+}
+```
+
 ## Testing
 
 ``` bash
