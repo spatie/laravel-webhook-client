@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\HeaderBag;
  *
  * @property-read int $id
  * @property string $name
+ * @property string $url
  * @property array|null $headers
  * @property array|null $payload
  * @property array|null $exception
