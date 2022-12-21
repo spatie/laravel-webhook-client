@@ -112,12 +112,7 @@ class WebhookCall extends Model
     {
         $days = config('webhook-client.delete_after_days');
 
-        if ($days === null) {
-            // shouldn't return anything
-            return static::where('id', '<', -1)->where('id', '>', -1);
-        }
-
-        if (! $days || ! is_int($days)) {
+        if (! is_int($days)) {
             throw InvalidConfig::invalidPrunable($days);
         }
 

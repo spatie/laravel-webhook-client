@@ -316,7 +316,8 @@ return [
 ```
 
 After configuring the model, you should schedule the `model:prune` Artisan command in your
-application's `Kernel` class. You are free to choose the appropriate interval at which this command should be run:
+application's `Kernel` class. Don't forget to explicitly mention the `WebhookCall` class!
+You are free to choose the appropriate interval at which this command should be run:
 
 ```php
 <?php
@@ -324,12 +325,18 @@ application's `Kernel` class. You are free to choose the appropriate interval at
 namespace App\Console;
 
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Spatie\WebhookClient\Models\WebhookCall;
 
 class Kernel extends ConsoleKernel
 
 protected function schedule(Schedule $schedule)
 {
-    $schedule->command('model:prune')->daily();
+    $schedule->command('model:prune'[
+        '--model' => [WebhookCall::class],
+    ])->daily();
+
+    // This will not work, as models in a package are not used by default
+    // $schedule->command('model:prune')->daily();
 }
 ```
 
