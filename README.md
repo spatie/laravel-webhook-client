@@ -297,11 +297,9 @@ $webhookConfig = new \Spatie\WebhookClient\WebhookConfig([
 
 ### Deleting models
 
-Sometimes you may want to periodically delete models that are no longer needed.
-To reach this, you can customize a config value and run a command.
+Whenever a webhook comes in, this package will store as a `WebhookCall` model. After a while, you might want to delete old models.
 
-The `WebhookCall` model has a Prunable trait. To configure the period after which
-the models should be removed, you can customize a config file.
+The `WebhookCall` model has [Laravel's MassPrunable trait](https://laravel.com/docs/master/eloquent#pruning-models) applied on it. You can customize the cutoff date in the `webhooks` config file.
 
 In this example all models will be deleted when older than 30 days.
 
@@ -316,12 +314,10 @@ return [
 ```
 
 After configuring the model, you should schedule the `model:prune` Artisan command in your
-application's `Kernel` class. Don't forget to explicitly mention the `WebhookCall` class!
+application's `Kernel` class. Don't forget to explicitly mention the `WebhookCall` class.
 You are free to choose the appropriate interval at which this command should be run:
 
 ```php
-<?php
-
 namespace App\Console;
 
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
