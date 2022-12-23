@@ -61,4 +61,11 @@ return [
             'process_webhook_job' => '',
         ],
     ],
+
+    /*
+     * The integer amount of days after which models should be deleted.
+     *
+     * 7 deletes all records after 1 week. Set to null if no models should be deleted.
+     */
+    'delete_after_days' => null,
 ];
