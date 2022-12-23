@@ -2,6 +2,23 @@
 
 All notable changes to `laravel-webhook-client` will be documented in this file
 
+## 3.1.4 - 2022-12-23
+
+### What's Changed
+
+- Align migration information with Stripe package by @cmgmyr in https://github.com/spatie/laravel-webhook-client/pull/156
+- Add PHP 8.2 Support by @patinthehat in https://github.com/spatie/laravel-webhook-client/pull/161
+- Cleanup by @Nielsvanpach in https://github.com/spatie/laravel-webhook-client/pull/167
+- Prunable by @Nielsvanpach in https://github.com/spatie/laravel-webhook-client/pull/166
+
+### New Contributors
+
+- @cmgmyr made their first contribution in https://github.com/spatie/laravel-webhook-client/pull/156
+- @patinthehat made their first contribution in https://github.com/spatie/laravel-webhook-client/pull/161
+- @Nielsvanpach made their first contribution in https://github.com/spatie/laravel-webhook-client/pull/167
+
+**Full Changelog**: https://github.com/spatie/laravel-webhook-client/compare/3.1.3...3.1.4
+
 ## 3.1.3 - 2022-08-07
 
 ### What's Changed
