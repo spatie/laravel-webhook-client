@@ -108,7 +108,7 @@ class WebhookCall extends Model
         return $this;
     }
 
-    public function prunable(): Builder
+    public function prunable()
     {
         $days = config('webhook-client.delete_after_days');
 
