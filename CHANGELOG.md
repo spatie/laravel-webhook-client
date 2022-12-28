@@ -2,6 +2,18 @@
 
 All notable changes to `laravel-webhook-client` will be documented in this file
 
+## 3.1.5 - 2022-12-28
+
+### What's Changed
+
+- Fix readme by @syahnur197 in https://github.com/spatie/laravel-webhook-client/pull/172
+
+### New Contributors
+
+- @syahnur197 made their first contribution in https://github.com/spatie/laravel-webhook-client/pull/172
+
+**Full Changelog**: https://github.com/spatie/laravel-webhook-client/compare/3.1.4...3.1.5
+
 ## 3.1.4 - 2022-12-23
 
 ### What's Changed
