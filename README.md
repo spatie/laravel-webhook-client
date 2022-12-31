@@ -37,6 +37,8 @@ php artisan vendor:publish --provider="Spatie\WebhookClient\WebhookClientService
 This is the contents of the file that will be published at `config/webhook-client.php`:
 
 ```php
+<?php
+
 return [
     'configs' => [
         [
@@ -75,10 +77,20 @@ return [
             'webhook_response' => \Spatie\WebhookClient\WebhookResponse\DefaultRespondsTo::class,
 
             /*
-             * The classname of the model to be used to store call. The class should be equal
-             * or extend Spatie\WebhookClient\Models\WebhookCall.
+             * The classname of the model to be used to store webhook calls. The class should
+             * be equal or extend Spatie\WebhookClient\Models\WebhookCall.
              */
             'webhook_model' => \Spatie\WebhookClient\Models\WebhookCall::class,
+
+            /*
+             * In this array, you can pass the headers that should be stored on
+             * the webhook call model when a webhook comes in.
+             *
+             * To store all headers, set this value to `*`.
+             */
+            'store_headers' => [
+
+            ],
 
             /*
              * The class name of the job that will process the webhook request.
@@ -88,6 +100,14 @@ return [
             'process_webhook_job' => '',
         ],
     ],
+
+    /*
+     * The number of days after which models should be deleted.
+     *
+     * Set to null if no models should be deleted.
+     */
+    'delete_after_days' => 30,
+];
 ```
 
 In the `signing_secret` key of the config file, you should add a valid webhook secret. This value should be provided by the app that will send you webhooks.
