@@ -2,6 +2,14 @@
 
 All notable changes to `laravel-webhook-client` will be documented in this file
 
+## 3.1.6 - 2022-12-31
+
+### What's Changed
+
+- set default config value to 30 days by @ankurk91 in https://github.com/spatie/laravel-webhook-client/pull/175
+
+**Full Changelog**: https://github.com/spatie/laravel-webhook-client/compare/3.1.5...3.1.6
+
 ## 3.1.5 - 2022-12-28
 
 ### What's Changed
