@@ -17,9 +17,9 @@
     ],
     "require": {
         "php": "^8.0",
-        "illuminate/bus": "^8.50|^9.0",
-        "illuminate/database": "^8.50|^9.0",
-        "illuminate/support": "^8.50|^9.0",
+        "illuminate/bus": "^8.50|^9.0|^10.x-dev",
+        "illuminate/database": "^8.50|^9.0|^10.x-dev",
+        "illuminate/support": "^8.50|^9.0|^10.x-dev",
         "spatie/laravel-package-tools": "^1.11"
     },
     "require-dev": {
