@@ -2,6 +2,14 @@
 
 All notable changes to `laravel-webhook-client` will be documented in this file
 
+## 3.1.7 - 2023-01-17
+
+### What's Changed
+
+- add  Laravel 10 support by @ankurk91 in https://github.com/spatie/laravel-webhook-client/pull/176
+
+**Full Changelog**: https://github.com/spatie/laravel-webhook-client/compare/3.1.6...3.1.7
+
 ## 3.1.6 - 2022-12-31
 
 ### What's Changed
