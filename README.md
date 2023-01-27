@@ -344,15 +344,16 @@ use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use Spatie\WebhookClient\Models\WebhookCall;
 
 class Kernel extends ConsoleKernel
-
-protected function schedule(Schedule $schedule)
 {
-    $schedule->command('model:prune', [
-        '--model' => [WebhookCall::class],
-    ])->daily();
-
-    // This will not work, as models in a package are not used by default
-    // $schedule->command('model:prune')->daily();
+    protected function schedule(Schedule $schedule)
+    {
+        $schedule->command('model:prune', [
+            '--model' => [WebhookCall::class],
+        ])->daily();
+    
+        // This will not work, as models in a package are not used by default
+        // $schedule->command('model:prune')->daily();
+    }
 }
 ```
 
