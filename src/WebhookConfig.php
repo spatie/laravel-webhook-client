@@ -33,7 +33,7 @@ class WebhookConfig
     {
         $this->name = $properties['name'];
 
-        $this->signingSecret = $properties['signing_secret'] ?? '';
+        $this->signingSecret = is_callable($properties['signing_secret']) ? $properties['signing_secret']() : ($properties['signing_secret'] ?? '');
 
         $this->signatureHeaderName = $properties['signature_header_name'] ?? '';
 
