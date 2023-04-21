@@ -74,6 +74,7 @@ class WebhookConfigTest extends TestCase
     public function it_uses_the_config_array_index_if_provided()
     {
         $config = $this->getValidConfig();
+        unset($config['name']);
 
         $this->assertEquals('custom', (new WebhookConfig($config, 'custom'))->name);
     }

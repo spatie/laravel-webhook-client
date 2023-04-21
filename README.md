@@ -41,13 +41,11 @@ This is the contents of the file that will be published at `config/webhook-clien
 
 return [
     'configs' => [
-        'default' => [
-            /*
-             * This package supports multiple webhook receiving endpoints. If you only have
-             * one endpoint receiving webhooks, you can use 'default'.
-             */
-            'name' => 'default',
-
+        /*
+         * This package supports multiple webhook receiving endpoints. If you only have
+         * one endpoint receiving webhooks, you can use 0 or 'default'.
+         */
+        0 => [
             /*
              * We expect that every webhook call will be signed using a secret. This secret
              * is used to verify that the payload has not been tampered with.

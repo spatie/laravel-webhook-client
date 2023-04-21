@@ -4,9 +4,9 @@ return [
     'configs' => [
         /*
          * This package supports multiple webhook receiving endpoints. If you only have
-         * one endpoint receiving webhooks, you can use 'default' as the key.
+         * one endpoint receiving webhooks, you can use either 0 or 'default' as the key.
          */
-        'default' => [
+        0 => [
             /*
              * We expect that every webhook call will be signed using a secret. This secret
              * is used to verify that the payload has not been tampered with.

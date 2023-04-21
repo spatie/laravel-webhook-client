@@ -31,7 +31,9 @@ class WebhookConfig
 
     public function __construct(array $properties, string|int|null $index = null)
     {
-        $this->name = $properties['name'] ?? $index ?? 'default';
+        $this->name = $properties['name']
+            ?? (0 === $index ? 'default' : $index)
+            ?? 'default';
 
         $this->signingSecret = $properties['signing_secret'] ?? '';
 
