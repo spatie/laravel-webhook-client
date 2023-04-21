@@ -29,9 +29,9 @@ class WebhookConfig
 
     public string $processWebhookJobClass;
 
-    public function __construct(array $properties)
+    public function __construct(array $properties, string|int|null $index = null)
     {
-        $this->name = $properties['name'];
+        $this->name = $properties['name'] ?? $index ?? 'default';
 
         $this->signingSecret = $properties['signing_secret'] ?? '';
 

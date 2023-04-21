@@ -41,7 +41,7 @@ This is the contents of the file that will be published at `config/webhook-clien
 
 return [
     'configs' => [
-        [
+        'default' => [
             /*
              * This package supports multiple webhook receiving endpoints. If you only have
              * one endpoint receiving webhooks, you can use 'default'.
@@ -350,7 +350,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('model:prune', [
             '--model' => [WebhookCall::class],
         ])->daily();
-    
+
         // This will not work, as models in a package are not used by default
         // $schedule->command('model:prune')->daily();
     }
