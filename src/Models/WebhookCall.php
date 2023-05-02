@@ -55,6 +55,7 @@ class WebhookCall extends Model
             'url' => $request->fullUrl(),
             'headers' => $headers,
             'payload' => $request->input(),
+            'exception' => null,
         ]);
     }
 
