@@ -2,6 +2,19 @@
 
 All notable changes to `laravel-webhook-client` will be documented in this file
 
+## 3.1.8 - 2023-05-02
+
+### What's Changed
+
+- Fix method embrace curlet brackets in Kernel Class by @wit3 in https://github.com/spatie/laravel-webhook-client/pull/180
+- perf: save exception as null by default :rocket:  by @ankurk91 in https://github.com/spatie/laravel-webhook-client/pull/191
+
+### New Contributors
+
+- @wit3 made their first contribution in https://github.com/spatie/laravel-webhook-client/pull/180
+
+**Full Changelog**: https://github.com/spatie/laravel-webhook-client/compare/3.1.7...3.1.8
+
 ## 3.1.7 - 2023-01-17
 
 ### What's Changed
