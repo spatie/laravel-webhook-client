@@ -137,7 +137,7 @@ Finally, let's take care of the routing. At the app that sends webhooks, you pro
 Route::webhooks('webhook-receiving-url');
 ```
 
-Behind the scenes, this will register a `POST` (But you can change method. Check Usage section👇) route to a controller provided by this package. Because the app that sends webhooks to you has no way of getting a csrf-token, you must add that route to the `except` array of the `VerifyCsrfToken` middleware:
+Behind the scenes, by default this will register a `POST` route to a controller provided by this package. Because the app that sends webhooks to you has no way of getting a csrf-token, you must add that route to the `except` array of the `VerifyCsrfToken` middleware:
 
 ```php
 protected $except = [
