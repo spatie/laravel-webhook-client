@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 use Spatie\WebhookClient\Exceptions\InvalidConfig;
+use Spatie\WebhookClient\Exceptions\InvalidMethod;
 
 class WebhookClientServiceProvider extends PackageServiceProvider
 {
@@ -20,8 +21,13 @@ class WebhookClientServiceProvider extends PackageServiceProvider
 
     public function packageBooted()
     {
-        Route::macro('webhooks', function (string $url, string $name = 'default') {
-            return Route::post($url, '\Spatie\WebhookClient\Http\Controllers\WebhookController')->name("webhook-client-{$name}");
+        Route::macro('webhooks', function (string $url, string $name = 'default', $method = 'post') {
+
+            if(! in_array($method, ['get', 'post', 'put', 'patch', 'delete'])) {
+                throw InvalidMethod::make($method);
+            }
+
+            return Route::{$method}($url, '\Spatie\WebhookClient\Http\Controllers\WebhookController')->name("webhook-client-{$name}");
         });
 
         $this->app->scoped(WebhookConfigRepository::class, function () {

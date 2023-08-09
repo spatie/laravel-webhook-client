@@ -137,7 +137,7 @@ Finally, let's take care of the routing. At the app that sends webhooks, you pro
 Route::webhooks('webhook-receiving-url');
 ```
 
-Behind the scenes, this will register a `POST` route to a controller provided by this package. Because the app that sends webhooks to you has no way of getting a csrf-token, you must add that route to the `except` array of the `VerifyCsrfToken` middleware:
+Behind the scenes, by default this will register a `POST` route to a controller provided by this package. Because the app that sends webhooks to you has no way of getting a csrf-token, you must add that route to the `except` array of the `VerifyCsrfToken` middleware:
 
 ```php
 protected $except = [
@@ -290,6 +290,15 @@ When registering routes for the package, you should pass the `name` of the confi
 ```php
 Route::webhooks('receiving-url-for-app-1', 'webhook-sending-app-1');
 Route::webhooks('receiving-url-for-app-2', 'webhook-sending-app-2');
+```
+
+### Change route method
+Being an incoming webhook client, there are instances where you might want to establish a route method other than the default `post`. You have the flexibility to modify the standard post method to options such as `get`, `put`, `patch`, or `delete`.
+```php
+Route::webhooks('receiving-url-for-app-1', 'webhook-sending-app-1', 'get');
+Route::webhooks('receiving-url-for-app-1', 'webhook-sending-app-1', 'put');
+Route::webhooks('receiving-url-for-app-1', 'webhook-sending-app-1', 'patch');
+Route::webhooks('receiving-url-for-app-1', 'webhook-sending-app-1', 'delete');
 ```
 
 ### Using the package without a controller
