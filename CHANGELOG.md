@@ -2,6 +2,18 @@
 
 All notable changes to `laravel-webhook-client` will be documented in this file
 
+## 3.2.0 - 2023-08-09
+
+### What's Changed
+
+- Enhance Webhook Client to Support Multiple HTTP Methods for Receiving Requests by @emrancu in https://github.com/spatie/laravel-webhook-client/pull/192
+
+### New Contributors
+
+- @emrancu made their first contribution in https://github.com/spatie/laravel-webhook-client/pull/192
+
+**Full Changelog**: https://github.com/spatie/laravel-webhook-client/compare/3.1.8...3.2.0
+
 ## 3.1.8 - 2023-05-02
 
 ### What's Changed
