@@ -2,6 +2,24 @@
 
 All notable changes to `laravel-webhook-client` will be documented in this file
 
+## 3.3.0 - 2024-02-19
+
+### What's Changed
+
+* Drop laravel 8 and php 8.0, add support php 8.3 on github action workflows by @lloricode in https://github.com/spatie/laravel-webhook-client/pull/198
+* Fix typo by @akr4m in https://github.com/spatie/laravel-webhook-client/pull/202
+* Update composer.json to use Larastan Org by @arnebr in https://github.com/spatie/laravel-webhook-client/pull/203
+* Laravel 11 Support by @sweptsquash in https://github.com/spatie/laravel-webhook-client/pull/204
+
+### New Contributors
+
+* @lloricode made their first contribution in https://github.com/spatie/laravel-webhook-client/pull/198
+* @akr4m made their first contribution in https://github.com/spatie/laravel-webhook-client/pull/202
+* @arnebr made their first contribution in https://github.com/spatie/laravel-webhook-client/pull/203
+* @sweptsquash made their first contribution in https://github.com/spatie/laravel-webhook-client/pull/204
+
+**Full Changelog**: https://github.com/spatie/laravel-webhook-client/compare/3.2.0...3.3.0
+
 ## 3.2.0 - 2023-08-09
 
 ### What's Changed
