@@ -1,12 +1,11 @@
 {
     "name": "spatie/laravel-webhook-client",
     "description": "Receive webhooks in Laravel apps",
+    "license": "MIT",
     "keywords": [
         "spatie",
         "laravel-webhook-client"
     ],
-    "homepage": "https://github.com/spatie/laravel-webhook-client",
-    "license": "MIT",
     "authors": [
         {
             "name": "Freek Van der Herten",
@@ -15,22 +14,25 @@
             "role": "Developer"
         }
     ],
+    "homepage": "https://github.com/spatie/laravel-webhook-client",
     "require": {
-        "php": "^8.1",
-        "illuminate/bus": "^9.0|^10.0",
-        "illuminate/database": "^9.0|^10.0",
-        "illuminate/support": "^9.0|^10.0",
+        "php": "^8.1 || ^8.2",
+        "illuminate/bus": "^9.0 || ^10.0 || ^11.0",
+        "illuminate/database": "^9.0 || ^10.0 || ^11.0",
+        "illuminate/support": "^9.0 || ^10.0 || ^11.0",
         "spatie/laravel-package-tools": "^1.11"
     },
     "require-dev": {
-        "larastan/larastan": "^1.0.4|^2.2",
-        "orchestra/testbench": "^7.0|^8.0",
+        "larastan/larastan": "^1.0.4 || ^2.2",
+        "orchestra/testbench": "^7.0 || ^8.0 || ^9.0",
         "phpstan/extension-installer": "^1.0",
         "phpstan/phpstan-deprecation-rules": "^1.0",
         "phpstan/phpstan-phpunit": "^1.0",
-        "phpunit/phpunit": "^9.3",
+        "phpunit/phpunit": "^9.3 || ^10.5",
         "spatie/laravel-ray": "^1.24"
     },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "autoload": {
         "psr-4": {
             "Spatie\\WebhookClient\\": "src"
@@ -41,25 +43,26 @@
             "Spatie\\WebhookClient\\Tests\\": "tests"
         }
     },
-    "scripts": {
-        "psalm": "vendor/bin/psalm",
-        "test": "vendor/bin/phpunit",
-        "test-coverage": "vendor/bin/phpunit --coverage-html coverage",
-        "analyse": "vendor/bin/phpstan analyse"
-    },
     "config": {
-        "sort-packages": true,
         "allow-plugins": {
             "phpstan/extension-installer": true
-        }
+        },
+        "sort-packages": true
     },
     "extra": {
+        "branch-alias": {
+            "dev-master": "11.x-dev"
+        },
         "laravel": {
             "providers": [
                 "Spatie\\WebhookClient\\WebhookClientServiceProvider"
             ]
         }
     },
-    "minimum-stability": "dev",
-    "prefer-stable": true
+    "scripts": {
+        "analyse": "vendor/bin/phpstan analyse",
+        "psalm": "vendor/bin/psalm",
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+    }
 }
