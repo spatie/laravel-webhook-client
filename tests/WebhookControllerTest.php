@@ -204,6 +204,21 @@ class WebhookControllerTest extends TestCase
         $this->assertEquals(0, count(WebhookCall::first()->headers));
     }
 
+    /** @test */
+    public function multiple_routes_can_share_configuration()
+    {
+        Route::webhooks('incoming-webhooks-additional');
+
+        $this->refreshWebhookConfigRepository();
+
+        $routeNames = collect(Route::getRoutes())
+            ->map(fn ($route) => $route->getName());
+
+        $uniqueRouteNames = $routeNames->unique();
+
+        $this->assertEquals($routeNames->count(), $uniqueRouteNames->count());
+    }
+
     protected function determineSignature(array $payload): string
     {
         $secret = config('webhook-client.configs.0.signing_secret');
