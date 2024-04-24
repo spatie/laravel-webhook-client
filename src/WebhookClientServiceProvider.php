@@ -27,7 +27,8 @@ class WebhookClientServiceProvider extends PackageServiceProvider
                 throw InvalidMethod::make($method);
             }
 
-            return Route::{$method}($url, '\Spatie\WebhookClient\Http\Controllers\WebhookController')->name("webhook-client-{$name}");
+            return Route::{$method}($url, '\Spatie\WebhookClient\Http\Controllers\WebhookController')
+                ->name("webhook-client-{$name}." . Str::random(8));
         });
 
         $this->app->scoped(WebhookConfigRepository::class, function () {
@@ -43,7 +44,9 @@ class WebhookClientServiceProvider extends PackageServiceProvider
         $this->app->bind(WebhookConfig::class, function () {
             $routeName = Route::currentRouteName() ?? '';
 
-            $configName = Str::after($routeName, 'webhook-client-');
+            $routeNameSuffix = Str::after($routeName, 'webhook-client-');
+
+            $configName = Str::before($routeNameSuffix, '.');
 
             $webhookConfig = app(WebhookConfigRepository::class)->getConfig($configName);
 
