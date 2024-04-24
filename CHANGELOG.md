@@ -2,6 +2,22 @@
 
 All notable changes to `laravel-webhook-client` will be documented in this file
 
+## 3.3.1 - 2024-04-24
+
+### What's Changed
+
+* Bump stefanzweifel/git-auto-commit-action from 4 to 5 by @dependabot in https://github.com/spatie/laravel-webhook-client/pull/200
+* Bump actions/checkout from 3 to 4 by @dependabot in https://github.com/spatie/laravel-webhook-client/pull/199
+* Add a unique token to route names by @ryanlholt in https://github.com/spatie/laravel-webhook-client/pull/210
+* Bump ramsey/composer-install from 2 to 3 by @dependabot in https://github.com/spatie/laravel-webhook-client/pull/205
+
+### New Contributors
+
+* @dependabot made their first contribution in https://github.com/spatie/laravel-webhook-client/pull/200
+* @ryanlholt made their first contribution in https://github.com/spatie/laravel-webhook-client/pull/210
+
+**Full Changelog**: https://github.com/spatie/laravel-webhook-client/compare/3.3.0...3.3.1
+
 ## 3.3.0 - 2024-02-19
 
 ### What's Changed
