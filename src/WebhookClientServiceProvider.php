@@ -28,7 +28,7 @@ class WebhookClientServiceProvider extends PackageServiceProvider
             }
 
             if (config('webhook-client.add_unique_token_to_route_name', false)) {
-                $name .= Str::random(8);
+                $name .= '.' . Str::random(8);
             }
 
             return Route::{$method}($url, '\Spatie\WebhookClient\Http\Controllers\WebhookController')
