@@ -2,6 +2,18 @@
 
 All notable changes to `laravel-webhook-client` will be documented in this file
 
+## 3.3.2 - 2024-04-25
+
+### What's Changed
+
+* Add config option to enable/disable unique token by @it-can in https://github.com/spatie/laravel-webhook-client/pull/212
+
+### New Contributors
+
+* @it-can made their first contribution in https://github.com/spatie/laravel-webhook-client/pull/212
+
+**Full Changelog**: https://github.com/spatie/laravel-webhook-client/compare/3.3.1...3.3.2
+
 ## 3.3.1 - 2024-04-24
 
 ### What's Changed
