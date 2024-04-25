@@ -36,7 +36,7 @@ class WebhookClientServiceProvider extends PackageServiceProvider
         });
 
         $this->app->scoped(WebhookConfigRepository::class, function () {
-            $configRepository = new WebhookConfigRepository;
+            $configRepository = new WebhookConfigRepository();
 
             collect(config('webhook-client.configs'))
                 ->map(fn (array $config) => new WebhookConfig($config))
