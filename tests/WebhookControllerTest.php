@@ -207,6 +207,8 @@ class WebhookControllerTest extends TestCase
     /** @test */
     public function multiple_routes_can_share_configuration()
     {
+        config()->set('webhook-client.add_unique_token_to_route_name', true);
+
         Route::webhooks('incoming-webhooks-additional');
 
         $this->refreshWebhookConfigRepository();
