@@ -2,6 +2,19 @@
 
 All notable changes to `laravel-webhook-client` will be documented in this file
 
+## 3.4.0 - 2024-05-21
+
+### What's Changed
+
+* Update README.md to Laravel 11 Schedule for Prune by @arnebr in https://github.com/spatie/laravel-webhook-client/pull/213
+* Extend InvalidWebhookSignatureEvent with WebhookConfig parameter by @jansgescheit in https://github.com/spatie/laravel-webhook-client/pull/214
+
+### New Contributors
+
+* @jansgescheit made their first contribution in https://github.com/spatie/laravel-webhook-client/pull/214
+
+**Full Changelog**: https://github.com/spatie/laravel-webhook-client/compare/3.3.2...3.4.0
+
 ## 3.3.2 - 2024-04-25
 
 ### What's Changed
