@@ -147,7 +147,7 @@ protected $except = [
 
 ## Usage
 
-With the installation out of the way, let's take a look at how this package handles webhooks. First, it will verify if the signature of the request is valid. If it is not, we'll throw an exception and fire off the `InvalidSignatureEvent` event. Requests with invalid signatures will not be stored in the database.
+With the installation out of the way, let's take a look at how this package handles webhooks. First, it will verify if the signature of the request is valid. If it is not, we'll throw an exception and fire off the `InvalidWebhookSignatureEvent` event. Requests with invalid signatures will not be stored in the database.
 
 Next, the request will be passed to a webhook profile. A webhook profile is a class that determines if a request should be stored and processed by your app. It allows you to filter out webhook requests that are of interest to your app. You can easily create [your own webhook profile](#determining-which-webhook-requests-should-be-stored-and-processed).
 
