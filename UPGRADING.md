@@ -50,3 +50,5 @@ class AddColumnsToWebhookCalls extends Migration
 - the `Spatie\WebhookClient\Events\InvalidSignature` event has been renamed to `Spatie\WebhookClient\Events\InvalidWebhookSignatureEvent`
 
 - the `Spatie\WebhookClient\ProcessWebhookJob` job has been moved to `Spatie\WebhookClient\Jobs\ProcessWebhookJob`
+
+- the `Spatie\WebhookClient\Events\InvalidWebhookSignatureEvent` event get the `Spatie\WebhookClient\WebhookConfig` as parameter
