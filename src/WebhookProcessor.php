@@ -35,7 +35,7 @@ class WebhookProcessor
     protected function ensureValidSignature(): self
     {
         if (! $this->config->signatureValidator->isValid($this->request, $this->config)) {
-            event(new InvalidWebhookSignatureEvent($this->request));
+            event(new InvalidWebhookSignatureEvent($this->request, $this->config));
 
             throw InvalidWebhookSignature::make();
         }
