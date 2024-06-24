@@ -2,6 +2,18 @@
 
 All notable changes to `laravel-webhook-client` will be documented in this file
 
+## 3.4.1 - 2024-06-24
+
+### What's Changed
+
+* Fix a typo in webhook-client.php by @kosarinin in https://github.com/spatie/laravel-webhook-client/pull/216
+
+### New Contributors
+
+* @kosarinin made their first contribution in https://github.com/spatie/laravel-webhook-client/pull/216
+
+**Full Changelog**: https://github.com/spatie/laravel-webhook-client/compare/3.4.0...3.4.1
+
 ## 3.4.0 - 2024-05-21
 
 ### What's Changed
