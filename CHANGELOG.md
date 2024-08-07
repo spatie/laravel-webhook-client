@@ -2,6 +2,18 @@
 
 All notable changes to `laravel-webhook-client` will be documented in this file
 
+## 3.4.2 - 2024-08-07
+
+### What's Changed
+
+* Change hash_equals order parameters by @sylfel in https://github.com/spatie/laravel-webhook-client/pull/221
+
+### New Contributors
+
+* @sylfel made their first contribution in https://github.com/spatie/laravel-webhook-client/pull/221
+
+**Full Changelog**: https://github.com/spatie/laravel-webhook-client/compare/3.4.1...3.4.2
+
 ## 3.4.1 - 2024-06-24
 
 ### What's Changed
