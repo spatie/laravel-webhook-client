@@ -137,11 +137,30 @@ Finally, let's take care of the routing. At the app that sends webhooks, you pro
 Route::webhooks('webhook-receiving-url');
 ```
 
-Behind the scenes, by default this will register a `POST` route to a controller provided by this package. Because the app that sends webhooks to you has no way of getting a csrf-token, you must add that route to the `except` array of the `VerifyCsrfToken` middleware:
+Behind the scenes, by default this will register a `POST` route to a controller provided by this package. Because the app that sends webhooks to you has no way of getting a csrf-token, you must exclude the route from csrf token validation.
+
+Here how you can do that in recent versions of Laravel.
+
+```php
+use Illuminate\Foundation\Application;
+use Illuminate\Foundation\Configuration\Middleware;
+
+return Application::configure(basePath: dirname(__DIR__))
+    ->withRouting(
+       // ...
+    )
+    ->withMiddleware(function (Middleware $middleware) {
+        $middleware->validateCsrfTokens(except: [
+            'your-webhook-receiving-url'
+        ]);
+    })->create();
+```
+
+In old versions of Laravel you can add your webhook route to the `except` array of the `VerifyCsrfToken` middleware:
 
 ```php
 protected $except = [
-    'webhook-receiving-url',
+    'your-webhook-receiving-url',
 ];
 ```
 
