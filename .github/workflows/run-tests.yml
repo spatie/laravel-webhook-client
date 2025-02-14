@@ -2,33 +2,28 @@ name: run-tests
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
   pull_request:
-    branches: [main]
+    branches:
+      - main
 
 jobs:
   test:
     runs-on: ${{ matrix.os }}
+
     strategy:
       fail-fast: false
       matrix:
-        php: [8.3, 8.2, 8.1]
-        laravel: [11.*, 10.*, 9.*,]
+        php: [8.4, 8.3]
+        laravel: ['11.*', '12.*']
         dependency-version: [prefer-lowest, prefer-stable]
-        os: [ubuntu-latest]
-        exclude:
-          - laravel: 11.*
-            php: 8.1
+        os: [ubuntu-latest]  
         include:
+          - laravel: 12.*
+            testbench: ^10.0
           - laravel: 11.*
             testbench: ^9.0
-            carbon: ^3.0
-          - laravel: 10.*
-            testbench: ^8.0
-            carbon: ^2.63
-          - laravel: 9.*
-            testbench: ^7.0
-            carbon: ^2.63
 
     name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.dependency-version }} - ${{ matrix.os }}
 
@@ -50,7 +45,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" "nesbot/carbon:${{ matrix.carbon }}" --no-interaction --no-update
+          composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
           composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction
 
       - name: List Installed Dependencies
