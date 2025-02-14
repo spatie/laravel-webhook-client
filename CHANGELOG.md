@@ -2,6 +2,18 @@
 
 All notable changes to `laravel-webhook-client` will be documented in this file
 
+## 3.4.3 - 2025-02-14
+
+### What's Changed
+
+* Laravel 12.x Compatibility by @laravel-shift in https://github.com/spatie/laravel-webhook-client/pull/227
+
+### New Contributors
+
+* @laravel-shift made their first contribution in https://github.com/spatie/laravel-webhook-client/pull/227
+
+**Full Changelog**: https://github.com/spatie/laravel-webhook-client/compare/3.4.2...3.4.3
+
 ## 3.4.2 - 2024-08-07
 
 ### What's Changed
