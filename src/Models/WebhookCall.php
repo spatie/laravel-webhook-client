@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Spatie\WebhookClient\Exceptions\InvalidConfig;
 use Spatie\WebhookClient\WebhookConfig;
 use Symfony\Component\HttpFoundation\HeaderBag;
+use Illuminate\Support\Str;
 
 /**
  * Class WebhookCall
@@ -52,7 +53,7 @@ class WebhookCall extends Model
 
         return self::create([
             'name' => $config->name,
-            'url' => $request->fullUrl(),
+            'url' => Str::limit($request->fullUrl(), 252),
             'headers' => $headers,
             'payload' => $request->input(),
             'exception' => null,
