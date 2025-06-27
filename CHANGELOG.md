@@ -2,6 +2,20 @@
 
 All notable changes to `laravel-webhook-client` will be documented in this file
 
+## 3.4.4 - 2025-06-27
+
+### What's Changed
+
+* Add illuminate/http as a dependency by @jmsfwk in https://github.com/spatie/laravel-webhook-client/pull/230
+* feat: register `webhooks` route macro in ServiceProvider::register() by @misaf in https://github.com/spatie/laravel-webhook-client/pull/237
+* Bump stefanzweifel/git-auto-commit-action from 5 to 6 by @dependabot in https://github.com/spatie/laravel-webhook-client/pull/236
+
+### New Contributors
+
+* @misaf made their first contribution in https://github.com/spatie/laravel-webhook-client/pull/237
+
+**Full Changelog**: https://github.com/spatie/laravel-webhook-client/compare/3.4.3...3.4.4
+
 ## 3.4.3 - 2025-02-14
 
 ### What's Changed
