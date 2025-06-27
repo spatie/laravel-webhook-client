@@ -2,6 +2,7 @@
 
 namespace Spatie\WebhookClient\Tests;
 
+use PHPUnit\Framework\Attributes\Test;
 use Spatie\WebhookClient\Exceptions\InvalidConfig;
 use Spatie\WebhookClient\Models\WebhookCall;
 use Spatie\WebhookClient\SignatureValidator\DefaultSignatureValidator;
@@ -12,7 +13,7 @@ use Spatie\WebhookClient\WebhookResponse\DefaultRespondsTo;
 
 class WebhookConfigTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function it_can_handle_a_valid_configuration()
     {
         $configArray = $this->getValidConfig();
@@ -28,7 +29,7 @@ class WebhookConfigTest extends TestCase
         $this->assertEquals($configArray['process_webhook_job'], $webhookConfig->processWebhookJobClass);
     }
 
-    /** @test */
+    #[Test]
     public function it_validates_the_signature_validator()
     {
         $config = $this->getValidConfig();
@@ -39,7 +40,7 @@ class WebhookConfigTest extends TestCase
         new WebhookConfig($config);
     }
 
-    /** @test */
+    #[Test]
     public function it_validates_the_webhook_profile()
     {
         $config = $this->getValidConfig();
@@ -50,7 +51,7 @@ class WebhookConfigTest extends TestCase
         new WebhookConfig($config);
     }
 
-    /** @test */
+    #[Test]
     public function it_validates_the_webhook_response()
     {
         $config = $this->getValidConfig();
@@ -61,7 +62,7 @@ class WebhookConfigTest extends TestCase
         new WebhookConfig($config);
     }
 
-    /** @test */
+    #[Test]
     public function it_uses_the_default_webhook_response_if_none_provided()
     {
         $config = $this->getValidConfig();
@@ -70,7 +71,7 @@ class WebhookConfigTest extends TestCase
         $this->assertInstanceOf(DefaultRespondsTo::class, (new WebhookConfig($config))->webhookResponse);
     }
 
-    /** @test */
+    #[Test]
     public function it_validates_the_process_webhook_job()
     {
         $config = $this->getValidConfig();

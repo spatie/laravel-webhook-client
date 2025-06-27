@@ -6,6 +6,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Route;
+use PHPUnit\Framework\Attributes\Test;
 use Spatie\WebhookClient\Events\InvalidWebhookSignatureEvent;
 use Spatie\WebhookClient\Models\WebhookCall;
 use Spatie\WebhookClient\Tests\TestClasses\CustomRespondsToWebhook;
@@ -43,7 +44,7 @@ class WebhookControllerTest extends TestCase
         ];
     }
 
-    /** @test */
+    #[Test]
     public function it_can_process_a_webhook_request()
     {
         $this->withoutExceptionHandling();
@@ -64,7 +65,7 @@ class WebhookControllerTest extends TestCase
         });
     }
 
-    /** @test */
+    #[Test]
     public function a_request_with_an_invalid_payload_will_not_get_processed()
     {
         $headers = $this->headers;
@@ -79,7 +80,7 @@ class WebhookControllerTest extends TestCase
         Event::assertDispatched(InvalidWebhookSignatureEvent::class);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_work_with_an_alternative_signature_validator()
     {
         config()->set('webhook-client.configs.0.signature_validator', EverythingIsValidSignatureValidator::class);
@@ -97,7 +98,7 @@ class WebhookControllerTest extends TestCase
             ->assertStatus(500);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_work_with_an_alternative_profile()
     {
         config()->set('webhook-client.configs.0.webhook_profile', ProcessNothingWebhookProfile::class);
@@ -112,7 +113,7 @@ class WebhookControllerTest extends TestCase
         $this->assertCount(0, WebhookCall::get());
     }
 
-    /** @test */
+    #[Test]
     public function it_can_work_with_an_alternative_config()
     {
         Route::webhooks('incoming-webhooks-alternative-config', 'alternative-config');
@@ -129,7 +130,7 @@ class WebhookControllerTest extends TestCase
             ->assertSuccessful();
     }
 
-    /** @test */
+    #[Test]
     public function it_can_work_with_an_alternative_model()
     {
         $this->withoutExceptionHandling();
@@ -145,7 +146,7 @@ class WebhookControllerTest extends TestCase
         $this->assertEquals([], WebhookCall::first()->payload);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_respond_with_custom_response()
     {
         config()->set('webhook-client.configs.0.webhook_response', CustomRespondsToWebhook::class);
@@ -158,7 +159,7 @@ class WebhookControllerTest extends TestCase
             ]);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_store_a_specific_header()
     {
         $this->withoutExceptionHandling();
@@ -174,7 +175,7 @@ class WebhookControllerTest extends TestCase
         $this->assertEquals($this->headers['Signature'], WebhookCall::first()->headerBag()->get('Signature'));
     }
 
-    /** @test */
+    #[Test]
     public function it_can_store_all_headers()
     {
         $this->withoutExceptionHandling();
@@ -189,7 +190,7 @@ class WebhookControllerTest extends TestCase
         $this->assertGreaterThan(1, count(WebhookCall::first()->headers));
     }
 
-    /** @test */
+    #[Test]
     public function it_can_store_none_of_the_headers()
     {
         $this->withoutExceptionHandling();
@@ -204,7 +205,7 @@ class WebhookControllerTest extends TestCase
         $this->assertEquals(0, count(WebhookCall::first()->headers));
     }
 
-    /** @test */
+    #[Test]
     public function multiple_routes_can_share_configuration()
     {
         config()->set('webhook-client.add_unique_token_to_route_name', true);
