@@ -19,10 +19,9 @@ class WebhookClientServiceProvider extends PackageServiceProvider
             ->hasMigrations('create_webhook_calls_table');
     }
 
-    public function packageBooted()
+    public function packageRegistered()
     {
         Route::macro('webhooks', function (string $url, string $name = 'default', $method = 'post') {
-
             if (! in_array($method, ['get', 'post', 'put', 'patch', 'delete'])) {
                 throw InvalidMethod::make($method);
             }
@@ -33,6 +32,19 @@ class WebhookClientServiceProvider extends PackageServiceProvider
 
             return Route::{$method}($url, '\Spatie\WebhookClient\Http\Controllers\WebhookController')
                 ->name("webhook-client-{$name}");
+        });
+    }
+
+    public function packageBooted()
+    {
+        $this->app->scoped(WebhookConfigRepository::class, function () {
+            $configRepository = new WebhookConfigRepository();
+
+            collect(config('webhook-client.configs'))
+                ->map(fn (array $config) => new WebhookConfig($config))
+                ->each(fn (WebhookConfig $webhookConfig) => $configRepository->addConfig($webhookConfig));
+
+            return $configRepository;
         });
 
         $this->app->scoped(WebhookConfigRepository::class, function () {
