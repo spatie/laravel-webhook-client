@@ -49,41 +49,7 @@ class WebhookCall extends Model
     public static function storeWebhook(WebhookConfig $config, Request $request): WebhookCall
     {
         $headers = self::headersToStore($config, $request);
-
-        // Get basic input data
-        $payload = $request->input();
-
-        // Add files as an indexed array if they exist
-        if ($request->allFiles()) {
-            // Convert associative array to indexed array
-            $files = [];
-            foreach ($request->allFiles() as $fieldFiles) {
-                if (is_array($fieldFiles)) {
-                    foreach ($fieldFiles as $file) {
-                        $files[] = [
-                            'originalName' => $file->getClientOriginalName(),
-                            'mimeType' => $file->getMimeType(),
-                            'size' => $file->getSize(),
-                            'error' => $file->getError(),
-                            'path' => $file->getPathname(),
-                            'content' => base64_encode(file_get_contents($file->getPathname())),
-                        ];
-                    }
-                } else {
-                    $files[] = [
-                        'originalName' => $fieldFiles->getClientOriginalName(),
-                        'mimeType' => $fieldFiles->getMimeType(),
-                        'size' => $fieldFiles->getSize(),
-                        'error' => $fieldFiles->getError(),
-                        'path' => $fieldFiles->getPathname(),
-                        'content' => base64_encode(file_get_contents($fieldFiles->getPathname())),
-                    ];
-                }
-            }
-
-            // Add files as a simple indexed array
-            $payload['attachments'] = $files;
-        }
+        $payload = self::buildPayloadFromRequest($request);
 
         return self::create([
             'name' => $config->name,
@@ -94,6 +60,44 @@ class WebhookCall extends Model
         ]);
     }
 
+    protected static function buildPayloadFromRequest(Request $request): array
+    {
+        $payload = $request->input();
+
+        if ($request->allFiles()) {
+            $payload['attachments'] = self::processRequestFiles($request->allFiles());
+        }
+
+        return $payload;
+    }
+
+    protected static function processRequestFiles(array $files): array
+    {
+        return collect($files)
+            ->flatMap(function ($fieldFiles) {
+                if (!is_array($fieldFiles)) {
+                    return [self::processUploadedFile($fieldFiles)];
+                }
+
+                return collect($fieldFiles)->map(function ($file) {
+                    return self::processUploadedFile($file);
+                });
+            })
+            ->toArray();
+    }
+
+    protected static function processUploadedFile($file): array
+    {
+        return [
+            'originalName' => $file->getClientOriginalName(),
+            'mimeType' => $file->getMimeType(),
+            'size' => $file->getSize(),
+            'error' => $file->getError(),
+            'path' => $file->getPathname(),
+            'content' => base64_encode(file_get_contents($file->getPathname())),
+        ];
+    }
+
     public static function headersToStore(WebhookConfig $config, Request $request): array
     {
         $headerNamesToStore = $config->storeHeaders;
@@ -102,13 +106,10 @@ class WebhookCall extends Model
             return $request->headers->all();
         }
 
-        $headerNamesToStore = array_map(
-            fn (string $headerName) => strtolower($headerName),
-            $headerNamesToStore,
-        );
+        $headerNamesToStore = array_map(fn(string $headerName) => strtolower($headerName), $headerNamesToStore);
 
         return collect($request->headers->all())
-            ->filter(fn (array $headerValue, string $headerName) => in_array($headerName, $headerNamesToStore))
+            ->filter(fn(array $headerValue, string $headerName) => in_array($headerName, $headerNamesToStore))
             ->toArray();
     }
 
@@ -148,7 +149,7 @@ class WebhookCall extends Model
     {
         $days = config('webhook-client.delete_after_days');
 
-        if (! is_int($days)) {
+        if (!is_int($days)) {
             throw InvalidConfig::invalidPrunable($days);
         }
 
@@ -166,24 +167,18 @@ class WebhookCall extends Model
             return [];
         }
 
-        $attachments = [];
-        foreach ($this->payload['attachments'] as $attachment) {
-            // Create a temporary file
-            $tempFile = tempnam(sys_get_temp_dir(), 'webhook_');
-            file_put_contents($tempFile, base64_decode($attachment['content']));
+        return collect($this->payload['attachments'])
+            ->map(function ($attachment) {
+                return $this->createUploadedFileFromAttachment($attachment);
+            })
+            ->toArray();
+    }
 
-            // Create a new UploadedFile instance
-            $uploadedFile = new \Illuminate\Http\UploadedFile(
-                $tempFile,
-                $attachment['originalName'],
-                $attachment['mimeType'],
-                $attachment['error'],
-                true,
-            );
+    protected function createUploadedFileFromAttachment(array $attachment): \Illuminate\Http\UploadedFile
+    {
+        $tempFile = tempnam(sys_get_temp_dir(), 'webhook_');
+        file_put_contents($tempFile, base64_decode($attachment['content']));
 
-            $attachments[] = $uploadedFile;
-        }
-
-        return $attachments;
+        return new \Illuminate\Http\UploadedFile($tempFile, $attachment['originalName'], $attachment['mimeType'], $attachment['error'], true);
     }
 }
