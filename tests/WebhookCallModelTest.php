@@ -1,237 +1,216 @@
 <?php
 
-namespace Spatie\WebhookClient\Tests;
-
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Spatie\WebhookClient\Models\WebhookCall;
 use Spatie\WebhookClient\WebhookConfig;
 
-class WebhookCallModelTest extends TestCase
-{
-    protected WebhookConfig $webhookConfig;
+beforeEach(function () {
+    $this->webhookConfig = new WebhookConfig([
+        'name' => 'test',
+        'signing_secret' => 'secret',
+        'signature_header_name' => 'Signature',
+        'signature_validator' => \Spatie\WebhookClient\SignatureValidator\DefaultSignatureValidator::class,
+        'webhook_profile' => \Spatie\WebhookClient\WebhookProfile\ProcessEverythingWebhookProfile::class,
+        'webhook_response' => \Spatie\WebhookClient\WebhookResponse\DefaultRespondsTo::class,
+        'webhook_model' => WebhookCall::class,
+        'process_webhook_job' => \Spatie\WebhookClient\Tests\TestClasses\ProcessWebhookJobTestClass::class,
+        'store_headers' => [],
+    ]);
+});
 
-    public function setUp(): void
-    {
-        parent::setUp();
+it('can store webhook without files', function () {
+    $request = Request::create('/test', 'POST', ['key' => 'value']);
 
-        $this->webhookConfig = new WebhookConfig([
-            'name' => 'test',
-            'signing_secret' => 'secret',
-            'signature_header_name' => 'Signature',
-            'signature_validator' => \Spatie\WebhookClient\SignatureValidator\DefaultSignatureValidator::class,
-            'webhook_profile' => \Spatie\WebhookClient\WebhookProfile\ProcessEverythingWebhookProfile::class,
-            'webhook_response' => \Spatie\WebhookClient\WebhookResponse\DefaultRespondsTo::class,
-            'webhook_model' => WebhookCall::class,
-            'process_webhook_job' => \Spatie\WebhookClient\Tests\TestClasses\ProcessWebhookJobTestClass::class,
-            'store_headers' => [],
-        ]);
-    }
+    $webhookCall = WebhookCall::storeWebhook($this->webhookConfig, $request);
 
-    public function test_it_can_store_webhook_without_files()
-    {
-        $request = Request::create('/test', 'POST', ['key' => 'value']);
+    expect($webhookCall)->toBeInstanceOf(WebhookCall::class);
+    expect($webhookCall->name)->toBe('test');
+    expect($webhookCall->payload)->toBe(['key' => 'value']);
+    expect($webhookCall->payload)->not->toHaveKey('attachments');
+});
 
-        $webhookCall = WebhookCall::storeWebhook($this->webhookConfig, $request);
+it('can store webhook with single file', function () {
+    Storage::fake('local');
 
-        $this->assertInstanceOf(WebhookCall::class, $webhookCall);
-        $this->assertEquals('test', $webhookCall->name);
-        $this->assertEquals(['key' => 'value'], $webhookCall->payload);
-        $this->assertArrayNotHasKey('attachments', $webhookCall->payload);
-    }
+    $file = UploadedFile::fake()->create('test.txt', 1, 'text/plain');
 
-    public function test_it_can_store_webhook_with_single_file()
-    {
-        Storage::fake('local');
+    $request = Request::create('/test', 'POST', ['key' => 'value']);
+    $request->files->set('document', $file);
 
-        $file = UploadedFile::fake()->create('test.txt', 1, 'text/plain');
+    $webhookCall = WebhookCall::storeWebhook($this->webhookConfig, $request);
 
-        $request = Request::create('/test', 'POST', ['key' => 'value']);
-        $request->files->set('document', $file);
+    expect($webhookCall)->toBeInstanceOf(WebhookCall::class);
+    expect($webhookCall->name)->toBe('test');
+    expect($webhookCall->payload['key'])->toBe('value');
+    expect($webhookCall->payload)->toHaveKey('attachments');
+    expect($webhookCall->payload['attachments'])->toHaveCount(1);
 
-        $webhookCall = WebhookCall::storeWebhook($this->webhookConfig, $request);
+    $attachment = $webhookCall->payload['attachments'][0];
+    expect($attachment['originalName'])->toBe('test.txt');
+    expect($attachment['mimeType'])->not->toBeEmpty();
+    expect($attachment['size'])->toBeGreaterThan(0);
+    expect($attachment)->toHaveKey('content');
+});
 
-        $this->assertInstanceOf(WebhookCall::class, $webhookCall);
-        $this->assertEquals('test', $webhookCall->name);
-        $this->assertEquals('value', $webhookCall->payload['key']);
-        $this->assertArrayHasKey('attachments', $webhookCall->payload);
-        $this->assertCount(1, $webhookCall->payload['attachments']);
+it('can store webhook with multiple files', function () {
+    Storage::fake('local');
 
-        $attachment = $webhookCall->payload['attachments'][0];
-        $this->assertEquals('test.txt', $attachment['originalName']);
-        $this->assertNotEmpty($attachment['mimeType']);
-        $this->assertGreaterThan(0, $attachment['size']);
-        $this->assertArrayHasKey('content', $attachment);
-    }
+    $file1 = UploadedFile::fake()->create('test1.txt', 1);
+    $file2 = UploadedFile::fake()->create('test2.pdf', 1);
 
-    public function test_it_can_store_webhook_with_multiple_files()
-    {
-        Storage::fake('local');
+    $request = Request::create('/test', 'POST', ['key' => 'value']);
+    $request->files->set('documents', [$file1, $file2]);
 
-        $file1 = UploadedFile::fake()->create('test1.txt', 1);
-        $file2 = UploadedFile::fake()->create('test2.pdf', 1);
+    $webhookCall = WebhookCall::storeWebhook($this->webhookConfig, $request);
 
-        $request = Request::create('/test', 'POST', ['key' => 'value']);
-        $request->files->set('documents', [$file1, $file2]);
+    expect($webhookCall)->toBeInstanceOf(WebhookCall::class);
+    expect($webhookCall->payload)->toHaveKey('attachments');
+    expect($webhookCall->payload['attachments'])->toHaveCount(2);
 
-        $webhookCall = WebhookCall::storeWebhook($this->webhookConfig, $request);
+    $attachment1 = $webhookCall->payload['attachments'][0];
+    expect($attachment1['originalName'])->toBe('test1.txt');
+    expect($attachment1['size'])->toBeGreaterThan(0);
 
-        $this->assertInstanceOf(WebhookCall::class, $webhookCall);
-        $this->assertArrayHasKey('attachments', $webhookCall->payload);
-        $this->assertCount(2, $webhookCall->payload['attachments']);
+    $attachment2 = $webhookCall->payload['attachments'][1];
+    expect($attachment2['originalName'])->toBe('test2.pdf');
+    expect($attachment2['size'])->toBeGreaterThan(0);
+});
 
-        $attachment1 = $webhookCall->payload['attachments'][0];
-        $this->assertEquals('test1.txt', $attachment1['originalName']);
-        $this->assertGreaterThan(0, $attachment1['size']);
+it('can store webhook with mixed file structure', function () {
+    Storage::fake('local');
 
-        $attachment2 = $webhookCall->payload['attachments'][1];
-        $this->assertEquals('test2.pdf', $attachment2['originalName']);
-        $this->assertGreaterThan(0, $attachment2['size']);
-    }
+    $singleFile = UploadedFile::fake()->create('single.txt', 1);
+    $multiFile1 = UploadedFile::fake()->create('multi1.txt', 1);
+    $multiFile2 = UploadedFile::fake()->create('multi2.txt', 1);
 
-    public function test_it_can_store_webhook_with_mixed_file_structure()
-    {
-        Storage::fake('local');
+    $request = Request::create('/test', 'POST', ['key' => 'value']);
+    $request->files->set('single_document', $singleFile);
+    $request->files->set('multiple_documents', [$multiFile1, $multiFile2]);
 
-        $singleFile = UploadedFile::fake()->create('single.txt', 1);
-        $multiFile1 = UploadedFile::fake()->create('multi1.txt', 1);
-        $multiFile2 = UploadedFile::fake()->create('multi2.txt', 1);
+    $webhookCall = WebhookCall::storeWebhook($this->webhookConfig, $request);
 
-        $request = Request::create('/test', 'POST', ['key' => 'value']);
-        $request->files->set('single_document', $singleFile);
-        $request->files->set('multiple_documents', [$multiFile1, $multiFile2]);
+    expect($webhookCall)->toBeInstanceOf(WebhookCall::class);
+    expect($webhookCall->payload)->toHaveKey('attachments');
+    expect($webhookCall->payload['attachments'])->toHaveCount(3);
 
-        $webhookCall = WebhookCall::storeWebhook($this->webhookConfig, $request);
+    $fileNames = collect($webhookCall->payload['attachments'])->pluck('originalName')->toArray();
+    expect($fileNames)->toContain('single.txt');
+    expect($fileNames)->toContain('multi1.txt');
+    expect($fileNames)->toContain('multi2.txt');
+});
 
-        $this->assertInstanceOf(WebhookCall::class, $webhookCall);
-        $this->assertArrayHasKey('attachments', $webhookCall->payload);
-        $this->assertCount(3, $webhookCall->payload['attachments']);
+it('can retrieve attachments as uploaded file objects', function () {
+    Storage::fake('local');
 
-        $fileNames = collect($webhookCall->payload['attachments'])->pluck('originalName')->toArray();
-        $this->assertContains('single.txt', $fileNames);
-        $this->assertContains('multi1.txt', $fileNames);
-        $this->assertContains('multi2.txt', $fileNames);
-    }
+    $file = UploadedFile::fake()->create('test.txt', 1);
 
-    public function test_it_can_retrieve_attachments_as_uploaded_file_objects()
-    {
-        Storage::fake('local');
+    $request = Request::create('/test', 'POST', ['key' => 'value']);
+    $request->files->set('document', $file);
 
-        $file = UploadedFile::fake()->create('test.txt', 1);
+    $webhookCall = WebhookCall::storeWebhook($this->webhookConfig, $request);
+    $attachments = $webhookCall->getAttachments();
 
-        $request = Request::create('/test', 'POST', ['key' => 'value']);
-        $request->files->set('document', $file);
+    expect($attachments)->toHaveCount(1);
+    expect($attachments[0])->toBeInstanceOf(UploadedFile::class);
+    expect($attachments[0]->getClientOriginalName())->toBe('test.txt');
+    expect($attachments[0]->getMimeType())->not->toBeEmpty();
+});
 
-        $webhookCall = WebhookCall::storeWebhook($this->webhookConfig, $request);
-        $attachments = $webhookCall->getAttachments();
+it('returns empty array when no attachments', function () {
+    $request = Request::create('/test', 'POST', ['key' => 'value']);
 
-        $this->assertCount(1, $attachments);
-        $this->assertInstanceOf(UploadedFile::class, $attachments[0]);
-        $this->assertEquals('test.txt', $attachments[0]->getClientOriginalName());
-        $this->assertNotEmpty($attachments[0]->getMimeType());
-    }
+    $webhookCall = WebhookCall::storeWebhook($this->webhookConfig, $request);
+    $attachments = $webhookCall->getAttachments();
 
-    public function test_it_returns_empty_array_when_no_attachments()
-    {
-        $request = Request::create('/test', 'POST', ['key' => 'value']);
+    expect($attachments)->toBeArray();
+    expect($attachments)->toBeEmpty();
+});
 
-        $webhookCall = WebhookCall::storeWebhook($this->webhookConfig, $request);
-        $attachments = $webhookCall->getAttachments();
+it('can retrieve multiple attachments as uploaded file objects', function () {
+    Storage::fake('local');
 
-        $this->assertIsArray($attachments);
-        $this->assertEmpty($attachments);
-    }
+    $file1 = UploadedFile::fake()->create('test1.txt', 1);
+    $file2 = UploadedFile::fake()->create('test2.pdf', 1);
 
-    public function test_it_can_retrieve_multiple_attachments_as_uploaded_file_objects()
-    {
-        Storage::fake('local');
+    $request = Request::create('/test', 'POST', ['key' => 'value']);
+    $request->files->set('documents', [$file1, $file2]);
 
-        $file1 = UploadedFile::fake()->create('test1.txt', 1);
-        $file2 = UploadedFile::fake()->create('test2.pdf', 1);
+    $webhookCall = WebhookCall::storeWebhook($this->webhookConfig, $request);
+    $attachments = $webhookCall->getAttachments();
 
-        $request = Request::create('/test', 'POST', ['key' => 'value']);
-        $request->files->set('documents', [$file1, $file2]);
+    expect($attachments)->toHaveCount(2);
+    expect($attachments[0])->toBeInstanceOf(UploadedFile::class);
+    expect($attachments[1])->toBeInstanceOf(UploadedFile::class);
 
-        $webhookCall = WebhookCall::storeWebhook($this->webhookConfig, $request);
-        $attachments = $webhookCall->getAttachments();
+    expect($attachments[0]->getClientOriginalName())->toBe('test1.txt');
+    expect($attachments[0]->getMimeType())->not->toBeEmpty();
 
-        $this->assertCount(2, $attachments);
-        $this->assertInstanceOf(UploadedFile::class, $attachments[0]);
-        $this->assertInstanceOf(UploadedFile::class, $attachments[1]);
+    expect($attachments[1]->getClientOriginalName())->toBe('test2.pdf');
+    expect($attachments[1]->getMimeType())->not->toBeEmpty();
+});
 
-        $this->assertEquals('test1.txt', $attachments[0]->getClientOriginalName());
-        $this->assertNotEmpty($attachments[0]->getMimeType());
+it('preserves file content through storage and retrieval', function () {
+    Storage::fake('local');
 
-        $this->assertEquals('test2.pdf', $attachments[1]->getClientOriginalName());
-        $this->assertNotEmpty($attachments[1]->getMimeType());
-    }
+    $originalContent = 'This is test content for the file.';
+    $file = UploadedFile::fake()->createWithContent('test.txt', $originalContent);
 
-    public function test_it_preserves_file_content_through_storage_and_retrieval()
-    {
-        Storage::fake('local');
+    $request = Request::create('/test', 'POST', ['key' => 'value']);
+    $request->files->set('document', $file);
 
-        $originalContent = 'This is test content for the file.';
-        $file = UploadedFile::fake()->createWithContent('test.txt', $originalContent);
+    $webhookCall = WebhookCall::storeWebhook($this->webhookConfig, $request);
+    $attachments = $webhookCall->getAttachments();
 
-        $request = Request::create('/test', 'POST', ['key' => 'value']);
-        $request->files->set('document', $file);
+    expect($attachments)->toHaveCount(1);
+    $retrievedContent = file_get_contents($attachments[0]->getPathname());
+    expect($retrievedContent)->toBe($originalContent);
+});
 
-        $webhookCall = WebhookCall::storeWebhook($this->webhookConfig, $request);
-        $attachments = $webhookCall->getAttachments();
+test('build payload from request method works correctly', function () {
+    $request = Request::create('/test', 'POST', ['key' => 'value', 'nested' => ['data' => 'test']]);
 
-        $this->assertCount(1, $attachments);
-        $retrievedContent = file_get_contents($attachments[0]->getPathname());
-        $this->assertEquals($originalContent, $retrievedContent);
-    }
+    $reflection = new \ReflectionClass(WebhookCall::class);
+    $method = $reflection->getMethod('buildPayloadFromRequest');
+    $method->setAccessible(true);
 
-    public function test_build_payload_from_request_method_works_correctly()
-    {
-        $request = Request::create('/test', 'POST', ['key' => 'value', 'nested' => ['data' => 'test']]);
+    $payload = $method->invokeArgs(null, [$request]);
 
-        $reflection = new \ReflectionClass(WebhookCall::class);
-        $method = $reflection->getMethod('buildPayloadFromRequest');
-        $method->setAccessible(true);
+    expect($payload)->toBe(['key' => 'value', 'nested' => ['data' => 'test']]);
+});
 
-        $payload = $method->invokeArgs(null, [$request]);
+test('process request files method handles single file correctly', function () {
+    Storage::fake('local');
 
-        $this->assertEquals(['key' => 'value', 'nested' => ['data' => 'test']], $payload);
-    }
+    $file = UploadedFile::fake()->create('test.txt', 1);
+    $files = ['document' => $file];
 
-    public function test_process_request_files_method_handles_single_file_correctly()
-    {
-        Storage::fake('local');
+    $reflection = new \ReflectionClass(WebhookCall::class);
+    $method = $reflection->getMethod('processRequestFiles');
+    $method->setAccessible(true);
 
-        $file = UploadedFile::fake()->create('test.txt', 1);
-        $files = ['document' => $file];
+    $result = $method->invokeArgs(null, [$files]);
 
-        $reflection = new \ReflectionClass(WebhookCall::class);
-        $method = $reflection->getMethod('processRequestFiles');
-        $method->setAccessible(true);
+    expect($result)->toHaveCount(1);
+    expect($result[0]['originalName'])->toBe('test.txt');
+    expect($result[0]['mimeType'])->toBe('text/plain');
+});
 
-        $result = $method->invokeArgs(null, [$files]);
+test('process request files method handles array of files correctly', function () {
+    Storage::fake('local');
 
-        $this->assertCount(1, $result);
-        $this->assertEquals('test.txt', $result[0]['originalName']);
-        $this->assertEquals('text/plain', $result[0]['mimeType']);
-    }
+    $file1 = UploadedFile::fake()->create('test1.txt', 1);
+    $file2 = UploadedFile::fake()->create('test2.txt', 1);
+    $files = ['documents' => [$file1, $file2]];
 
-    public function test_process_request_files_method_handles_array_of_files_correctly()
-    {
-        Storage::fake('local');
+    $reflection = new \ReflectionClass(WebhookCall::class);
+    $method = $reflection->getMethod('processRequestFiles');
+    $method->setAccessible(true);
 
-        $file1 = UploadedFile::fake()->create('test1.txt', 1);
-        $file2 = UploadedFile::fake()->create('test2.txt', 1);
-        $files = ['documents' => [$file1, $file2]];
+    $result = $method->invokeArgs(null, [$files]);
 
-        $reflection = new \ReflectionClass(WebhookCall::class);
-        $method = $reflection->getMethod('processRequestFiles');
-        $method->setAccessible(true);
-
-        $result = $method->invokeArgs(null, [$files]);
-
-        $this->assertCount(2, $result);
-        $this->assertEquals('test1.txt', $result[0]['originalName']);
-        $this->assertEquals('test2.txt', $result[1]['originalName']);
-    }
-}
+    expect($result)->toHaveCount(2);
+    expect($result[0]['originalName'])->toBe('test1.txt');
+    expect($result[1]['originalName'])->toBe('test2.txt');
+});
