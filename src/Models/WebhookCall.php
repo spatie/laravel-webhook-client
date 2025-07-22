@@ -75,7 +75,7 @@ class WebhookCall extends Model
     {
         return collect($files)
             ->flatMap(function ($fieldFiles) {
-                if (!is_array($fieldFiles)) {
+                if (! is_array($fieldFiles)) {
                     return [self::processUploadedFile($fieldFiles)];
                 }
 
@@ -106,10 +106,10 @@ class WebhookCall extends Model
             return $request->headers->all();
         }
 
-        $headerNamesToStore = array_map(fn(string $headerName) => strtolower($headerName), $headerNamesToStore);
+        $headerNamesToStore = array_map(fn (string $headerName) => strtolower($headerName), $headerNamesToStore);
 
         return collect($request->headers->all())
-            ->filter(fn(array $headerValue, string $headerName) => in_array($headerName, $headerNamesToStore))
+            ->filter(fn (array $headerValue, string $headerName) => in_array($headerName, $headerNamesToStore))
             ->toArray();
     }
 
@@ -149,7 +149,7 @@ class WebhookCall extends Model
     {
         $days = config('webhook-client.delete_after_days');
 
-        if (!is_int($days)) {
+        if (! is_int($days)) {
             throw InvalidConfig::invalidPrunable($days);
         }
 
@@ -163,7 +163,7 @@ class WebhookCall extends Model
      */
     public function getAttachments(): array
     {
-        if (!isset($this->payload['attachments'])) {
+        if (! isset($this->payload['attachments'])) {
             return [];
         }
 
