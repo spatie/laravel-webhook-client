@@ -149,7 +149,7 @@ Route::webhooks('webhook-receiving-url');
 
 Behind the scenes, by default this will register a `POST` route to a controller provided by this package. Because the app that sends webhooks to you has no way of getting a csrf-token, you must exclude the route from csrf token validation.
 
-Here how you can do that in recent versions of Laravel.
+Here is how you can do that in recent versions of Laravel.
 
 ```php
 use Illuminate\Foundation\Application;
@@ -182,7 +182,7 @@ Next, the request will be passed to a webhook profile. A webhook profile is a cl
 
 If the webhook profile determines that request should be stored and processed, we'll first store it in the `webhook_calls` table. After that, we'll pass that newly created `WebhookCall` model to a queued job. Most webhook sending apps expect you to respond very quickly. Offloading the real processing work allows for speedy responses. You can specify which job should process the webhook in the `process_webhook_job` in the `webhook-client` config file. Should an exception be thrown while queueing the job, the package will store that exception in the `exception` attribute on the `WebhookCall` model.
 
-After the job has been dispatched, the request will be passed to a webhook response. A webhook response is a class that determines the HTTP response for the request. An 'ok' message response with `200` status code is returned by default, but you can easily create [your own webhook response](#creating-your-own-webhook-response).
+After the job has been dispatched, the request will be passed to a webhook response. A webhook response is a class that determines the HTTP response for the request. An 'ok' message response with a `200` status code is returned by default, but you can easily create [your own webhook response](#creating-your-own-webhook-response).
 
 ### Verifying the signature of incoming webhooks
 
@@ -241,7 +241,7 @@ After the signature is validated and the webhook profile has determined that the
 
 The request will first be stored in the `webhook_calls` table. This is done using the `WebhookCall` model.
 
-Should you want to customize the table name or anything on the storage behavior, you can let the package use an alternative model. A webhook storing model can be specified in the `webhook_model`. Make sure your model extends `Spatie\WebhookClient\Models\WebhookCall`.
+Should you want to customize the table name or anything about the storage behavior, you can let the package use an alternative model. A webhook storing model can be specified in the `webhook_model`. Make sure your model extends `Spatie\WebhookClient\Models\WebhookCall`.
 
 You can change how the webhook is stored by overriding the `storeWebhook` method of `WebhookCall`. In the `storeWebhook` method you should return a saved model.
 
@@ -355,7 +355,7 @@ $webhookConfig = new \Spatie\WebhookClient\WebhookConfig([
 
 ### Deleting models
 
-Whenever a webhook comes in, this package will store as a `WebhookCall` model. After a while, you might want to delete old models.
+Whenever a webhook comes in, this package will store it as a `WebhookCall` model. After a while, you might want to delete old models.
 
 The `WebhookCall` model has [Laravel's MassPrunable trait](https://laravel.com/docs/master/eloquent#pruning-models) applied on it. You can customize the cutoff date in the `webhooks` config file.
 
@@ -372,7 +372,7 @@ return [
 ```
 
 After configuring the model, you should schedule the `model:prune` Artisan command in your
-application's `route/console.php`. Don't forget to explicitly mention the `WebhookCall` class.
+application's `routes/console.php`. Don't forget to explicitly mention the `WebhookCall` class.
 You are free to choose the appropriate interval at which this command should be run:
 
 ```php
