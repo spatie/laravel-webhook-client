@@ -2,6 +2,12 @@
 
 All notable changes to `laravel-webhook-client` will be documented in this file
 
+## 3.5.0 - 2026-02-21
+
+### What's Changed
+
+- Add Laravel 13 support
+
 ## 3.4.4 - 2025-06-27
 
 ### What's Changed
