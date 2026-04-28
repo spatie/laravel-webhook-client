@@ -2,6 +2,15 @@
 
 All notable changes to `laravel-webhook-client` will be documented in this file
 
+## 3.6.0 - 2026-04-28
+
+### What's Changed
+
+* Bump ramsey/composer-install from 3 to 4 by @dependabot[bot] in https://github.com/spatie/laravel-webhook-client/pull/247
+* Store attachments in dedicated column instead of overwriting payload by @freekmurze in https://github.com/spatie/laravel-webhook-client/pull/249
+
+**Full Changelog**: https://github.com/spatie/laravel-webhook-client/compare/3.5.0...3.6.0
+
 ## 3.5.0 - 2026-02-21
 
 ### What's Changed
