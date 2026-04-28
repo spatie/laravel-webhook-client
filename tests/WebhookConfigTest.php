@@ -57,6 +57,24 @@ it('validates the process webhook job', function () {
     expect(fn () => new WebhookConfig($config))->toThrow(InvalidConfig::class);
 });
 
+it('defaults storeAttachments to true when not provided', function () {
+    $config = getValidConfig();
+    unset($config['store_attachments']);
+
+    $webhookConfig = new WebhookConfig($config);
+
+    expect($webhookConfig->storeAttachments)->toBeTrue();
+});
+
+it('respects an explicit storeAttachments value', function () {
+    $config = getValidConfig();
+    $config['store_attachments'] = false;
+
+    $webhookConfig = new WebhookConfig($config);
+
+    expect($webhookConfig->storeAttachments)->toBeFalse();
+});
+
 function getValidConfig(): array
 {
     return [

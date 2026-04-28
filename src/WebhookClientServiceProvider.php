@@ -16,7 +16,10 @@ class WebhookClientServiceProvider extends PackageServiceProvider
         $package
             ->name('laravel-webhook-client')
             ->hasConfigFile()
-            ->hasMigrations('create_webhook_calls_table');
+            ->hasMigrations(
+                'create_webhook_calls_table',
+                'add_attachments_to_webhook_calls_table',
+            );
     }
 
     public function packageRegistered()

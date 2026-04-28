@@ -54,6 +54,13 @@ return [
             ],
 
             /*
+             * When set to true, file uploads on the incoming request are stored
+             * in the dedicated `attachments` column on the webhook call model.
+             * Set to false to skip file extraction entirely.
+             */
+            'store_attachments' => true,
+
+            /*
              * The class name of the job that will process the webhook request.
              *
              * This should be set to a class that extends \Spatie\WebhookClient\Jobs\ProcessWebhookJob.
