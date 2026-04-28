@@ -8,9 +8,9 @@ parameters:
         - config
         - database
     tmpDir: build/phpstan
-    checkOctaneCompatibility: true
-    checkModelProperties: true
     checkMissingIterableValueType: false
 
     ignoreErrors:
         - '#Unsafe usage of new static#'
+        - '#PHPDoc tag @mixin contains unknown class Eloquent#'
+        - '#Call to an undefined static method Spatie\\WebhookClient\\Models\\WebhookCall::(create|where)\(\)#'

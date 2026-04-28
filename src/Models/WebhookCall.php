@@ -20,6 +20,7 @@ use Symfony\Component\HttpFoundation\HeaderBag;
  * @property string $url
  * @property array|null $headers
  * @property array|null $payload
+ * @property array|null $attachments
  * @property array|null $exception
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -43,32 +44,40 @@ class WebhookCall extends Model
     protected $casts = [
         'headers' => 'array',
         'payload' => 'array',
+        'attachments' => 'array',
         'exception' => 'array',
     ];
 
     public static function storeWebhook(WebhookConfig $config, Request $request): WebhookCall
     {
-        $headers = self::headersToStore($config, $request);
-        $payload = self::buildPayloadFromRequest($request);
-
         return self::create([
             'name' => $config->name,
             'url' => $request->fullUrl(),
-            'headers' => $headers,
-            'payload' => $payload,
+            'headers' => self::headersToStore($config, $request),
+            'payload' => self::buildPayloadFromRequest($request),
+            'attachments' => self::buildAttachmentsFromRequest($config, $request),
             'exception' => null,
         ]);
     }
 
     protected static function buildPayloadFromRequest(Request $request): array
     {
-        $payload = $request->input();
+        return $request->input();
+    }
 
-        if ($request->allFiles()) {
-            $payload['attachments'] = self::processRequestFiles($request->allFiles());
+    protected static function buildAttachmentsFromRequest(WebhookConfig $config, Request $request): ?array
+    {
+        if (! $config->storeAttachments) {
+            return null;
         }
 
-        return $payload;
+        $files = $request->allFiles();
+
+        if (empty($files)) {
+            return null;
+        }
+
+        return self::processRequestFiles($files);
     }
 
     protected static function processRequestFiles(array $files): array
@@ -157,20 +166,20 @@ class WebhookCall extends Model
     }
 
     /**
-     * Convert stored file metadata back into UploadedFile objects
+     * Convert stored file metadata back into UploadedFile objects.
+     *
+     * Reads from the dedicated attachments column and falls back to
+     * `payload['attachments']` for rows written by older versions of the
+     * package that stored attachments inside the payload.
      *
      * @return array
      */
     public function getAttachments(): array
     {
-        if (! isset($this->payload['attachments'])) {
-            return [];
-        }
+        $attachments = $this->attachments ?? $this->payload['attachments'] ?? [];
 
-        return collect($this->payload['attachments'])
-            ->map(function ($attachment) {
-                return $this->createUploadedFileFromAttachment($attachment);
-            })
+        return collect($attachments)
+            ->map(fn ($attachment) => $this->createUploadedFileFromAttachment($attachment))
             ->toArray();
     }
 

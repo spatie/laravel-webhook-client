@@ -15,6 +15,7 @@ return new class extends Migration
             $table->string('url', 512);
             $table->json('headers')->nullable();
             $table->json('payload')->nullable();
+            $table->json('attachments')->nullable();
             $table->text('exception')->nullable();
 
             $table->timestamps();

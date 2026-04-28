@@ -27,6 +27,8 @@ class WebhookConfig
 
     public array | string $storeHeaders;
 
+    public bool $storeAttachments;
+
     public string $processWebhookJobClass;
 
     public function __construct(array $properties)
@@ -56,6 +58,8 @@ class WebhookConfig
         $this->webhookModel = $properties['webhook_model'];
 
         $this->storeHeaders = $properties['store_headers'] ?? [];
+
+        $this->storeAttachments = $properties['store_attachments'] ?? true;
 
         if (! is_subclass_of($properties['process_webhook_job'], ProcessWebhookJob::class)) {
             throw InvalidConfig::invalidProcessWebhookJob($properties['process_webhook_job']);
