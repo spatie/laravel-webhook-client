@@ -12,3 +12,5 @@ parameters:
 
     ignoreErrors:
         - '#Unsafe usage of new static#'
+        - '#PHPDoc tag @mixin contains unknown class Eloquent#'
+        - '#Call to an undefined static method Spatie\\WebhookClient\\Models\\WebhookCall::(create|where)\(\)#'
