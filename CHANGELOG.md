@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-webhook-client` will be documented in this file
 
+## 3.6.1 - 2026-04-29
+
+**Full Changelog**: https://github.com/spatie/laravel-webhook-client/compare/3.6.0...3.6.1
+
 ## 3.6.0 - 2026-04-28
 
 ### What's Changed
