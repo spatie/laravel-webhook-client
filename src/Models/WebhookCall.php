@@ -59,7 +59,7 @@ class WebhookCall extends Model
             'exception' => null,
         ];
 
-        if (Schema::hasColumn((new self)->getTable(), 'attachments')) {
+        if (Schema::hasColumn((new self())->getTable(), 'attachments')) {
             $data['attachments'] = self::buildAttachmentsFromRequest($config, $request);
         }
 
