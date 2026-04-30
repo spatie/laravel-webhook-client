@@ -2,6 +2,18 @@
 
 All notable changes to `laravel-webhook-client` will be documented in this file
 
+## 3.6.2 - 2026-04-30
+
+### What's Changed
+
+* fix SQLSTATE[42703] column "attachments" does not exist by @tanthammar in https://github.com/spatie/laravel-webhook-client/pull/251
+
+### New Contributors
+
+* @tanthammar made their first contribution in https://github.com/spatie/laravel-webhook-client/pull/251
+
+**Full Changelog**: https://github.com/spatie/laravel-webhook-client/compare/3.6.1...3.6.2
+
 ## 3.6.1 - 2026-04-29
 
 **Full Changelog**: https://github.com/spatie/laravel-webhook-client/compare/3.6.0...3.6.1
