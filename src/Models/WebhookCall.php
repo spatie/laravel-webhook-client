@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\MassPrunable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 use Spatie\WebhookClient\Exceptions\InvalidConfig;
 use Spatie\WebhookClient\WebhookConfig;
 use Symfony\Component\HttpFoundation\HeaderBag;
@@ -50,14 +51,19 @@ class WebhookCall extends Model
 
     public static function storeWebhook(WebhookConfig $config, Request $request): WebhookCall
     {
-        return self::create([
+        $data = [
             'name' => $config->name,
             'url' => $request->fullUrl(),
             'headers' => self::headersToStore($config, $request),
             'payload' => self::buildPayloadFromRequest($request),
-            'attachments' => self::buildAttachmentsFromRequest($config, $request),
             'exception' => null,
-        ]);
+        ];
+
+        if (Schema::hasColumn((new self)->getTable(), 'attachments')) {
+            $data['attachments'] = self::buildAttachmentsFromRequest($config, $request);
+        }
+
+        return self::create($data);
     }
 
     protected static function buildPayloadFromRequest(Request $request): array

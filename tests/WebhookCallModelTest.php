@@ -1,7 +1,9 @@
 <?php
 
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 use Spatie\WebhookClient\Models\WebhookCall;
 use Spatie\WebhookClient\WebhookConfig;
@@ -318,4 +320,16 @@ test('process request files method handles array of files correctly', function (
     expect($result)->toHaveCount(2);
     expect($result[0]['originalName'])->toBe('test1.txt');
     expect($result[1]['originalName'])->toBe('test2.txt');
+});
+
+it('stores a webhook call when the attachments column does not exist', function () {
+    Schema::table('webhook_calls', function (Blueprint $table) {
+        $table->dropColumn('attachments');
+    });
+
+    $request = Request::create('/test', 'POST', ['key' => 'value']);
+    $webhookCall = WebhookCall::storeWebhook($this->webhookConfig, $request);
+
+    expect($webhookCall->exists)->toBeTrue();
+    expect($webhookCall->name)->toBe('test');
 });
