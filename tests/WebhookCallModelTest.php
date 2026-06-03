@@ -6,6 +6,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 use Spatie\WebhookClient\Models\WebhookCall;
+use Spatie\WebhookClient\Tests\TestClasses\CustomTableWebhookCall;
 use Spatie\WebhookClient\WebhookConfig;
 
 beforeEach(function () {
@@ -332,4 +333,40 @@ it('stores a webhook call when the attachments column does not exist', function 
 
     expect($webhookCall->exists)->toBeTrue();
     expect($webhookCall->name)->toBe('test');
+});
+
+it('stores the webhook using the configured model table when checking for the attachments column', function () {
+    // The custom model maps to its own table that has no attachments column,
+    // while the default webhook_calls table (created in TestCase) does have one.
+    // The attachments-column check must look at the configured model's table.
+    Schema::create('custom_webhook_calls', function (Blueprint $table) {
+        $table->bigIncrements('id');
+        $table->string('name');
+        $table->string('url', 512);
+        $table->json('headers')->nullable();
+        $table->json('payload')->nullable();
+        $table->text('exception')->nullable();
+        $table->timestamps();
+    });
+
+    $config = new WebhookConfig([
+        'name' => 'test',
+        'signing_secret' => 'secret',
+        'signature_header_name' => 'Signature',
+        'signature_validator' => \Spatie\WebhookClient\SignatureValidator\DefaultSignatureValidator::class,
+        'webhook_profile' => \Spatie\WebhookClient\WebhookProfile\ProcessEverythingWebhookProfile::class,
+        'webhook_response' => \Spatie\WebhookClient\WebhookResponse\DefaultRespondsTo::class,
+        'webhook_model' => CustomTableWebhookCall::class,
+        'process_webhook_job' => \Spatie\WebhookClient\Tests\TestClasses\ProcessWebhookJobTestClass::class,
+        'store_headers' => [],
+    ]);
+
+    $request = Request::create('/test', 'POST', ['key' => 'value']);
+
+    $webhookCall = CustomTableWebhookCall::storeWebhook($config, $request);
+
+    expect($webhookCall)->toBeInstanceOf(CustomTableWebhookCall::class);
+    expect($webhookCall->getTable())->toBe('custom_webhook_calls');
+    expect(CustomTableWebhookCall::count())->toBe(1);
+    expect(WebhookCall::count())->toBe(0);
 });

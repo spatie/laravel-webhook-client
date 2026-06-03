@@ -54,16 +54,16 @@ class WebhookCall extends Model
         $data = [
             'name' => $config->name,
             'url' => $request->fullUrl(),
-            'headers' => self::headersToStore($config, $request),
-            'payload' => self::buildPayloadFromRequest($request),
+            'headers' => static::headersToStore($config, $request),
+            'payload' => static::buildPayloadFromRequest($request),
             'exception' => null,
         ];
 
-        if (Schema::hasColumn((new self())->getTable(), 'attachments')) {
-            $data['attachments'] = self::buildAttachmentsFromRequest($config, $request);
+        if (Schema::hasColumn((new static())->getTable(), 'attachments')) {
+            $data['attachments'] = static::buildAttachmentsFromRequest($config, $request);
         }
 
-        return self::create($data);
+        return static::create($data);
     }
 
     protected static function buildPayloadFromRequest(Request $request): array
@@ -83,7 +83,7 @@ class WebhookCall extends Model
             return null;
         }
 
-        return self::processRequestFiles($files);
+        return static::processRequestFiles($files);
     }
 
     protected static function processRequestFiles(array $files): array
@@ -91,11 +91,11 @@ class WebhookCall extends Model
         return collect($files)
             ->flatMap(function ($fieldFiles) {
                 if (! is_array($fieldFiles)) {
-                    return [self::processUploadedFile($fieldFiles)];
+                    return [static::processUploadedFile($fieldFiles)];
                 }
 
                 return collect($fieldFiles)->map(function ($file) {
-                    return self::processUploadedFile($file);
+                    return static::processUploadedFile($file);
                 });
             })
             ->toArray();
