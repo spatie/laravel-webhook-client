@@ -1,9 +1,12 @@
 <?php
 
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 use Spatie\WebhookClient\Models\WebhookCall;
+use Spatie\WebhookClient\Tests\TestClasses\CustomTableWebhookCall;
 use Spatie\WebhookClient\WebhookConfig;
 
 beforeEach(function () {
@@ -29,6 +32,39 @@ it('can store webhook without files', function () {
     expect($webhookCall->name)->toBe('test');
     expect($webhookCall->payload)->toBe(['key' => 'value']);
     expect($webhookCall->payload)->not->toHaveKey('attachments');
+});
+
+it('stores the webhook using the configured webhook model table', function () {
+    Schema::create('custom_webhook_calls', function (Blueprint $table) {
+        $table->id();
+        $table->string('name');
+        $table->string('url');
+        $table->json('headers')->nullable();
+        $table->json('payload')->nullable();
+        $table->json('exception')->nullable();
+        $table->timestamps();
+    });
+
+    $this->webhookConfig = new WebhookConfig([
+        'name' => 'test',
+        'signing_secret' => 'secret',
+        'signature_header_name' => 'Signature',
+        'signature_validator' => \Spatie\WebhookClient\SignatureValidator\DefaultSignatureValidator::class,
+        'webhook_profile' => \Spatie\WebhookClient\WebhookProfile\ProcessEverythingWebhookProfile::class,
+        'webhook_response' => \Spatie\WebhookClient\WebhookResponse\DefaultRespondsTo::class,
+        'webhook_model' => CustomTableWebhookCall::class,
+        'process_webhook_job' => \Spatie\WebhookClient\Tests\TestClasses\ProcessWebhookJobTestClass::class,
+        'store_headers' => [],
+    ]);
+
+    $request = Request::create('/test', 'POST', ['key' => 'value']);
+
+    $webhookCall = CustomTableWebhookCall::storeWebhook($this->webhookConfig, $request);
+
+    expect($webhookCall)->toBeInstanceOf(CustomTableWebhookCall::class);
+    expect($webhookCall->getTable())->toBe('custom_webhook_calls');
+    expect(CustomTableWebhookCall::count())->toBe(1);
+    expect(WebhookCall::count())->toBe(0);
 });
 
 it('can store webhook with single file', function () {

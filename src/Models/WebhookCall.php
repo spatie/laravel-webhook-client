@@ -48,10 +48,10 @@ class WebhookCall extends Model
 
     public static function storeWebhook(WebhookConfig $config, Request $request): WebhookCall
     {
-        $headers = self::headersToStore($config, $request);
-        $payload = self::buildPayloadFromRequest($request);
+        $headers = static::headersToStore($config, $request);
+        $payload = static::buildPayloadFromRequest($request);
 
-        return self::create([
+        return static::create([
             'name' => $config->name,
             'url' => $request->fullUrl(),
             'headers' => $headers,
@@ -65,7 +65,7 @@ class WebhookCall extends Model
         $payload = $request->input();
 
         if ($request->allFiles()) {
-            $payload['attachments'] = self::processRequestFiles($request->allFiles());
+            $payload['attachments'] = static::processRequestFiles($request->allFiles());
         }
 
         return $payload;
@@ -76,11 +76,11 @@ class WebhookCall extends Model
         return collect($files)
             ->flatMap(function ($fieldFiles) {
                 if (! is_array($fieldFiles)) {
-                    return [self::processUploadedFile($fieldFiles)];
+                    return [static::processUploadedFile($fieldFiles)];
                 }
 
                 return collect($fieldFiles)->map(function ($file) {
-                    return self::processUploadedFile($file);
+                    return static::processUploadedFile($file);
                 });
             })
             ->toArray();
