@@ -2,6 +2,7 @@
 
 namespace Spatie\WebhookClient;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 use Spatie\LaravelPackageTools\Package;
@@ -24,16 +25,20 @@ class WebhookClientServiceProvider extends PackageServiceProvider
 
     public function packageRegistered()
     {
-        Route::macro('webhooks', function (string $url, string $name = 'default', $method = 'post') {
-            if (! in_array($method, ['get', 'post', 'put', 'patch', 'delete'])) {
-                throw InvalidMethod::make($method);
+        Route::macro('webhooks', function (string $url, string $name = 'default', array|string $method = 'post') {
+            $methods = Arr:wrap($method);
+
+            foreach ($methods as $method) {
+                if (! in_array($method, ['get', 'query', 'post', 'put', 'patch', 'delete'])) {
+                    throw InvalidMethod::make($method);
+                }
             }
 
             if (config('webhook-client.add_unique_token_to_route_name', false)) {
                 $name .= '.' . Str::random(8);
             }
 
-            return Route::{$method}($url, '\Spatie\WebhookClient\Http\Controllers\WebhookController')
+            return Route::match($methods, $url, '\Spatie\WebhookClient\Http\Controllers\WebhookController')
                 ->name("webhook-client-{$name}");
         });
     }
