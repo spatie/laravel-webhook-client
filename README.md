@@ -322,12 +322,18 @@ Route::webhooks('receiving-url-for-app-2', 'webhook-sending-app-2');
 ```
 
 ### Change route method
-Being an incoming webhook client, there are instances where you might want to establish a route method other than the default `post`. You have the flexibility to modify the standard post method to options such as `get`, `put`, `patch`, or `delete`.
+Being an incoming webhook client, there are instances where you might want to establish a route method other than the default `post`. You have the flexibility to modify the standard post method to options such as `get`, `query`, `put`, `patch`, or `delete`.
 ```php
 Route::webhooks('receiving-url-for-app-1', 'webhook-sending-app-1', 'get');
 Route::webhooks('receiving-url-for-app-1', 'webhook-sending-app-1', 'put');
 Route::webhooks('receiving-url-for-app-1', 'webhook-sending-app-1', 'patch');
 Route::webhooks('receiving-url-for-app-1', 'webhook-sending-app-1', 'delete');
+```
+
+If a webhook sender uses several methods on the same endpoint, pass an array of methods to register them all on a single route.
+
+```php
+Route::webhooks('receiving-url-for-app-1', 'webhook-sending-app-1', ['post', 'put']);
 ```
 
 ### Using the package without a controller

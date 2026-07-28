@@ -25,8 +25,8 @@ class WebhookClientServiceProvider extends PackageServiceProvider
 
     public function packageRegistered()
     {
-        Route::macro('webhooks', function (string $url, string $name = 'default', array|string $method = 'post') {
-            $methods = Arr:wrap($method);
+        Route::macro('webhooks', function (string $url, string $name = 'default', array|string $methods = 'post') {
+            $methods = Arr::wrap($methods);
 
             foreach ($methods as $method) {
                 if (! in_array($method, ['get', 'query', 'post', 'put', 'patch', 'delete'])) {

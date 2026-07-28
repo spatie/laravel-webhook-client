@@ -173,6 +173,23 @@ it('can store none of the headers', function () {
     expect(count(WebhookCall::first()->headers))->toBe(0);
 });
 
+it('can process a webhook request for each of the registered methods', function (string $method) {
+    test()->withoutExceptionHandling();
+
+    Route::webhooks('incoming-webhooks-multiple-methods', 'default', ['post', 'put', 'query']);
+
+    test()
+        ->call(
+            $method,
+            'incoming-webhooks-multiple-methods',
+            server: test()->transformHeadersToServerVars($this->headers),
+            content: json_encode($this->payload),
+        )
+        ->assertSuccessful();
+
+    expect(WebhookCall::get())->toHaveCount(1);
+})->with(['POST', 'PUT', 'QUERY']);
+
 it('allows multiple routes to share configuration', function () {
     config()->set('webhook-client.add_unique_token_to_route_name', true);
 
