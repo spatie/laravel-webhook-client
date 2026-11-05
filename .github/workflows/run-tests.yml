@@ -15,15 +15,16 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [8.5, 8.4, 8.3]
-        laravel: ['11.*', '12.*', '13.*']
+        php: ['8.6', '8.5', '8.4', '8.3']
+        laravel: ['12.*', '13.*']
         dependency-version: [prefer-stable]
         os: [ubuntu-latest]
+        exclude:
+          - php: '8.6'
+            laravel: '12.*'
         include:
           - laravel: 12.*
             testbench: ^10.0
-          - laravel: 11.*
-            testbench: ^9.0
           - laravel: 13.*
             testbench: ^11.0
 
